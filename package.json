@@ -68,7 +68,7 @@
     "antd": "^3.6.6",
     "antd-mobile": "^1.4.2",
     "babel-plugin-import": "^1.8.0",
-    "echarts": "^4.1.0",
+    "echarts": "^4.2.0-rc.2",
     "fastclick": "^1.0.6",
     "fundebug-javascript": "^1.2.2",
     "history": "^4.6.3",
