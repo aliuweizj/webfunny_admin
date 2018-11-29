@@ -95,6 +95,8 @@ export default class Header extends Component {
   choseProject(project) {
     this.setState({chooseProject: project})
     window.localStorage.chooseWebMonitorId = project.webMonitorId
-    this.props.chooseProject(project)
+    if (typeof this.props.chooseProject === "function") {
+      this.props.chooseProject(project)
+    }
   }
 }

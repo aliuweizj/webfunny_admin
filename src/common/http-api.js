@@ -34,6 +34,8 @@ const api = {
   "setIgnoreJavascriptError": apiHost + "/api/v1/ignoreError",
   // 获取忽略的js错误列表
   "ignoreErrorByApplication": apiHost + "/api/v1/ignoreErrorByApplication",
+  // 查询用户的行为列表
+  "searchUserBehaviors": apiHost + "/api/v1/searchUserBehaviors",
 
 }
 

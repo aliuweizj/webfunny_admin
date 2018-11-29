@@ -4,4 +4,3 @@ import reducers from "./reducers"
 
 // 直接调用启动
 initApp("/webfunny", reducers, extraRoutes)
-

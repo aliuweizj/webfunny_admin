@@ -34,3 +34,8 @@ import JavascriptErrorDetailContainer from "Containers/javascriptErrorDetail"
 export const JavascriptErrorDetail = props => <Bundle loadContainer={JavascriptErrorDetailContainer} title="javascriptErrorDetail" >
   {Container => <Container {...props} />}
 </Bundle>
+
+import BehaviorsContainer from "Containers/behaviors"
+export const Behaviors = props => <Bundle loadContainer={BehaviorsContainer} title="behaviors" >
+  {Container => <Container {...props} />}
+</Bundle>
