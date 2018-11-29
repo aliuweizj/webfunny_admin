@@ -93,7 +93,10 @@ module.exports = env => {
       }),
       new ManifestPlugin({
         publicPath: assetsUrl
-      })
+      }),
+      new webpack.ProvidePlugin({
+        $: 'zepto-webpack'
+      }),
     ]
   });
 }
