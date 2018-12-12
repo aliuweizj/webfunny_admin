@@ -76,7 +76,7 @@ class JavascriptError extends Component {
       </Row>
       <Row>
         <Tabs defaultActiveKey="1"  activeKey={activeKeyDown} onTabClick={this.onPageError.bind(this)}>
-          <TabPane tab={<span><Icon type="tags-o" />错误列表</span>} key="1">
+          <TabPane tab={<span><Icon type="tags-o" />错误列表(<b>TOP15</b>)</span>} key="1">
             <Card className="error-list-container">
               {
                 jsErrorList.length <= 0 && <span className="loading-box"><Icon className="loading-icon" type="loading" /></span>
@@ -85,15 +85,16 @@ class JavascriptError extends Component {
                   jsErrorList.map((error, index) => {
                   const ignoreStatus = ignoreErrorList.filter(data => data.ignoreErrorMessage === error.errorMessage && data.type === "ignore").length > 0
                   const resolveStatus = ignoreErrorList.filter(data => data.ignoreErrorMessage === error.errorMessage && data.type === "resolve").length > 0
-                  const msgArr = error.errorMessage.split(": ")
+                  const tempErrorMessage = decodeURIComponent(error.errorMessage)
+                  const msgArr = tempErrorMessage.split(": ")
                   const len = msgArr.length
                   const nowTime = new Date().getTime()
                   const latestTime = parseInt(error.happenTime, 10)
                   const timeStatus = nowTime - latestTime > 24 * 60 * 60 * 1000
                   return <p key={index} onClick={this.turnToDetail.bind(this, error)} title="点击查看详情" >
-                    <span className={ignoreStatus && " status-icon status-icon-ignore " ||  resolveStatus && " status-icon status-icon-resolve " || "status-icon"}/><span>{msgArr[0] || "空"}</span>
-                    <span>{msgArr[len - 1] || "..."}</span>
-                    {
+                    <span className={ignoreStatus && " status-icon status-icon-ignore " ||  resolveStatus && " status-icon status-icon-resolve " || "status-icon"}/><span>{decodeURIComponent(msgArr[0]) || "空"}</span>
+                    <span>{decodeURIComponent(msgArr[len - 1]) || "..."}</span>
+                    { error.osInfo &&
                       error.osInfo.map((obj) => {
                         let osType = ""
                         if (obj.os === "ios") {
@@ -141,7 +142,7 @@ class JavascriptError extends Component {
                     const msgArr = error.errorMessage.split(": ")
                     const len = msgArr.length
                     return <p key={index} onClick={this.turnToDetail.bind(this, error)} title="点击查看详情" >
-                      <span className="status-icon"/><span>{msgArr[0] || "空"}</span>
+                      <span className="status-icon"/><span>{decodeURIComponent(msgArr[0]) || "空"}</span>
                       <span>{msgArr[len - 1] || "..."}</span>
                       {
                         error.osInfo.map((obj) => {
@@ -252,10 +253,11 @@ class JavascriptError extends Component {
     this.props.getJsErrorCountByDayAction({ timeType }, (result) => {
       const data = result.data
       const dateArray = [], jsErrorArray = []
-      for (let i = 0; i < 30; i ++) {
+      for (let i = 0; i <= 14; i ++) {
         dateArray.push(data[i].day)
         jsErrorArray.push(data[i].count)
       }
+      console.log(dateArray)
       this.state.jsErrorCountByDayChart.setOption(jsErrorOption([dateArray, jsErrorArray]))
     })
     // 获取忽略js错误列表

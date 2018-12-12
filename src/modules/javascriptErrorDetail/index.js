@@ -331,7 +331,8 @@ class JavascriptErrorDetail extends Component {
     for (let i = 0; i < jsPathArray.length; i ++) {
       const jsPathStr = jsPathArray[i].replace(/[()]/g, "")
       const strArr = jsPathStr.split(":")
-      const jsPath = jsPathStr.match(/https?:\/\/\S*.js/g)[0]
+      const tempJsPath = jsPathStr.match(/https?:\/\/\S*.js/g)
+      const jsPath = tempJsPath ? jsPathStr.match(/https?:\/\/\S*.js/g)[0] : ""
       const locationX = strArr[strArr.length - 2]
       const locationY = strArr[strArr.length - 1]
       stackList.push({

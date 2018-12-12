@@ -8,7 +8,6 @@ class Behaviors extends Component {
     this.changeInputValue = this.changeInputValue.bind(this)
     this.search = this.search.bind(this)
     this.showPreviewPage = this.showPreviewPage.bind(this)
-    this.showBehaviorsElement = this.showBehaviorsElement.bind(this)
   }
 
   componentDidMount() {
@@ -19,48 +18,8 @@ class Behaviors extends Component {
     })
   }
 
-  showBehaviorsElement(behaviorList) {
-    return <Row className="footprint-container">
-      <Timeline>
-        {
-          behaviorList.map((behavior, index) => {
-            const happenTime = new Date(parseInt(behavior.happenTime, 10)).Format("yyyy-MM-dd hh:mm:ss.S")
-            let color = ""
-            let conEle = null
-            if (behavior.uploadType === "ELE_BEHAVIOR") {
-              color = "blue"
-              conEle = <span>
-                    <label className="footprint-des">点击了 {behavior.tagName}标签 {behavior.innerText}</label>
-                    <label className="footprint-time">发生时间：{happenTime} &nbsp;&nbsp;&nbsp;&nbsp; 类名: {behavior.className}</label>
-                    <label className="footprint-time">{behavior.simpleUrl}</label>
-                  </span>
-            } else if (behavior.uploadType === "CUSTOMER_PV") {
-              color = "green"
-              conEle = <span>
-                    <label className="footprint-des">
-                      进入页面 {behavior.simpleUrl}
-                      <a onClick={this.showPreviewPage(behavior.simpleUrl)}>预览</a>
-                    </label>
-                    <label className="footprint-time">发生时间：{happenTime}</label>
-                  </span>
-            } else if (behavior.uploadType === "JS_ERROR") {
-              color = "green"
-              conEle = <span>
-                    <label className="footprint-des">发生错误 {behavior.errorMessage}</label>
-                    <label className="footprint-time">发生时间：{happenTime}</label>
-                  </span>
-            }
-            return <Timeline.Item color={color} key={index}>
-              {conEle}
-            </Timeline.Item>
-          })
-        }
-      </Timeline>
-    </Row>
-  }
-
   render() {
-    const { behaviorList, searchFlag, userInfo, previewUrl } = this.props
+    const { behaviorList, searchFlag, userInfo } = this.props
     return <div className="behaviors-container">
       <BackTop>
         <Icon type="to-top" size="L"/>
@@ -70,7 +29,7 @@ class Behaviors extends Component {
         loadedProjects={this.loadedProjects.bind(this)}
       />
       { userInfo &&
-        <Card title={`${userInfo.secondUserParam}用户`}>
+        <Card id="infoCard" title={`${userInfo.secondUserParam}用户`}>
           <p>位置：{userInfo.city}</p>
           <p>设备：{userInfo.deviceName}</p>
           <p>系统：{userInfo.os}</p>
@@ -78,7 +37,6 @@ class Behaviors extends Component {
           <p>截止时间：{new Date(parseInt(userInfo.happenTime, 10)).Format("yyyy-MM-dd hh:mm:ss")}</p>
         </Card>
       }
-      <iframe className="preview-box" src={ previewUrl }/>
       <div className={searchFlag ? "behaviors-con behaviors-con-s" : "behaviors-con"}>
         <Input
           size="large"
@@ -141,6 +99,8 @@ class Behaviors extends Component {
       }
       const userInfo = res[len - 1]
       this.props.updateBehaviorsState({behaviorList: res, searchFlag: true, userInfo})
+      console.log($("#infoCard"))
+      $("#infoCard").draggable()
     })
   }
   changeInputValue(e) {

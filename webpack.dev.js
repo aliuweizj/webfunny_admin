@@ -53,9 +53,6 @@ module.exports = env => {
           }
         }
       }),
-      new webpack.ProvidePlugin({
-          $: 'zepto-webpack'
-      }),
       new OpenBrowserPlugin({ url: 'http://localhost:'+port})
     ]
   });
