@@ -99,8 +99,6 @@ class Behaviors extends Component {
       }
       const userInfo = res[len - 1]
       this.props.updateBehaviorsState({behaviorList: res, searchFlag: true, userInfo})
-      console.log($("#infoCard"))
-      $("#infoCard").draggable()
     })
   }
   changeInputValue(e) {

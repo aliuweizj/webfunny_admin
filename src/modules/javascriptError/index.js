@@ -44,14 +44,14 @@ class JavascriptError extends Component {
               <TabPane tab={<span><Icon type="area-chart" />月统计</span>} key="1">
                 <div id="jsErrorCountByDay" className="chart-box" />
               </TabPane>
-              <TabPane tab={<span><Icon type="clock-circle-o" />实时统计</span>} key="2">
+              <TabPane tab={<span><Icon type="clock-circle-o" />今天</span>} key="2">
                 <div id="jsErrorCountByHour" className="chart-box" />
               </TabPane>
             </Tabs>
           </Col>
           <Col span={8}>
             <Tabs defaultActiveKey="1" >
-              <TabPane tab={<span><Icon type="file-text" />一周统计</span>} key="1">
+              <TabPane tab={<span><Icon type="file-text" />错误率</span>} key="1">
                 <div className="info-box">
                   <span><Icon type="exception" /><label>总错误率</label></span>
                   <span>{totalPercent}%</span>
@@ -225,7 +225,7 @@ class JavascriptError extends Component {
     this.loadInitData()
 
     // 根据平台获取并计算错误率
-    this.props.getJavascriptErrorCountByOsAction({day: 7}, (result) => {
+    this.props.getJavascriptErrorCountByOsAction({day: 1}, (result) => {
       const pcError = parseInt(result.pcError.count, 10)
       const iosError = parseInt(result.iosError.count, 10)
       const androidError = parseInt(result.androidError.count, 10)

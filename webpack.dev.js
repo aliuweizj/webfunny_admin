@@ -53,6 +53,9 @@ module.exports = env => {
           }
         }
       }),
+      new webpack.ProvidePlugin({
+          $: 'jquery'
+      }),
       new OpenBrowserPlugin({ url: 'http://localhost:'+port})
     ]
   });

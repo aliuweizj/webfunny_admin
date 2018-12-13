@@ -95,7 +95,7 @@ module.exports = env => {
         publicPath: assetsUrl
       }),
       new webpack.ProvidePlugin({
-        $: 'zepto-webpack'
+        $: 'jquery'
       }),
     ]
   });
