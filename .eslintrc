@@ -122,9 +122,9 @@
       "beforeColon": false,
       "afterColon": true
     }],
-    "new-cap": [1, {                 // http://eslint.org/docs/rules/new-cap 要求构造函数名以大写字母开头
-      "newIsCap": true
-    }],
+//    "new-cap": [1, {                 // http://eslint.org/docs/rules/new-cap 要求构造函数名以大写字母开头
+//      "newIsCap": true
+//    }],
     "no-multiple-empty-lines": [2, { // http://eslint.org/docs/rules/no-multiple-empty-lines   不允许有多行空行
       "max": 2
     }],

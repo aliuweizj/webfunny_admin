@@ -6,7 +6,8 @@ const initialState = {
   behaviorList: [],
   searchFlag: false,
   userInfo: null,
-  previewUrl: ""
+  previewUrl: "",
+  timeScope: 1
 }
 
 export default handleActions({
