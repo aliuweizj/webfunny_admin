@@ -51,6 +51,7 @@ class Behaviors extends Component {
             placeholder="搜索用户的行为记录，请输入KEY或者USERID"
             onChange={this.changeInputValue}
           />
+          <p className="demo-des">检索示例：(选择本地数据后) 输入：4358269e-4a5b-43bf-b417-38255e82458b</p>
           <Button onClick={this.chooseTimeScope.bind(this, 0)} type={timeScope === 0 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>1天</Button>
           <Button onClick={this.chooseTimeScope.bind(this, 1)} type={timeScope === 1 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>2天</Button>
           <Button onClick={this.chooseTimeScope.bind(this, 2)} type={timeScope === 2 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>3天</Button>

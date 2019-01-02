@@ -5,6 +5,11 @@
   top: 0;
   background: #fff;
   z-index: 9;
+  .home-icon {
+    color: #5d5cb6;
+    font-size: 30px;
+    cursor: pointer;
+  }
   .sub-header {
     display: flex;
     align-items: center;

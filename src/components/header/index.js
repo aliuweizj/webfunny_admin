@@ -56,10 +56,13 @@ export default class Header extends Component {
             </a>
           </Dropdown>
         </div>
+        <Icon className="home-icon" type="home" onClick={this.turnToHome.bind(this)}/>
       </section>
     </div>
   }
-
+  turnToHome() {
+    window.location.href = "http://www.webfunny.cn"
+  }
   choseProject(project) {
     this.setState({chooseProject: project})
     window.localStorage.chooseWebMonitorId = project.webMonitorId

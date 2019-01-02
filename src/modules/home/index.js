@@ -1,6 +1,6 @@
 import "./index.scss"
 import React, { Component } from "react"
-import { Card, Icon } from "antd"
+import { Card, Button, Icon } from "antd"
 
 export default class Home extends Component {
   constructor(props) {
@@ -29,8 +29,12 @@ export default class Home extends Component {
             <p><Icon type="like-o" style={{color: "#5d5cb6", fontWeight: "bold"}} /><span> 可以快速复现线上用户行为，解决不限于BUG的很多问题。</span></p>
           </Card>
         </div>
+        <Button onClick={this.turnToBlog.bind(this)} className="git-btn" shape="circle" size="large" icon="github" />
       </div>
     </div>
+  }
+  turnToBlog() {
+    window.open("https://www.cnblogs.com/warm-stranger/p/10209990.html")
   }
   turnToJsError() {
     this.props.history.push("javascriptError")
@@ -42,13 +46,13 @@ export default class Home extends Component {
     const context = canvas.getContext("2d")
     // 微粒子创建数组
     const particles = []
-    for (let j = 0; j < 500; j++) {
+    for (let j = 0; j < 400; j++) {
       particles.push({// 设置雪花的初始位x，y  x,y向上的速度，以及雪花的大小颜色，随机生成的
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
         vx: Math.random() * 1 - 0.5,
         vy: Math.random() * 1 + 0.5,
-        size: 0.5 + Math.random() * 2,
+        size: 1 + Math.random() * 1,
         color: "#fff"
       })
     }
@@ -57,7 +61,7 @@ export default class Home extends Component {
       context.clearRect(0, 0, window.innerWidth, window.innerHeight)
       // 清除画布
       let particle
-      for (let i = 0; i < 300; i++) {// 遍历所有的雪花
+      for (let i = 0; i < 500; i++) {// 遍历所有的雪花
         particle = particles[i]
         particle.x += particle.vx// 更新雪花的新的x,y位置
         particle.y += particle.vy
