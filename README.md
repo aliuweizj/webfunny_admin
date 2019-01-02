@@ -13,7 +13,7 @@
     这是一个运用于前端监控系统的项目，我在知乎上对其作用做了介绍。
     
 线上Demo:
-    https://www.webfunny.cn/webfunny/javascriptError
+    http://www.webfunny.cn/
     
 博客讲解：
     https://www.cnblogs.com/warm-stranger/p/10209990.html
