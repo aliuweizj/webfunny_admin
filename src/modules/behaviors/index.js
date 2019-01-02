@@ -1,7 +1,8 @@
 import "./index.scss"
 import React, { Component } from "react"
-import { Input, Row, Icon, Timeline, BackTop, Card, Button, Spin } from "antd"
+import { Input, Row, Icon, Timeline, BackTop, Card, Button, Spin, Popover } from "antd"
 import Header from "Components/header"
+import Utils from "Common/utils"
 class Behaviors extends Component {
   constructor(props) {
     super(props)
@@ -22,7 +23,9 @@ class Behaviors extends Component {
   }
 
   render() {
-    const { behaviorList, searchFlag, userInfo, timeScope } = this.props
+    const { behaviorList, searchFlag, userInfo, timeScope, showMore } = this.props
+    const bLen = behaviorList.length
+    let happenTimeTemp = ""
     return <div className="behaviors-container">
       <BackTop>
         <Icon type="to-top" size="L"/>
@@ -32,8 +35,7 @@ class Behaviors extends Component {
         loadedProjects={this.loadedProjects.bind(this)}
       />
       { userInfo &&
-        <Card id="infoCard" title={`${userInfo.secondUserParam}用户`}>
-          <p>位置：{userInfo.city}</p>
+        <Card id="infoCard" title={`${Utils.b64DecodeUnicode(userInfo.secondUserParam)}用户`}>
           <p>设备：{userInfo.deviceName}</p>
           <p>系统：{userInfo.os}</p>
           <p>网络地址：{userInfo.monitorIp}</p>
@@ -46,63 +48,87 @@ class Behaviors extends Component {
             id="searchBox"
             size="large"
             addonAfter={<Icon type="search" onClick={this.search}/>}
-            placeholder="搜索用户的行为记录，请输入手机号或者USERID"
+            placeholder="搜索用户的行为记录，请输入KEY或者USERID"
             onChange={this.changeInputValue}
           />
-          <Button onClick={this.chooseTimeScope.bind(this, 1)} type={timeScope === 1 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>1天</Button>
-          <Button onClick={this.chooseTimeScope.bind(this, 2)} type={timeScope === 2 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>2天</Button>
-          <Button onClick={this.chooseTimeScope.bind(this, 3)} type={timeScope === 3 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>3天</Button>
-          <Button onClick={this.chooseTimeScope.bind(this, 7)} type={timeScope === 7 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>7天</Button>
+          <Button onClick={this.chooseTimeScope.bind(this, 0)} type={timeScope === 0 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>1天</Button>
+          <Button onClick={this.chooseTimeScope.bind(this, 1)} type={timeScope === 1 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>2天</Button>
+          <Button onClick={this.chooseTimeScope.bind(this, 2)} type={timeScope === 2 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>3天</Button>
+          <Button onClick={this.chooseTimeScope.bind(this, 6)} type={timeScope === 6 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>7天</Button>
           <Button onClick={this.chooseTimeScope.bind(this, 30)} type={timeScope === 30 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>全部</Button>
         </div>
         { behaviorList.length > 0 &&
         <Row className="footprint-container">
+          {!showMore && <Button style={{marginBottom: 20}} onClick={this.showMore.bind(this)}>展示更多</Button>}
           <Timeline>
             {
               behaviorList.map((behavior, index) => {
+                if (bLen > 200 && !showMore && index < bLen - 100) {
+                  return null
+                }
+                if (behavior.happenTime === happenTimeTemp) {
+                  return null
+                }
+                happenTimeTemp = behavior.happenTime
                 const happenTime = new Date(parseInt(behavior.happenTime, 10)).Format("yyyy-MM-dd hh:mm:ss.S")
-                const serverTime = new Date(behavior.createdAt).Format("yyyy-MM-dd hh:mm:ss.S")
                 const completeUrl = decodeURIComponent(behavior.completeUrl || behavior.simpleUrl)
                 let color = ""
                 let behaviorName = ""
                 let behaviorContent = ""
                 if (behavior.uploadType === "ELE_BEHAVIOR") {
-                  color = "green"
-                  behaviorName = "点击了"
-                  let innerText = ""
-                  const innerTextTemp = behavior.innerText
-                  const reg = new RegExp("[\\u4E00-\\u9FFF]+", "g")
-                  if (innerTextTemp && !reg.test(innerTextTemp)) {
-                    const tempArr = innerTextTemp.match(/(%[a-zA-Z0-9]{2}){3}/g)
-                    if (tempArr) {
-                      tempArr.forEach((item) => {
-                        try {
-                          const itemText = decodeURIComponent(item)
-                          innerText += itemText
-                        } catch (e) {console.log()}
-                      })
-                    } else {
-                      innerText = innerTextTemp
-                    }
-                  } else {
-                    innerText = innerTextTemp
+                  color = "#333333"
+                  behaviorName = "点击了 "
+                  let innerText = Utils.b64DecodeUnicode(behavior.innerText)
+                  const reg = /[\u4e00-\u9fa5]/
+                  try {
+                    innerText = reg.test(innerText) ? innerText : decodeURIComponent(innerText)
+                  } catch (e) {
+                    innerText = innerText
                   }
-                  behaviorContent = behavior.tagName + "标签 （" + innerText + "） 样式名：" + behavior.className
+                  behaviorContent = <span><label>{behavior.tagName + "标签 （" + innerText + "）"}</label><br/><i style={{fontSize: 12}}>{"样式名：" + Utils.b64DecodeUnicode(behavior.className)}</i></span>
                 } else if (behavior.uploadType === "CUSTOMER_PV") {
                   color = "blue"
-                  behaviorName = "进入页面"
+                  behaviorName = "进入页面 "
                   behaviorContent = behavior.simpleUrl
                 } else if (behavior.uploadType === "JS_ERROR") {
                   color = "red"
-                  behaviorName = "发生错误"
-                  behaviorContent = behavior.errorMessage
-                } else {
+                  behaviorName = "发生错误 "
+                  behaviorContent = Utils.b64DecodeUnicode(behavior.errorMessage)
+                } else if (behavior.uploadType === "SCREEN_SHOT") {
+                  color = "darkgoldenrod"
+                  behaviorName = "屏幕截图 "
+                  behaviorContent = "data:image/webp;base64," + Utils.b64DecodeUnicode(behavior.screenInfo)
+                } else if (behavior.uploadType === "HTTP_LOG") {
+                  const status = behavior.status
+                  behaviorName = behavior.statusResult
+                  color = "cyan"
+                  if (behaviorName === "请求返回" && status === "200") {
+                    color = "green"
+                    behaviorName = <span style={{display: "block"}}>{behavior.statusResult} <i style={{fontSize: 12, color}}>{"    状态：" + status + "  "}</i></span>
+                  } else if (behaviorName === "请求返回" && status !== "200") {
+                    color = "red"
+                    behaviorName = <span style={{display: "block"}}>{behavior.statusResult} <i style={{fontSize: 12, color}}>{"    状态：" + status + "  "}</i></span>
+                  }
+                  behaviorContent = <span style={{display: "block"}}><i style={{fontSize: 12}}>请求地址：{Utils.b64DecodeUnicode(behavior.httpUrl)}</i></span>
+                }  else {
                   color = "black"
                 }
                 return <Timeline.Item color={color} key={index}>
                     <span>
-                      <label className="footprint-des">{behaviorName} {behaviorContent}</label>
-                      <label className="footprint-time"><b>客户端时间：{happenTime}</b> -- <i>服务器时间：{serverTime}</i></label>
+                      <label className="footprint-des" onClick={this.showDetail.bind(this, behavior.uploadType, behaviorContent)}>
+                        {behaviorName}
+                        { behavior.uploadType === "SCREEN_SHOT" ?
+                          <span>
+                            <Popover placement="right" content={<img src={behaviorContent}/>} title="屏幕快照">
+                              <a type="primary" style={{marginLeft: 10, marginRight: 10}}> 预览 </a>
+                            </Popover>
+                            <br/><i style={{fontSize: 12}}>截图描述：{Utils.b64DecodeUnicode(behavior.description)}</i>
+                          </span>
+                          :
+                          behaviorContent
+                        }
+                      </label>
+                      <label className="footprint-time"><b style={{color: "#666"}}>客户端时间：{happenTime}</b></label>
                       <label className="footprint-time"><a style={{color: "#77b3eb"}} href={completeUrl} target="_blank">{completeUrl}</a></label>
                     </span>
                 </Timeline.Item>
@@ -116,8 +142,9 @@ class Behaviors extends Component {
     </div>
   }
   search() {
-    const { searchValue, webMonitorId, timeScope } = this.props
+    const { webMonitorId, timeScope } = this.props
     this.setState({loading: true})
+    const searchValue = Utils.b64EncodeUnicode(this.props.searchValue)
     this.props.searchUserBehaviorsAction({searchValue, webMonitorId, timeScope }, (res) => {
       const len = res.length
       for (let i = 0; i < res.length - 1; i++) {
@@ -135,6 +162,10 @@ class Behaviors extends Component {
     }, () => {
       this.setState({loading: false})
     })
+  }
+  showMore() {
+    const showMore = this.props.showMore
+    this.props.updateBehaviorsState({showMore: !showMore})
   }
   changeInputValue(e) {
     const searchValue = e.target.value
@@ -154,6 +185,11 @@ class Behaviors extends Component {
   showPreviewPage(url) {
     const previewUrl = url
     this.props.updateBehaviorsState({previewUrl})
+  }
+  showDetail(type, behaviorContent) {
+    if (type === "JS_ERROR") {
+      this.props.history.push("javascriptErrorDetail?errorMsg=" + behaviorContent)
+    }
   }
 }
 

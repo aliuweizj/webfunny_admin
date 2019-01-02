@@ -254,10 +254,10 @@ class JavascriptError extends Component {
       const data = result.data
       const dateArray = [], jsErrorArray = []
       for (let i = 0; i <= 14; i ++) {
+        if (!data[i]) continue
         dateArray.push(data[i].day)
         jsErrorArray.push(data[i].count)
       }
-      console.log(dateArray)
       this.state.jsErrorCountByDayChart.setOption(jsErrorOption([dateArray, jsErrorArray]))
     })
     // 获取忽略js错误列表

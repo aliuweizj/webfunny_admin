@@ -51,7 +51,8 @@ module.exports = env => {
           'files': {
             'js': ['index.js']
           }
-        }
+        },
+        webfunny: false,
       }),
       new webpack.ProvidePlugin({
           $: 'jquery'

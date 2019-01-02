@@ -5,6 +5,20 @@ export default class Utils {
   static isObject(object) {
     return Object.prototype.toString.call(object) === "[object Object]"
   }
+  static b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+      return String.fromCharCode("0x" + p1)
+    }))
+  }
+  static b64DecodeUnicode(str) {
+    try {
+      return decodeURIComponent(atob(str).split("").map(function(c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)
+      }).join(""))
+    } catch (e) {
+      return str
+    }
+  }
   static qs(object, cache) {
     const arr = []
     function inner(innerObj, prefix) {

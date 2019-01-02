@@ -89,7 +89,8 @@ module.exports = env => {
           } else {
             return 0;
           }
-        }
+        },
+        webfunny: true
       }),
       new ManifestPlugin({
         publicPath: assetsUrl
