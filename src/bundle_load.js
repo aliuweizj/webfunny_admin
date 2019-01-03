@@ -4,9 +4,10 @@ import Bundle from "./lib/bundle"  // 调用基础库的方法
 // 加载模块
 import HomeContainer from "Containers/home"
 import ProjectListContainer from "Containers/projectList"
+import JavascriptErrorContainer from "Containers/javascriptError"
+import BehaviorsContainer from "Containers/behaviors"
 
-
-export const Home = props => <Bundle loadContainer={HomeContainer} next={ProjectListContainer} title="数据概览" >
+export const Home = props => <Bundle loadContainer={HomeContainer} next={[JavascriptErrorContainer, BehaviorsContainer]} title="首页" >
   {Container => <Container {...props} />}
 </Bundle>
 
@@ -25,7 +26,6 @@ export const Login = props => <Bundle loadContainer={LoginContainer} title="logi
   {Container => <Container {...props} />}
 </Bundle>
 
-import JavascriptErrorContainer from "Containers/javascriptError"
 export const JavascriptError = props => <Bundle loadContainer={JavascriptErrorContainer} title="JS错误列表" >
   {Container => <Container {...props} />}
 </Bundle>
@@ -35,7 +35,6 @@ export const JavascriptErrorDetail = props => <Bundle loadContainer={JavascriptE
   {Container => <Container {...props} />}
 </Bundle>
 
-import BehaviorsContainer from "Containers/behaviors"
 export const Behaviors = props => <Bundle loadContainer={BehaviorsContainer} title="behaviors" >
   {Container => <Container {...props} />}
 </Bundle>
