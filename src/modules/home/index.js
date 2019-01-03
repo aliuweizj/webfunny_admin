@@ -60,9 +60,10 @@ export default class Home extends Component {
     function timeUp() {
       context.clearRect(0, 0, window.innerWidth, window.innerHeight)
       // 清除画布
-      let particle
+      let particle = {}
       for (let i = 0; i < 500; i++) {// 遍历所有的雪花
         particle = particles[i]
+        if (!particle) continue
         particle.x += particle.vx// 更新雪花的新的x,y位置
         particle.y += particle.vy
         if (particle.x < 0) {
