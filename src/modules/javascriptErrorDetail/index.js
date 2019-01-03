@@ -83,7 +83,7 @@ class JavascriptErrorDetail extends Component {
     }
 
     return <div className="javascriptErrorDetail-container">
-      <Header/>
+      <Header parentProps={this.props}/>
       <Row className="detail-container">
         <Col span={16}>
           <span className="error-type">{errorDetail.errorType}</span><span className="error-url">{errorDetail.titleDetail || "..."}</span>
@@ -158,12 +158,12 @@ class JavascriptErrorDetail extends Component {
       }
       <Row className="stack-container">
         <h4>Js错误堆栈</h4>
-        <span className="error-msg">{ errorDetail.errorMessage }</span>
+        <span className="error-msg">{ Utils.b64DecodeUnicode(errorDetail.errorMessage) }</span>
         <Collapse defaultActiveKey={["1"]} onChange={this.callback}>
           {
             errorStackList.map((stack, index) => {
               return <Panel header={stack.jsPathStr} key={index + 1}>
-                <p>{decodeURIComponent(stack.code)}</p>
+                <p>{Utils.b64DecodeUnicode(decodeURIComponent(stack.code))}</p>
               </Panel>
             })
           }

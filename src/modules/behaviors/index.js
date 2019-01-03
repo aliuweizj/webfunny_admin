@@ -33,6 +33,7 @@ class Behaviors extends Component {
       <Header
         chooseProject={this.choseProject.bind(this)}
         loadedProjects={this.loadedProjects.bind(this)}
+        parentProps={this.props}
       />
       { userInfo &&
         <Card id="infoCard" title={`${Utils.b64DecodeUnicode(userInfo.secondUserParam)}用户`}>

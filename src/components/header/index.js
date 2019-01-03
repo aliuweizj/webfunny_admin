@@ -49,6 +49,7 @@ export default class Header extends Component {
       </Menu>
     return <div className="header-container">
       <section className="sub-header">
+        <Icon className="home-icon" type="home" onClick={this.turnToHome.bind(this)}/>
         <div className="project-select-box">
           <Dropdown overlay={menu} trigger={["click"]}>
             <a className="ant-dropdown-link" href="#">
@@ -56,12 +57,12 @@ export default class Header extends Component {
             </a>
           </Dropdown>
         </div>
-        <Icon className="home-icon" type="home" onClick={this.turnToHome.bind(this)}/>
       </section>
     </div>
   }
   turnToHome() {
-    window.location.href = "http://www.webfunny.cn"
+    const {parentProps} = this.props
+    parentProps.history.push("home")
   }
   choseProject(project) {
     this.setState({chooseProject: project})

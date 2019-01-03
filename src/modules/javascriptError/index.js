@@ -37,6 +37,7 @@ class JavascriptError extends Component {
       <Header
         chooseProject={this.choseProject.bind(this)}
         loadedProjects={this.loadedProjects.bind(this)}
+        parentProps={this.props}
       />
       <Row>
         <Card className="main-info-container">
