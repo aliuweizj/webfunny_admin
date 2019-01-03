@@ -16,7 +16,7 @@ export default class Home extends Component {
     return <div className="home-container">
       <canvas className="snow-canvas" id="snowCanvas">你的浏览器不支持canvas</canvas>
       <div className="home-mask">
-        <span className="home-title">WebFunny</span>
+        <span className="home-title">WebFunny <Button onClick={this.turnToBlog.bind(this)} className="git-btn" shape="circle" size="large" icon="github" /></span>
         <div className="home-content">
           <Card onClick={this.turnToJsError.bind(this)} title={<div><Icon type="area-chart" /> 页面错误分析 </div>} extra={<a href="#">详情 <Icon type="right" /></a>} style={{ width: 300, float: "left" }}>
             <p><Icon type="dot-chart" style={{color: "#5d5cb6", fontWeight: "bold"}} /> <span> 分析2周内，页面报错的变化趋势，错误率信息。</span></p>
@@ -29,7 +29,7 @@ export default class Home extends Component {
             <p><Icon type="like-o" style={{color: "#5d5cb6", fontWeight: "bold"}} /><span> 可以快速复现线上用户行为，解决不限于BUG的很多问题。</span></p>
           </Card>
         </div>
-        <Button onClick={this.turnToBlog.bind(this)} className="git-btn" shape="circle" size="large" icon="github" />
+
       </div>
     </div>
   }
