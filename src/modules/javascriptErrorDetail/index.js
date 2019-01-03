@@ -22,7 +22,7 @@ class JavascriptErrorDetail extends Component {
       this.props.updateJavascriptErrorDetailState({errorList, errorDetail})
     })
 
-    this.props.getJavascriptErrorAboutInfoAction({errorMsg: encodeURIComponent(errorMsg), customerKey: errorDetail.customerKey}, (res) => {
+    this.props.getJavascriptErrorAboutInfoAction({errorMsg: errorMsg, customerKey: errorDetail.customerKey}, (res) => {
       this.props.updateJavascriptErrorDetailState({errorAboutInfo: res})
     })
 
@@ -39,7 +39,12 @@ class JavascriptErrorDetail extends Component {
   render() {
     const { errorDetail, errorList, errorStackList, errorAboutInfo, isIgnore } = this.props
     const columns = [
-      { title: "错误信息", dataIndex: "errorMessage", key: "errorMessage"},
+      {
+        title: "错误信息", dataIndex: "errorMessage", key: "errorMessage",
+        render: (text) => {
+          return <label>{Utils.b64DecodeUnicode(text)}</label>
+        },
+      },
       { title: "页面", dataIndex: "simpleUrl", key: "simpleUrl" },
       { title: "设备", dataIndex: "deviceName", key: "deviceName" },
       { title: "客户IP地址", dataIndex: "monitorIp", key: "monitorIp" },
@@ -86,9 +91,9 @@ class JavascriptErrorDetail extends Component {
       <Header parentProps={this.props}/>
       <Row className="detail-container">
         <Col span={16}>
-          <span className="error-type">{errorDetail.errorType}</span><span className="error-url">{errorDetail.titleDetail || "..."}</span>
-          <span className="error-msg"><label /><label>{errorDetail.errorMessage || "..."}</label> <label>{errorDetail.happenTime}</label></span>
-          <span className="error-page-link"><Icon type="link" /><a target="_blank" href={errorDetail.simpleUrl}>{errorDetail.simpleUrl || "..."}</a></span>
+          <span className="error-type">{Utils.b64DecodeUnicode(errorDetail.errorType)}</span><span className="error-url">{Utils.b64DecodeUnicode(errorDetail.titleDetail) || "..."}</span>
+          <span className="error-msg"><label /><label>{Utils.b64DecodeUnicode(errorDetail.errorMessage) || "..."}</label> <label>{errorDetail.happenTime}</label></span>
+          <span className="error-page-link"><Icon type="link" /><a target="_blank" href={Utils.b64DecodeUnicode(errorDetail.simpleUrl)}>{Utils.b64DecodeUnicode(errorDetail.simpleUrl) || "..."}</a></span>
         </Col>
         <Col span={8}>
           <div className="info-box">
@@ -168,7 +173,7 @@ class JavascriptErrorDetail extends Component {
             })
           }
           <Panel header="堆栈明细" key={errorStackList.length + 1}>
-            <p>{ errorDetail.errorStack }</p>
+            <p>{ Utils.b64DecodeUnicode(errorDetail.errorStack) }</p>
           </Panel>
         </Collapse>
       </Row>
@@ -231,7 +236,7 @@ class JavascriptErrorDetail extends Component {
     if (errorList.length >= errorIndex + 1) {
       const errorDetail = this.analysisError(errorList[errorIndex + 1])
       this.props.updateJavascriptErrorDetailState({errorDetail, errorIndex: errorIndex + 1})
-      this.props.getJavascriptErrorAboutInfoAction({errorMsg: encodeURIComponent(errorDetail.errorMessage), customerKey: errorDetail.customerKey}, (res) => {
+      this.props.getJavascriptErrorAboutInfoAction({errorMsg: errorDetail.errorMessage, customerKey: errorDetail.customerKey}, (res) => {
         this.props.updateJavascriptErrorDetailState({errorAboutInfo: res})
       })
     }
@@ -252,7 +257,7 @@ class JavascriptErrorDetail extends Component {
     let os = error.os.split(" ")[0]
     let osVersion = error.os.split(" ")[1]
     const deviceName = error.deviceName
-    const jsPathArray = error.errorStack.match(/\([(http)?:]?[\S]*\d+\)/g)
+    const jsPathArray = Utils.b64DecodeUnicode(error.errorStack).match(/\([(http)?:]?[\S]*\d+\)/g)
     const tempArr = jsPathArray ? jsPathArray[0].split("/") : []
     const titleDetail = tempArr.length ? tempArr[tempArr.length - 1] : ""
     const customerKey = error.customerKey
