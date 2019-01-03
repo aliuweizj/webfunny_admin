@@ -22,10 +22,10 @@ const envUrls = {
     uri: "https://www.webfunny.cn"
   },
   prod: {
-    apiServerUrl: "https://www.webfunny.cn",
-    assetsUrl: "https://www.webfunny.cn",
-    nodeApiServerUrl: "https://www.webfunny.cn",
-    uri: "https://www.webfunny.cn"
+    apiServerUrl: "//www.webfunny.cn",
+    assetsUrl: "//www.webfunny.cn",
+    nodeApiServerUrl: "//www.webfunny.cn",
+    uri: "//www.webfunny.cn"
   }
 }
 

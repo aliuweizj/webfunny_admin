@@ -16,7 +16,7 @@ export default class Utils {
         return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)
       }).join(""))
     } catch (e) {
-      return str
+      return "..."
     }
   }
   static qs(object, cache) {

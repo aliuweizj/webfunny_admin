@@ -80,13 +80,18 @@ class Behaviors extends Component {
                   color = "#333333"
                   behaviorName = "点击了 "
                   let innerText = Utils.b64DecodeUnicode(behavior.innerText)
+                  let placeholder = ""
+                  const placeholderArray = behavior.placeholder.split(" ")
+                  placeholderArray.forEach((item) => {
+                    placeholder += Utils.b64DecodeUnicode(item) + " "
+                  })
                   const reg = /[\u4e00-\u9fa5]/
                   try {
                     innerText = reg.test(innerText) ? innerText : decodeURIComponent(innerText)
                   } catch (e) {
                     innerText = innerText
                   }
-                  behaviorContent = <span><label>{behavior.tagName + "标签 （" + innerText + "）"}</label><br/><i style={{fontSize: 12}}>{"样式名：" + Utils.b64DecodeUnicode(behavior.className)}</i></span>
+                  behaviorContent = <span><label>{behavior.tagName + "标签 （" + innerText + placeholder + "）"}</label><br/><i style={{fontSize: 12}}>{"样式名：" + Utils.b64DecodeUnicode(behavior.className)}</i></span>
                 } else if (behavior.uploadType === "CUSTOMER_PV") {
                   color = "blue"
                   behaviorName = "进入页面 "

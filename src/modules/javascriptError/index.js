@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import Header from "Components/header"
 import { Row, Col, Tabs, Card, Icon, Tooltip } from "antd"
 import { jsErrorOption, jsErrorOptionByHour } from "ChartConfig/jsChartOption"
+import Utils from "Common/utils"
 const TabPane = Tabs.TabPane
 const echarts = require("echarts")
 class JavascriptError extends Component {
@@ -92,8 +93,8 @@ class JavascriptError extends Component {
                   const latestTime = parseInt(error.happenTime, 10)
                   const timeStatus = nowTime - latestTime > 24 * 60 * 60 * 1000
                   return <p key={index} onClick={this.turnToDetail.bind(this, error)} title="点击查看详情" >
-                    <span className={ignoreStatus && " status-icon status-icon-ignore " ||  resolveStatus && " status-icon status-icon-resolve " || "status-icon"}/><span>{decodeURIComponent(msgArr[0]) || "空"}</span>
-                    <span>{decodeURIComponent(msgArr[len - 1]) || "..."}</span>
+                    <span className={ignoreStatus && " status-icon status-icon-ignore " ||  resolveStatus && " status-icon status-icon-resolve " || "status-icon"}/><span>{ Utils.b64DecodeUnicode(msgArr[0]) || "空"}</span>
+                    <span>{Utils.b64DecodeUnicode(msgArr[len - 1]) || "..."}</span>
                     { error.osInfo &&
                       error.osInfo.map((obj) => {
                         let osType = ""
