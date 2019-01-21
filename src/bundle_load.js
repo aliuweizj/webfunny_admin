@@ -7,7 +7,7 @@ import ProjectListContainer from "Containers/projectList"
 import JavascriptErrorContainer from "Containers/javascriptError"
 import BehaviorsContainer from "Containers/behaviors"
 import JavascriptErrorDetailContainer from "Containers/javascriptErrorDetail"
-export const Home = props => <Bundle loadContainer={HomeContainer} next={[JavascriptErrorContainer, BehaviorsContainer]} title="首页" >
+export const Home = props => <Bundle loadContainer={HomeContainer} title="首页" >
   {Container => <Container {...props} />}
 </Bundle>
 
