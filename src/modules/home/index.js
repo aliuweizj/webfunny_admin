@@ -1,7 +1,6 @@
 import "./index.scss"
 import React, { Component } from "react"
 import { Card, Button, Icon } from "antd"
-import HttpUtil from "Common/http-util"
 export default class Home extends Component {
   constructor(props) {
     super(props)
