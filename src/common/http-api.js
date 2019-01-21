@@ -36,6 +36,8 @@ const api = {
   "ignoreErrorByApplication": apiHost + "/api/v1/ignoreErrorByApplication",
   // 查询用户的行为列表
   "searchUserBehaviors": apiHost + "/api/v1/searchUserBehaviors",
+  // 获取截屏列表
+  "getScreenShotInfoListByPage": apiHost + "/api/v1/getScreenShotInfoListByPage",
 
 }
 

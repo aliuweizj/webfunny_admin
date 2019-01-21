@@ -6,7 +6,7 @@ import HomeContainer from "Containers/home"
 import ProjectListContainer from "Containers/projectList"
 import JavascriptErrorContainer from "Containers/javascriptError"
 import BehaviorsContainer from "Containers/behaviors"
-
+import JavascriptErrorDetailContainer from "Containers/javascriptErrorDetail"
 export const Home = props => <Bundle loadContainer={HomeContainer} next={[JavascriptErrorContainer, BehaviorsContainer]} title="首页" >
   {Container => <Container {...props} />}
 </Bundle>
@@ -26,12 +26,16 @@ export const Login = props => <Bundle loadContainer={LoginContainer} title="logi
   {Container => <Container {...props} />}
 </Bundle>
 
-export const JavascriptError = props => <Bundle loadContainer={JavascriptErrorContainer} title="JS错误列表" >
+export const JavascriptError = props => <Bundle loadContainer={JavascriptErrorContainer} next={[JavascriptErrorDetailContainer]} title="JS错误列表" >
   {Container => <Container {...props} />}
 </Bundle>
 
-import JavascriptErrorDetailContainer from "Containers/javascriptErrorDetail"
-export const JavascriptErrorDetail = props => <Bundle loadContainer={JavascriptErrorDetailContainer} title="javascriptErrorDetail" >
+export const JavascriptErrorDetail = props => <Bundle loadContainer={JavascriptErrorDetailContainer} title="错误详情" >
+  {Container => <Container {...props} />}
+</Bundle>
+
+import ShowScreenShotContainer from "Containers/showScreenShot"
+export const ShowScreenShot = props => <Bundle loadContainer={ShowScreenShotContainer} title="javascriptErrorDetail" >
   {Container => <Container {...props} />}
 </Bundle>
 

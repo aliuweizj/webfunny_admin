@@ -1,7 +1,7 @@
 import "./index.scss"
 import React, { Component } from "react"
 import { Card, Button, Icon } from "antd"
-
+import HttpUtil from "Common/http-util"
 export default class Home extends Component {
   constructor(props) {
     super(props)
@@ -10,6 +10,19 @@ export default class Home extends Component {
   componentDidMount() {
     const canvas = document.querySelector("#snowCanvas")
     this.snow(canvas)
+
+    // HttpUtil.post("http://172.16.48.74:8010/api/v1/uploadExtendLog", {
+    //   behaviorResult: '失败',
+    //   behaviorType: 'faceIdentify阿里活体检测结果',
+    //   description:
+    //     'result:-1 (-2=认证异常,网络不通或者环境问题;-1=未认证,用户主动取消;0=认证中;1=审核通过;2=审核失败)',
+    //   uploadType: 'APP_BEHAVIOR',
+    //   userId: 'A5AF91A4-874A-4A88-BAA0-86DBFFEC1457'
+    // }, {timeout: 180 * 1000}).then( response => {
+    //   console.log(response.data)
+    // }).catch((e) => {
+    //   console.log(e)
+    // })
   }
 
   render() {

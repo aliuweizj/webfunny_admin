@@ -87,14 +87,14 @@ class JavascriptError extends Component {
                   jsErrorList.map((error, index) => {
                   const ignoreStatus = ignoreErrorList.filter(data => data.ignoreErrorMessage === error.errorMessage && data.type === "ignore").length > 0
                   const resolveStatus = ignoreErrorList.filter(data => data.ignoreErrorMessage === error.errorMessage && data.type === "resolve").length > 0
-                  const tempErrorMessage = decodeURIComponent(error.errorMessage)
+                  const tempErrorMessage = Utils.b64DecodeUnicode(error.errorMessage)
                   const msgArr = tempErrorMessage.split(": ")
                   const len = msgArr.length
                   const nowTime = new Date().getTime()
                   const latestTime = parseInt(error.happenTime, 10)
                   const timeStatus = nowTime - latestTime > 24 * 60 * 60 * 1000
                   return <p key={index} onClick={this.turnToDetail.bind(this, error)} title="点击查看详情" >
-                    <span className={ignoreStatus && " status-icon status-icon-ignore " ||  resolveStatus && " status-icon status-icon-resolve " || "status-icon"}/><span>{ Utils.b64DecodeUnicode(msgArr[0]) || "空"}</span>
+                    <span className={ignoreStatus && " status-icon status-icon-ignore " ||  resolveStatus && " status-icon status-icon-resolve " || "status-icon"}/><span>{ Utils.b64DecodeUnicode(msgArr[0] || msgArr[1] || msgArr[2]) || "空"}</span>
                     <span>{Utils.b64DecodeUnicode(msgArr[len - 1]) || "..."}</span>
                     { error.osInfo &&
                       error.osInfo.map((obj) => {
@@ -141,10 +141,11 @@ class JavascriptError extends Component {
               <Card className="error-list-container">
                 {
                   jsErrorListByPage.map((error, index) => {
-                    const msgArr = error.errorMessage.split(": ")
+                    const errorMessage = Utils.b64DecodeUnicode(error.errorMessage)
+                    const msgArr = errorMessage.split(": ")
                     const len = msgArr.length
                     return <p key={index} onClick={this.turnToDetail.bind(this, error)} title="点击查看详情" >
-                      <span className="status-icon"/><span>{decodeURIComponent(msgArr[0]) || "空"}</span>
+                      <span className="status-icon"/><span>{Utils.b64DecodeUnicode(msgArr[0] || msgArr[1] || msgArr[2]) || "空"}</span>
                       <span>{msgArr[len - 1] || "..."}</span>
                       {
                         error.osInfo.map((obj) => {
@@ -156,7 +157,7 @@ class JavascriptError extends Component {
                           } else {
                             osType = "windows"
                           }
-                          return <span>
+                          return <span key={Math.random()}>
                           <Icon className="click-export" type={osType} /><label>（{obj.count}次）</label>
                         </span>
                         })

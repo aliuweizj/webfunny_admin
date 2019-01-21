@@ -2,7 +2,7 @@ import Utils from "Common/utils"
 import {Toast} from "antd-mobile"
 import "whatwg-fetch"
 import "./extension"
-const timeout = 120000
+const timeout = 300000
 export default class HttpUtil {
   /**
    * get 请求
