@@ -43,7 +43,7 @@
         background: rgba(0, 0, 0, 0.1);
         .git-btn {
             font-size: 24px;
-            color: #5d5cb6;
+            color: red;
             box-shadow: 0px 0px 20px 0px #fff;
             animation: shadow 1s linear 0s infinite alternate;
             /* Firefox: */
@@ -55,7 +55,7 @@
         }
         .home-title {
             display: block;
-            font-size: 100px;
+            font-size: 60px;
             color: #fff;
             font-weight: bold;
             text-align: center;
