@@ -2,8 +2,12 @@ body {
   font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", sans-serif;
   padding: 0;
   margin: 0;
-  background: url("../assets/img/home/html_bg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  &:after {
+    display: block;
+    content: '页面正在努力加载中，请稍等几秒钟哦...';
+    text-align: center;
+    line-height: 500px;
+    font-size: 18px;
+    color: #e2e2e2;
+  }
 }
