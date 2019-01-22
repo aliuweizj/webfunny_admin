@@ -90,7 +90,8 @@ module.exports = env => {
             return 0;
           }
         },
-        webfunny: true
+        webfunny: true,
+        baiduAs: true
       }),
       new ManifestPlugin({
         publicPath: assetsUrl

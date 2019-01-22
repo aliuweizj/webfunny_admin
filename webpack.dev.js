@@ -53,6 +53,7 @@ module.exports = env => {
           }
         },
         webfunny: false,
+        baiduAs: false
       }),
       new webpack.ProvidePlugin({
           $: 'jquery'
