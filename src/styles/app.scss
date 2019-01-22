@@ -2,12 +2,82 @@ body {
   font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", sans-serif;
   padding: 0;
   margin: 0;
+  @keyframes loading-msg
+  {
+    0% {
+      content: '页面正在努力加载中，请稍等几秒钟哦';
+    }
+    30% {
+      content: '页面正在努力加载中，请稍等几秒钟哦.';
+    }
+    60% {
+      content: '页面正在努力加载中，请稍等几秒钟哦..';
+    }
+    100% {
+      content: '页面正在努力加载中，请稍等几秒钟哦...';
+    }
+  }
+
+  @-moz-keyframes loading-msg /* Firefox */
+  {
+    0% {
+      content: '页面正在努力加载中，请稍等几秒钟哦';
+    }
+    30% {
+      content: '页面正在努力加载中，请稍等几秒钟哦.';
+    }
+    60% {
+      content: '页面正在努力加载中，请稍等几秒钟哦..';
+    }
+    100% {
+      content: '页面正在努力加载中，请稍等几秒钟哦...';
+    }
+  }
+
+  @-webkit-keyframes loading-msg /* Safari 和 Chrome */
+  {
+    0% {
+      content: '页面正在努力加载中，请稍等几秒钟哦';
+    }
+    30% {
+      content: '页面正在努力加载中，请稍等几秒钟哦.';
+    }
+    60% {
+      content: '页面正在努力加载中，请稍等几秒钟哦..';
+    }
+    100% {
+      content: '页面正在努力加载中，请稍等几秒钟哦...';
+    }
+  }
+
+  @-o-keyframes loading-msg /* Opera */
+  {
+    0% {
+      content: '页面正在努力加载中，请稍等几秒钟哦';
+    }
+    30% {
+      content: '页面正在努力加载中，请稍等几秒钟哦.';
+    }
+    60% {
+      content: '页面正在努力加载中，请稍等几秒钟哦..';
+    }
+    100% {
+      content: '页面正在努力加载中，请稍等几秒钟哦...';
+    }
+  }
   &:after {
     display: block;
-    content: '页面正在努力加载中，请稍等几秒钟哦...';
+    content: ' ';
     text-align: center;
     line-height: 500px;
     font-size: 18px;
     color: #e2e2e2;
+    animation: loading-msg 3s linear 0s infinite normal;
+    /* Firefox: */
+    -moz-animation: loading-msg 3s linear 0s infinite normal;
+    /* Safari 和 Chrome: */
+    -webkit-animation: loading-msg 3s linear 0s infinite normal;
+    /* Opera: */
+    -o-animation: loading-msg 3s linear 0s infinite normal;
   }
 }
