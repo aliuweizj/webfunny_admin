@@ -57,8 +57,12 @@ export default class Header extends Component {
             </a>
           </Dropdown>
         </div>
+        <img className="git-btn" src={require("Images/common/github5.png")} onClick={this.turnToBlog.bind(this)} />
       </section>
     </div>
+  }
+  turnToBlog() {
+    window.open("https://www.cnblogs.com/warm-stranger/p/10209990.html")
   }
   turnToHome() {
     const {parentProps} = this.props
