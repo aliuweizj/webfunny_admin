@@ -1,17 +1,24 @@
 import "./index.scss"
 import React, { Component } from "react"
-import { Input, Row, Icon, Timeline, BackTop, Card, Button, Spin, Popover } from "antd"
+import { Input, Row, Icon, Timeline, BackTop, Card, Button, Spin, Popover, Select, Modal } from "antd"
+import { loadPageTimeOption } from "ChartConfig/behaviorsChartConfig"
 import Header from "Components/header"
 import Utils from "Common/utils"
+const echarts = require("echarts")
+const Option = Select.Option
 class Behaviors extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: false
+      loading: false,
+      searchExampleAble: false,
+      loadPageTimeChart: null
     }
     this.changeInputValue = this.changeInputValue.bind(this)
     this.search = this.search.bind(this)
     this.showPreviewPage = this.showPreviewPage.bind(this)
+    this.handleTimeScopeChange = this.handleTimeScopeChange.bind(this)
+    this.createLoadPageTimeChart = this.createLoadPageTimeChart.bind(this)
   }
 
   componentDidMount() {
@@ -26,6 +33,15 @@ class Behaviors extends Component {
     const { behaviorList, searchFlag, userInfo, timeScope, showMore } = this.props
     const bLen = behaviorList.length
     let happenTimeTemp = ""
+    const selectTimeScope =
+      <Select defaultValue={timeScope + 1 + "天"} style={{ width: 80 }} onChange={this.handleTimeScopeChange}>
+        <Option value={0}>1天</Option>
+        <Option value={1}>2天</Option>
+        <Option value={2}>3天</Option>
+        <Option value={6}>7天</Option>
+        <Option value={30}>30天</Option>
+      </Select>
+
     return <div className="behaviors-container">
       <BackTop>
         <Icon type="to-top" size="L"/>
@@ -35,29 +51,17 @@ class Behaviors extends Component {
         loadedProjects={this.loadedProjects.bind(this)}
         parentProps={this.props}
       />
-      { userInfo &&
-        <Card id="infoCard" title={`${Utils.b64DecodeUnicode(userInfo.secondUserParam)}用户`}>
-          <p>设备：{userInfo.deviceName}</p>
-          <p>系统：{userInfo.os}</p>
-          <p>网络地址：{userInfo.monitorIp}</p>
-          <p>截止时间：{new Date(parseInt(userInfo.happenTime, 10)).Format("yyyy-MM-dd hh:mm:ss")}</p>
-        </Card>
-      }
       <Spin spinning={this.state.loading}>
         <div className={searchFlag ? "behaviors-con behaviors-con-s" : "behaviors-con"}>
           <Input
             id="searchBox"
             size="large"
-            addonAfter={<Icon type="search" onClick={this.search}/>}
+            addonBefore={selectTimeScope}
+            addonAfter={<span className="search-btn" onClick={this.search}><Icon type="search"/> 搜索</span>}
             placeholder="搜索用户的行为记录，请输入KEY或者USERID"
             onChange={this.changeInputValue}
           />
-          <p className="demo-des">选择项目「本地监控」，输入：4358269e-4a5b-43bf-b417-38255e82458b， 点击搜索按钮</p>
-          <Button onClick={this.chooseTimeScope.bind(this, 0)} type={timeScope === 0 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>1天</Button>
-          <Button onClick={this.chooseTimeScope.bind(this, 1)} type={timeScope === 1 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>2天</Button>
-          <Button onClick={this.chooseTimeScope.bind(this, 2)} type={timeScope === 2 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>3天</Button>
-          <Button onClick={this.chooseTimeScope.bind(this, 6)} type={timeScope === 6 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>7天</Button>
-          <Button onClick={this.chooseTimeScope.bind(this, 30)} type={timeScope === 30 ? "primary" : "ghost"} size="small" style={{ width: 80, marginRight: "0.18rem", marginTop: "0.1rem" }}>全部</Button>
+          <Button disabled={this.state.searchExampleAble} className="sea-example" onClick={this.exampleSearch.bind(this)}><img src={require("Images/behaviors/click.png")} /> 搜索演示</Button>
         </div>
         { behaviorList.length > 0 &&
         <Row className="footprint-container">
@@ -96,7 +100,7 @@ class Behaviors extends Component {
                 } else if (behavior.uploadType === "CUSTOMER_PV") {
                   color = "blue"
                   behaviorName = "进入页面 "
-                  behaviorContent = behavior.simpleUrl
+                  behaviorContent = behavior.simpleUrl.replace(/https:\/\/.*\//g, "https://****/")
                 } else if (behavior.uploadType === "JS_ERROR") {
                   color = "red"
                   behaviorName = "发生错误 "
@@ -104,7 +108,10 @@ class Behaviors extends Component {
                 } else if (behavior.uploadType === "SCREEN_SHOT") {
                   color = "darkgoldenrod"
                   behaviorName = "屏幕截图 "
-                  behaviorContent = "data:image/webp;base64," + Utils.b64DecodeUnicode(behavior.screenInfo)
+                  behaviorContent = Utils.b64DecodeUnicode(behavior.screenInfo)
+                  if (behaviorContent.indexOf("data:image/webp;base64") === -1 && behaviorContent.indexOf("data:image/png;base64") === -1 ) {
+                    behaviorContent = "data:image/webp;base64," + behaviorContent
+                  }
                 } else if (behavior.uploadType === "HTTP_LOG") {
                   const status = behavior.status
                   behaviorName = behavior.statusResult
@@ -116,7 +123,7 @@ class Behaviors extends Component {
                     color = "red"
                     behaviorName = <span style={{display: "block"}}>{behavior.statusResult} <i style={{fontSize: 12, color}}>{"    状态：" + status + "  "}</i></span>
                   }
-                  behaviorContent = <span style={{display: "block"}}><i style={{fontSize: 12}}>请求地址：{Utils.b64DecodeUnicode(behavior.httpUrl)}</i></span>
+                  behaviorContent = <span style={{display: "block"}}><i style={{fontSize: 12}}>请求地址：{Utils.b64DecodeUnicode(behavior.httpUrl).replace(/https:\/\/.*\//g, "https://****/")}</i></span>
                 }  else {
                   color = "black"
                 }
@@ -136,7 +143,7 @@ class Behaviors extends Component {
                         }
                       </label>
                       <label className="footprint-time"><b style={{color: "#666"}}>客户端时间：{happenTime}</b></label>
-                      <label className="footprint-time"><a style={{color: "#77b3eb"}} href={completeUrl} target="_blank">{completeUrl}</a></label>
+                      <label className="footprint-time"><a style={{color: "#77b3eb"}} href={completeUrl} target="_blank">{completeUrl.replace(/https:\/\/.*\//g, "https://****/")}</a></label>
                     </span>
                 </Timeline.Item>
               })
@@ -144,15 +151,43 @@ class Behaviors extends Component {
           </Timeline>
         </Row>
         }
+        {
+          <Row className="userInfo-container">
+            { userInfo &&
+              <Card id="infoCard" title={"用户基本信息"}>
+                <p>设备名称：{userInfo.deviceName} &nbsp;&nbsp;&nbsp;&nbsp; <a onClick={this.searchPhone.bind(this, "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=" + userInfo.deviceName)}>机型搜索</a></p>
+                <p>系统版本：{userInfo.os}</p>
+                <p>网络地址：{userInfo.monitorIp}</p>
+                <p>所在地区：{userInfo.province + "  " + userInfo.city}</p>
+                <p>
+                  <span style={{display: "block"}}>开始时间：{new Date(parseInt(userInfo.startTime, 10)).Format("yyyy-MM-dd hh:mm:ss")}</span>
+                  <span>结束时间：{new Date(parseInt(userInfo.endTime, 10)).Format("yyyy-MM-dd hh:mm:ss")}</span> (停留{((userInfo.endTime - userInfo.startTime) / 60000).toFixed(1)}分钟)
+                </p>
+                <p>行为记录：{behaviorList.length} 条</p>
+              </Card>
+            }
+            { userInfo &&
+            <Card id="loadCard" title="页面平均加载时间">
+              <div id="loadPageTimeChart" className="chart-box" />
+            </Card>
+            }
+            { userInfo &&
+              <Card id="pvsCard" title={"访问次数"}>
+                <p>页面的访问次数</p>
+              </Card>
+            }
+          </Row>
+        }
       </Spin>
 
     </div>
   }
-  search() {
-    const { webMonitorId, timeScope } = this.props
-    this.setState({loading: true})
-    const searchValue = Utils.b64EncodeUnicode(this.props.searchValue)
-    this.props.searchUserBehaviorsAction({searchValue, webMonitorId, timeScope }, (res) => {
+  exampleSearch() {
+    const { exampleSearchValue } = this.props
+    this.setState({loading: true, searchExampleAble: true})
+    const searchValue = Utils.b64EncodeUnicode(exampleSearchValue)
+    this.props.searchUserBehaviorsAction({searchValue, webMonitorId: "omega_webmonitor", timeScope: 100 }, (result) => {
+      const res = result.behaviorList
       const len = res.length
       for (let i = 0; i < res.length - 1; i++) {
         for (let j = 0; j < res.length - 1 - i; j++) {
@@ -163,12 +198,65 @@ class Behaviors extends Component {
           }
         }
       }
-      const userInfo = res[len - 1]
+      const userInfo = result.cusDetail
+      userInfo.startTime = res[0].happenTime
+      userInfo.endTime = res[len - 1].happenTime
       this.props.updateBehaviorsState({behaviorList: res, searchFlag: true, userInfo})
+      setTimeout(() => {
+        this.createLoadPageTimeChart(result.loadPageTimeList)
+      }, 1000)
       this.setState({loading: false})
     }, () => {
       this.setState({loading: false})
     })
+  }
+  search() {
+    const { webMonitorId, timeScope } = this.props
+    const searchValue = Utils.b64EncodeUnicode(this.props.searchValue)
+    if (!searchValue) {
+      Modal.warning({
+        title: "提示",
+        content: "搜索内容为空！",
+      })
+      return
+    }
+    this.setState({loading: true})
+    this.props.searchUserBehaviorsAction({searchValue, webMonitorId, timeScope }, (result) => {
+      const res = result.behaviorList
+      const len = res.length
+      for (let i = 0; i < res.length - 1; i++) {
+        for (let j = 0; j < res.length - 1 - i; j++) {
+          if (res[j].happenTime > res[j + 1].happenTime) {
+            const temp = res[j]
+            res[j] = res[j + 1]
+            res[j + 1] = temp
+          }
+        }
+      }
+      const userInfo = result.cusDetail
+      userInfo.startTime = res[0].happenTime
+      userInfo.endTime = res[len - 1].happenTime
+      this.props.updateBehaviorsState({behaviorList: res, searchFlag: true, userInfo})
+      setTimeout(() => {
+        this.createLoadPageTimeChart(result.loadPageTimeList)
+      }, 1000)
+      this.setState({loading: false})
+    }, () => {
+      this.setState({loading: false})
+    })
+  }
+  createLoadPageTimeChart(res) {
+    const arr1 = []
+    const arr2 = []
+    res.forEach((page) => {
+      arr1.push(page.simpleUrl.replace(/https:\/\/.*\//g, "/") + "（" + page.urlCount + "）")
+      arr2.push(page.loadPage)
+    })
+    this.state.loadPageTimeChart = echarts.init(document.getElementById("loadPageTimeChart"))
+    this.state.loadPageTimeChart.setOption(loadPageTimeOption(arr1, arr2))
+  }
+  handleTimeScopeChange(timeScope) {
+    this.props.updateBehaviorsState({timeScope})
   }
   showMore() {
     const showMore = this.props.showMore
@@ -197,6 +285,9 @@ class Behaviors extends Component {
     if (type === "JS_ERROR") {
       this.props.history.push("javascriptErrorDetail?errorMsg=" + behaviorContent)
     }
+  }
+  searchPhone(url) {
+    window.open(url)
   }
 }
 

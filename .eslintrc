@@ -63,7 +63,7 @@
       "allowKeywords": true
     }],
     "eqeqeq": 2,                     // http://eslint.org/docs/rules/eqeqeq  使用强等号
-    "guard-for-in": 1,               // http://eslint.org/docs/rules/guard-for-in 使用for-in 循环需要判断是否属于本对象的属性,否则会遍历原型链上的属性
+    "guard-for-in": 0,               // http://eslint.org/docs/rules/guard-for-in 使用for-in 循环需要判断是否属于本对象的属性,否则会遍历原型链上的属性
     "no-caller": 2,                  // http://eslint.org/docs/rules/no-caller 禁止使用arguments.caller and arguments.callee ,已经被遗弃
     "no-else-return": 2,             // http://eslint.org/docs/rules/no-else-return 如果if块包含return语句，则else块变得不必要。 其内容可以放在块外。
     "no-eq-null": 2,                 // http://eslint.org/docs/rules/no-eq-null  null 值比较用强等

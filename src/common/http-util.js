@@ -20,7 +20,9 @@ export default class HttpUtil {
    */
   static get(url, params = {}, httpCustomerOpertion = { isHandleResult: true, isShowLoading: true }) {
     const method = "GET"
-    params.webMonitorId = window.localStorage.chooseWebMonitorId
+    if (!params.webMonitorId) {
+      params.webMonitorId = window.localStorage.chooseWebMonitorId
+    }
     const fetchUrl = url + Utils.qs(params)
     const fetchParams = Object.assign({}, { method }, this.getHeaders())
     return HttpUtil.handleFetchData(fetchUrl, fetchParams, httpCustomerOpertion)
@@ -36,7 +38,9 @@ export default class HttpUtil {
    */
   static post(url, params = {}, httpCustomerOpertion = { isHandleResult: true, isShowLoading: true }) {
     const method = "POST"
-    params.webMonitorId = window.localStorage.chooseWebMonitorId
+    if (!params.webMonitorId) {
+      params.webMonitorId = window.localStorage.chooseWebMonitorId
+    }
     const body = JSON.stringify(params)
     const fetchParams = Object.assign({}, { method, body }, this.getHeaders())
     return HttpUtil.handleFetchData(url, fetchParams, httpCustomerOpertion)
