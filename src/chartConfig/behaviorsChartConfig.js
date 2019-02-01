@@ -3,9 +3,9 @@ export const loadPageTimeOption = (arr1, arr2) => {
   let netStateColor = ""
   let avgTime = 0
   arr2.forEach((a) => {
-    avgTime += parseFloat(a)
+    avgTime += a
   })
-  avgTime = avgTime / 1000 / arr2.length
+  avgTime = avgTime / arr2.length
   if (avgTime <= 3) {
     netState = "良好"
     netStateColor = "green"
@@ -46,6 +46,10 @@ export const loadPageTimeOption = (arr1, arr2) => {
       {
         type: "category",
         data: arr1,
+        axisLabel: {
+          interval: 0,
+          rotate: 50
+        },
         axisPointer: {
           type: "shadow"
         },
@@ -72,7 +76,7 @@ export const loadPageTimeOption = (arr1, arr2) => {
         max: "dataMax",
         axisLabel: {
           formatter: function(value) {
-            const time = (value / 1000).toFixed(2) + "s"
+            const time = value + "s"
             return time
           }
         },

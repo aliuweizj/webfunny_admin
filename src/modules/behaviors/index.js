@@ -172,8 +172,8 @@ class Behaviors extends Component {
             </Card>
             }
             { userInfo &&
-              <Card id="pvsCard" title={"访问次数"}>
-                <p>页面的访问次数</p>
+              <Card id="pvsCard" title={"接口请求平均耗时"}>
+                <p>待发布</p>
               </Card>
             }
           </Row>
@@ -186,7 +186,7 @@ class Behaviors extends Component {
     const { exampleSearchValue } = this.props
     this.setState({loading: true, searchExampleAble: true})
     const searchValue = Utils.b64EncodeUnicode(exampleSearchValue)
-    this.props.searchUserBehaviorsAction({searchValue, webMonitorId: "omega_webmonitor", timeScope: 100 }, (result) => {
+    this.props.searchUserBehaviorsAction({searchValue, webMonitorId: "mcl_webmonitor", timeScope: 100 }, (result) => {
       const res = result.behaviorList
       const len = res.length
       for (let i = 0; i < res.length - 1; i++) {
@@ -250,7 +250,7 @@ class Behaviors extends Component {
     const arr2 = []
     res.forEach((page) => {
       arr1.push(page.simpleUrl.replace(/https:\/\/.*\//g, "/") + "（" + page.urlCount + "）")
-      arr2.push(page.loadPage)
+      arr2.push(parseFloat((page.loadPage / 1000).toFixed(2)))
     })
     this.state.loadPageTimeChart = echarts.init(document.getElementById("loadPageTimeChart"))
     this.state.loadPageTimeChart.setOption(loadPageTimeOption(arr1, arr2))

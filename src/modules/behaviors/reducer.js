@@ -1,7 +1,7 @@
 import { handleActions } from "redux-actions"
 
 const initialState = {
-  exampleSearchValue: "B371438C-8321-4834-94FB-72BAC8AAE45F",
+  exampleSearchValue: "19E0FF2C-EB28-E811-A0D7-702084FB832C",
   searchValue: "",
   webMonitorId: "",
   behaviorList: [],
