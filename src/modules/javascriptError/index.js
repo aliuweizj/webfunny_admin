@@ -46,7 +46,7 @@ class JavascriptError extends Component {
               <TabPane tab={<span><Icon type="area-chart" />月统计</span>} key="1">
                 <div id="jsErrorCountByDay" className="chart-box" />
               </TabPane>
-              <TabPane tab={<span><Icon type="clock-circle-o" />今天</span>} key="2">
+              <TabPane tab={<span><Icon type="clock-circle-o" />实时统计</span>} key="2">
                 <div id="jsErrorCountByHour" className="chart-box" />
               </TabPane>
             </Tabs>
@@ -256,7 +256,7 @@ class JavascriptError extends Component {
     this.props.getJsErrorCountByDayAction({ timeType }, (result) => {
       const data = result.data
       const dateArray = [], jsErrorArray = []
-      for (let i = 0; i <= 14; i ++) {
+      for (let i = 0; i <= 30; i ++) {
         if (!data[i]) continue
         dateArray.push(data[i].day)
         jsErrorArray.push(data[i].count)

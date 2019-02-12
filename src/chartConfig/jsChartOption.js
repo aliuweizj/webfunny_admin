@@ -68,7 +68,7 @@ export const jsErrorOption = (result) => {
     series: [
       {
         name: "Error发生次数：",
-        type: "line",
+        type: "bar",
         smooth: true,
         data: result[1],
         areaStyle: {}

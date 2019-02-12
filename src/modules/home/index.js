@@ -1,101 +1,98 @@
 import "./index.scss"
 import React, { Component } from "react"
-import { Card, Button, Icon } from "antd"
+import Header from "Components/header"
+import ChartFactory from "Components/chartFactory"
+import { customerGrowCountByMonth, loadPageTimeOption } from "ChartConfig/homeChartConfig"
+import { jsErrorOptionByHour } from "ChartConfig/jsChartOption"
+import { Card, Icon, Spin } from "antd"
 export default class Home extends Component {
   constructor(props) {
     super(props)
+    this.initData.bind(this)
   }
-
-  componentDidMount() {
-    const canvas = document.querySelector("#snowCanvas")
-    this.snow(canvas)
-
-    // HttpUtil.post("http://172.16.48.74:8010/api/v1/uploadExtendLog", {
-    //   behaviorResult: '失败',
-    //   behaviorType: 'faceIdentify阿里活体检测结果',
-    //   description:
-    //     'result:-1 (-2=认证异常,网络不通或者环境问题;-1=未认证,用户主动取消;0=认证中;1=审核通过;2=审核失败)',
-    //   uploadType: 'APP_BEHAVIOR',
-    //   userId: 'A5AF91A4-874A-4A88-BAA0-86DBFFEC1457'
-    // }, {timeout: 180 * 1000}).then( response => {
-    //   console.log(response.data)
-    // }).catch((e) => {
-    //   console.log(e)
-    // })
-  }
-
   render() {
+    const { customerPvChart, jsErrorByHourChart, loadPageTimeChart } = this.props
     return <div className="home-container">
-      <canvas className="snow-canvas" id="snowCanvas">你的浏览器不支持canvas</canvas>
+      <Header
+        chooseProject={this.choseProject.bind(this)}
+        loadedProjects={this.loadedProjects.bind(this)}
+        parentProps={this.props}
+      />
       <div className="home-mask">
-        <span className="home-title">WebFunny <Button onClick={this.turnToBlog.bind(this)} className="git-btn" shape="circle" size="large" icon="github" /></span>
         <div className="home-content">
-          <Card onClick={this.turnToJsError.bind(this)} title={<div><Icon type="area-chart" /> 页面错误分析 </div>} extra={<a href="#">详情 <Icon type="right" /></a>} style={{ width: 300, float: "left" }}>
-            <p><Icon type="dot-chart" style={{color: "#5d5cb6", fontWeight: "bold"}} /> <span> 分析2周内，页面报错的变化趋势，错误率信息。</span></p>
-            <p><Icon type="bars" style={{color: "#5d5cb6", fontWeight: "bold"}} /> <span> 统计页面发生错误列表，页面发生的错误列表。</span></p>
-            <p><Icon type="code-o" style={{color: "#5d5cb6", fontWeight: "bold"}} /> <span> 针对单个错误进行详细分析，定位错误位置，提高解决效率。</span></p>
+          <Card title={<div><Icon type="area-chart" /> 日活量 </div>} style={{ width: "32%", float: "left" }}>
+            {
+              customerPvChart ?
+                <ChartFactory
+                  option={customerPvChart}
+                />
+                :
+                <div className="chart-loading">
+                  <Spin tip="Loading..."/>
+                </div>
+            }
           </Card>
-          <Card onClick={this.turnToBehaviors.bind(this)} title={<div><Icon type="search" /> 用户行为检索 </div>} extra={<a href="#">详情 <Icon type="right" /></a>} style={{ width: 300, float: "left" }}>
-            <p><Icon type="search" style={{color: "#5d5cb6", fontWeight: "bold"}} /><span> 统计用户在页面上的行为，输入关键词进行搜索。</span></p>
-            <p><Icon type="picture" style={{color: "#5d5cb6", fontWeight: "bold"}} /><span> 包括: 进入页面，点击，请求，报错，以及页面的部分截图信息。</span></p>
-            <p><Icon type="like-o" style={{color: "#5d5cb6", fontWeight: "bold"}} /><span> 可以快速复现线上用户行为，解决不限于BUG的很多问题。</span></p>
+          <Card title={<div onClick={this.turnToJsError.bind(this)}><Icon type="clock-circle-o" /> Js报错实时监控 </div>} extra={<a>报错详情 <Icon type="right" /></a>} style={{ width: "33%", float: "left" }}>
+            {
+              jsErrorByHourChart ?
+                <ChartFactory
+                  option={jsErrorByHourChart}
+                />
+                :
+                <div className="chart-loading">
+                  <Spin tip="Loading..."/>
+                </div>
+            }
+          </Card>
+
+          <Card title={<div><Icon type="hourglass" /> 页面加载时间 </div>} style={{ width: "32%", float: "left" }}>
+            {
+              loadPageTimeChart ?
+                <ChartFactory
+                  option={loadPageTimeChart}
+                />
+                :
+                <div className="chart-loading">
+                  <Spin tip="Loading..."/>
+                </div>
+            }
           </Card>
         </div>
-
       </div>
     </div>
   }
-  turnToBlog() {
-    window.open("https://www.cnblogs.com/warm-stranger/p/10209990.html")
+  initData() {
+    this.props.getCustomerCountByTimeAction({timeScope: 14}, (data) => {
+      this.props.updateHomeState({customerPvChart: customerGrowCountByMonth(data)})
+    })
+    this.props.getJsErrorCountByHourAction((res) => {
+      const data = res.data
+      const dateArray = [], jsErrorArray = []
+      for (let i = 0; i < data.length; i ++) {
+        dateArray.push(data[i].day)
+        jsErrorArray.push(data[i].count)
+      }
+      this.props.updateHomeState({jsErrorByHourChart: jsErrorOptionByHour([dateArray, jsErrorArray])})
+    })
+    this.props.getPageLoadTimeByDateAction({timeScope: 1}, (data) => {
+      this.props.updateHomeState({loadPageTimeChart: loadPageTimeOption(data)})
+    })
+  }
+  choseProject() {
+    this.props.clearHomeState()
+    setTimeout(() => {
+      this.initData()
+    }, 5000)
+  }
+  loadedProjects() {
+    setTimeout(() => {
+      this.initData()
+    }, 5000)
   }
   turnToJsError() {
     this.props.history.push("javascriptError")
   }
   turnToBehaviors() {
     this.props.history.push("behaviors")
-  }
-  snow(canvas) {
-    const context = canvas.getContext("2d")
-    // 微粒子创建数组
-    const particles = []
-    for (let j = 0; j < 400; j++) {
-      particles.push({// 设置雪花的初始位x，y  x,y向上的速度，以及雪花的大小颜色，随机生成的
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        vx: Math.random() * 1 - 0.5,
-        vy: Math.random() * 1 + 0.5,
-        size: 1 + Math.random() * 1,
-        color: "#fff"
-      })
-    }
-    // 进行绘制
-    function timeUp() {
-      context.clearRect(0, 0, window.innerWidth, window.innerHeight)
-      // 清除画布
-      let particle = {}
-      for (let i = 0; i < 500; i++) {// 遍历所有的雪花
-        particle = particles[i]
-        if (!particle) continue
-        particle.x += particle.vx// 更新雪花的新的x,y位置
-        particle.y += particle.vy
-        if (particle.x < 0) {
-          particle.x = window.innerWidth// 如果雪花的位置放在了左侧意外，然后使其显示在窗口右边
-        }
-        if (particle.x > window.innerWidth) {
-          particle.x = 0
-        }
-        if (particle.y >= window.innerHeight) {
-          particle.y = 0
-        }
-        // 设置雪花颜色
-        context.fillStyle = particle.color
-        context.beginPath()// 开始绘制雪花
-        context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)// 绘制圆形
-        context.closePath()// 必和路径
-        context.fill()
-      }
-    }
-
-    setInterval(timeUp, 40)
   }
 }

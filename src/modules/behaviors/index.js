@@ -29,6 +29,10 @@ class Behaviors extends Component {
     })
   }
 
+  componentWillUnMount() {
+    this.props.clearBehaviorsState()
+  }
+
   render() {
     const { behaviorList, searchFlag, userInfo, timeScope, showMore } = this.props
     const bLen = behaviorList.length
@@ -65,69 +69,70 @@ class Behaviors extends Component {
         </div>
         { behaviorList.length > 0 &&
         <Row className="footprint-container">
-          {!showMore && <Button style={{marginBottom: 20}} onClick={this.showMore.bind(this)}>展示更多</Button>}
-          <Timeline>
-            {
-              behaviorList.map((behavior, index) => {
-                if (bLen > 200 && !showMore && index < bLen - 100) {
-                  return null
-                }
-                if (behavior.happenTime === happenTimeTemp) {
-                  return null
-                }
-                happenTimeTemp = behavior.happenTime
-                const happenTime = new Date(parseInt(behavior.happenTime, 10)).Format("yyyy-MM-dd hh:mm:ss.S")
-                const completeUrl = decodeURIComponent(behavior.completeUrl || behavior.simpleUrl)
-                let color = ""
-                let behaviorName = ""
-                let behaviorContent = ""
-                if (behavior.uploadType === "ELE_BEHAVIOR") {
-                  color = "#333333"
-                  behaviorName = "点击了 "
-                  let innerText = Utils.b64DecodeUnicode(behavior.innerText)
-                  let placeholder = ""
-                  const placeholderArray = behavior.placeholder.split(" ")
-                  placeholderArray.forEach((item) => {
-                    placeholder += Utils.b64DecodeUnicode(item) + " "
-                  })
-                  const reg = /[\u4e00-\u9fa5]/
-                  try {
-                    innerText = reg.test(innerText) ? innerText : decodeURIComponent(innerText)
-                  } catch (e) {
-                    innerText = innerText
+          <Card id="behaviorsInfo" title={"行为记录列表"}>
+            {!showMore && <Button style={{marginBottom: 20}} onClick={this.showMore.bind(this)}>展示更多</Button>}
+            <Timeline>
+              {
+                behaviorList.map((behavior, index) => {
+                  if (bLen > 200 && !showMore && index < bLen - 100) {
+                    return null
                   }
-                  behaviorContent = <span><label>{behavior.tagName + "标签 （" + innerText + placeholder + "）"}</label><br/><i style={{fontSize: 12}}>{"样式名：" + Utils.b64DecodeUnicode(behavior.className)}</i></span>
-                } else if (behavior.uploadType === "CUSTOMER_PV") {
-                  color = "blue"
-                  behaviorName = "进入页面 "
-                  behaviorContent = behavior.simpleUrl.replace(/https:\/\/.*\//g, "https://****/")
-                } else if (behavior.uploadType === "JS_ERROR") {
-                  color = "red"
-                  behaviorName = "发生错误 "
-                  behaviorContent = Utils.b64DecodeUnicode(behavior.errorMessage)
-                } else if (behavior.uploadType === "SCREEN_SHOT") {
-                  color = "darkgoldenrod"
-                  behaviorName = "屏幕截图 "
-                  behaviorContent = Utils.b64DecodeUnicode(behavior.screenInfo)
-                  if (behaviorContent.indexOf("data:image/webp;base64") === -1 && behaviorContent.indexOf("data:image/png;base64") === -1 ) {
-                    behaviorContent = "data:image/webp;base64," + behaviorContent
+                  if (behavior.happenTime === happenTimeTemp) {
+                    return null
                   }
-                } else if (behavior.uploadType === "HTTP_LOG") {
-                  const status = behavior.status
-                  behaviorName = behavior.statusResult
-                  color = "cyan"
-                  if (behaviorName === "请求返回" && status === "200") {
-                    color = "green"
-                    behaviorName = <span style={{display: "block"}}>{behavior.statusResult} <i style={{fontSize: 12, color}}>{"    状态：" + status + "  "}</i></span>
-                  } else if (behaviorName === "请求返回" && status !== "200") {
+                  happenTimeTemp = behavior.happenTime
+                  const happenTime = new Date(parseInt(behavior.happenTime, 10)).Format("yyyy-MM-dd hh:mm:ss.S")
+                  const completeUrl = decodeURIComponent(behavior.completeUrl || behavior.simpleUrl)
+                  let color = ""
+                  let behaviorName = ""
+                  let behaviorContent = ""
+                  if (behavior.uploadType === "ELE_BEHAVIOR") {
+                    color = "#333333"
+                    behaviorName = "点击了 "
+                    let innerText = Utils.b64DecodeUnicode(behavior.innerText)
+                    let placeholder = ""
+                    const placeholderArray = behavior.placeholder.split(" ")
+                    placeholderArray.forEach((item) => {
+                      placeholder += Utils.b64DecodeUnicode(item) + " "
+                    })
+                    const reg = /[\u4e00-\u9fa5]/
+                    try {
+                      innerText = reg.test(innerText) ? innerText : decodeURIComponent(innerText)
+                    } catch (e) {
+                      innerText = innerText
+                    }
+                    behaviorContent = <span><label>{behavior.tagName + "标签 （" + innerText + placeholder + "）"}</label><br/><i style={{fontSize: 12}}>{"样式名：" + Utils.b64DecodeUnicode(behavior.className)}</i></span>
+                  } else if (behavior.uploadType === "CUSTOMER_PV") {
+                    color = "blue"
+                    behaviorName = "进入页面 "
+                    behaviorContent = behavior.simpleUrl.replace(/https:\/\/.*\//g, "https://****/")
+                  } else if (behavior.uploadType === "JS_ERROR") {
                     color = "red"
-                    behaviorName = <span style={{display: "block"}}>{behavior.statusResult} <i style={{fontSize: 12, color}}>{"    状态：" + status + "  "}</i></span>
+                    behaviorName = "发生错误 "
+                    behaviorContent = Utils.b64DecodeUnicode(behavior.errorMessage)
+                  } else if (behavior.uploadType === "SCREEN_SHOT") {
+                    color = "darkgoldenrod"
+                    behaviorName = "屏幕截图 "
+                    behaviorContent = Utils.b64DecodeUnicode(behavior.screenInfo)
+                    if (behaviorContent.indexOf("data:image/webp;base64") === -1 && behaviorContent.indexOf("data:image/png;base64") === -1 ) {
+                      behaviorContent = "data:image/webp;base64," + behaviorContent
+                    }
+                  } else if (behavior.uploadType === "HTTP_LOG") {
+                    const status = behavior.status
+                    behaviorName = behavior.statusResult
+                    color = "cyan"
+                    if (behaviorName === "请求返回" && status === "200") {
+                      color = "green"
+                      behaviorName = <span style={{display: "block"}}>{behavior.statusResult} <i style={{fontSize: 12, color}}>{"    状态：" + status + "  "}</i></span>
+                    } else if (behaviorName === "请求返回" && status !== "200") {
+                      color = "red"
+                      behaviorName = <span style={{display: "block"}}>{behavior.statusResult} <i style={{fontSize: 12, color}}>{"    状态：" + status + "  "}</i></span>
+                    }
+                    behaviorContent = <span style={{display: "block"}}><i style={{fontSize: 12}}>请求地址：{Utils.b64DecodeUnicode(behavior.httpUrl).replace(/https:\/\/.*\//g, "https://****/")}</i></span>
+                  }  else {
+                    color = "black"
                   }
-                  behaviorContent = <span style={{display: "block"}}><i style={{fontSize: 12}}>请求地址：{Utils.b64DecodeUnicode(behavior.httpUrl).replace(/https:\/\/.*\//g, "https://****/")}</i></span>
-                }  else {
-                  color = "black"
-                }
-                return <Timeline.Item color={color} key={index}>
+                  return <Timeline.Item color={color} key={index}>
                     <span>
                       <label className="footprint-des" onClick={this.showDetail.bind(this, behavior.uploadType, behaviorContent)}>
                         {behaviorName}
@@ -145,10 +150,12 @@ class Behaviors extends Component {
                       <label className="footprint-time"><b style={{color: "#666"}}>客户端时间：{happenTime}</b></label>
                       <label className="footprint-time"><a style={{color: "#77b3eb"}} href={completeUrl} target="_blank">{completeUrl.replace(/https:\/\/.*\//g, "https://****/")}</a></label>
                     </span>
-                </Timeline.Item>
-              })
-            }
-          </Timeline>
+                  </Timeline.Item>
+                })
+              }
+            </Timeline>
+          </Card>
+
         </Row>
         }
         {
@@ -167,7 +174,7 @@ class Behaviors extends Component {
               </Card>
             }
             { userInfo &&
-            <Card id="loadCard" title="页面平均加载时间">
+            <Card id="loadCard" title="页面平均加载时间（网络环境评估）">
               <div id="loadPageTimeChart" className="chart-box" />
             </Card>
             }

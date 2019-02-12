@@ -36,7 +36,7 @@ export const loadPageTimeOption = (arr1, arr2) => {
       hideDelay: 100
     },
     grid: {
-      top: "18%",
+      top: "10%",
       left: "3%",
       right: "4%",
       bottom: "1%",

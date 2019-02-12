@@ -7,7 +7,8 @@ import ProjectListContainer from "Containers/projectList"
 import JavascriptErrorContainer from "Containers/javascriptError"
 import BehaviorsContainer from "Containers/behaviors"
 import JavascriptErrorDetailContainer from "Containers/javascriptErrorDetail"
-export const Home = props => <Bundle loadContainer={HomeContainer} title="首页" >
+import CustomerPvAnalysisContainer from "Containers/customerPvAnalysis"
+export const Home = props => <Bundle loadContainer={HomeContainer} title="前端监控系统" >
   {Container => <Container {...props} />}
 </Bundle>
 
@@ -35,10 +36,14 @@ export const JavascriptErrorDetail = props => <Bundle loadContainer={JavascriptE
 </Bundle>
 
 import ShowScreenShotContainer from "Containers/showScreenShot"
-export const ShowScreenShot = props => <Bundle loadContainer={ShowScreenShotContainer} title="javascriptErrorDetail" >
+export const ShowScreenShot = props => <Bundle loadContainer={ShowScreenShotContainer} title="线上截图分析" >
   {Container => <Container {...props} />}
 </Bundle>
 
-export const Behaviors = props => <Bundle loadContainer={BehaviorsContainer} title="behaviors" >
+export const Behaviors = props => <Bundle loadContainer={BehaviorsContainer} title="用户行为分析" >
+  {Container => <Container {...props} />}
+</Bundle>
+
+export const CustomerPvAnalysis = props => <Bundle loadContainer={CustomerPvAnalysisContainer} title="用户PV/UV分析" >
   {Container => <Container {...props} />}
 </Bundle>

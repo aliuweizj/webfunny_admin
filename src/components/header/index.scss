@@ -34,6 +34,33 @@
       width: 32px;
       cursor: pointer;
     }
+    .menu-right {
+      width: 150px;
+      text-align: center;
+      cursor: pointer;
+      .new {
+        position: absolute;
+        background: red;
+        color: #fff;
+        font-size: 12px;
+        padding: 2px 4px;
+        border-radius: 4px;
+        margin-top: -14px;
+        margin-left: -20px;
+        transform: scale(0.7);
+      }
+      .not {
+        position: absolute;
+        background: #aaa;
+        color: #fff;
+        font-size: 12px;
+        padding: 2px 4px;
+        border-radius: 4px;
+        margin-top: -14px;
+        margin-left: -20px;
+        transform: scale(0.7);
+      }
+    }
   }
   .github-box {
     font-size: 26px;

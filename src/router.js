@@ -12,4 +12,5 @@ export default [
   { path: prePath + "/javascriptErrorDetail", component: containers.JavascriptErrorDetail },
   { path: prePath + "/behaviors", component: containers.Behaviors },
   { path: prePath + "/showScreenShot", component: containers.ShowScreenShot },
+  { path: prePath + "/customerPvAnalysis", component: containers.CustomerPvAnalysis },
 ]

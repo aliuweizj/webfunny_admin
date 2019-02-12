@@ -38,6 +38,10 @@ const api = {
   "searchUserBehaviors": apiHost + "/api/v1/searchUserBehaviors",
   // 获取截屏列表
   "getScreenShotInfoListByPage": apiHost + "/api/v1/getScreenShotInfoListByPage",
+  // 获取日活量数据
+  "getCustomerCountByTime": apiHost + "/api/v1/getCustomerCountByTime",
+  // 获取当日页面加载平均时间
+  "getPageLoadTimeByDate": apiHost + "/api/v1/getPageLoadTimeByDate",
 
 }
 

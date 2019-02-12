@@ -1,21 +1,19 @@
 import { handleActions } from "redux-actions"
 
 const initialState = {
-  customerPvChart: null,
-  jsErrorByHourChart: null,
-  loadPageTimeChart: null
+  isFetching: false
 }
 
 export default handleActions({
 
-  updateHomeState: (state = initialState, { payload }) => {
+  updateCustomerPvAnalysisState: (state = initialState, { payload }) => {
     return {
       ...state,
       ...payload
     }
   },
 
-  clearHomeState: () => {
+  clearCustomerPvAnalysisState: () => {
     return {
       ...initialState
     }

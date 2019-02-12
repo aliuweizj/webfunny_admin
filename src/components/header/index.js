@@ -33,6 +33,14 @@ export default class Header extends Component {
     }, () => {
       throw new Error("未能成功获取应用列表")
     })
+    $(window).scroll(() => {
+      const top = $(document).scrollTop()
+      if (top > 100) {
+        $(".header-container").fadeOut()
+      } else if (top < 20) {
+        $(".header-container").fadeIn()
+      }
+    })
   }
 
   render() {
@@ -57,9 +65,16 @@ export default class Header extends Component {
             </a>
           </Dropdown>
         </div>
+        <span className="menu-right" onClick={this.turnTo.bind(this, "home")}>首页</span>
+        <span className="menu-right" onClick={this.turnTo.bind(this, "javascriptError")}>错误统计</span>
+        <span className="menu-right" onClick={this.turnTo.bind(this, "behaviors")}>行为检索<label className="new">New</label></span>
+        <span className="menu-right">性能分析<label className="not">Not</label></span>
         <img className="git-btn" src={require("Images/common/github5.png")} onClick={this.turnToBlog.bind(this)} />
       </section>
     </div>
+  }
+  turnTo(url) {
+    this.props.parentProps.history.push(url)
   }
   turnToBlog() {
     window.open("https://www.cnblogs.com/warm-stranger/p/10209990.html")
