@@ -30,7 +30,6 @@ export const customerGrowCountByMonth = (resArray) => {
       {
         type: "category",
         data: categoryArray,
-        boundaryGap: false,
         axisLine: {
           show: true,
           lineStyle: {

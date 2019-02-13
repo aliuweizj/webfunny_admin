@@ -20,19 +20,7 @@ export default class Home extends Component {
       />
       <div className="home-mask">
         <div className="home-content">
-          <Card title={<div><Icon type="area-chart" /> 日活量 </div>} style={{ width: "32%", float: "left" }}>
-            {
-              customerPvChart ?
-                <ChartFactory
-                  option={customerPvChart}
-                />
-                :
-                <div className="chart-loading">
-                  <Spin tip="Loading..."/>
-                </div>
-            }
-          </Card>
-          <Card title={<div onClick={this.turnToJsError.bind(this)}><Icon type="clock-circle-o" /> Js报错实时监控 </div>} extra={<a>报错详情 <Icon type="right" /></a>} style={{ width: "33%", float: "left" }}>
+          <Card title={<div ><Icon type="clock-circle-o" /> Js报错实时监控 </div>} extra={<a onClick={this.turnToJsError.bind(this)}>报错详情 <Icon type="right" /></a>} style={{ width: "33%", float: "left" }}>
             {
               jsErrorByHourChart ?
                 <ChartFactory
@@ -62,9 +50,6 @@ export default class Home extends Component {
     </div>
   }
   initData() {
-    this.props.getCustomerCountByTimeAction({timeScope: 14}, (data) => {
-      this.props.updateHomeState({customerPvChart: customerGrowCountByMonth(data)})
-    })
     this.props.getJsErrorCountByHourAction((res) => {
       const data = res.data
       const dateArray = [], jsErrorArray = []
