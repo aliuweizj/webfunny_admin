@@ -2,7 +2,7 @@ import "./index.scss"
 import React, { Component } from "react"
 import Header from "Components/header"
 import ChartFactory from "Components/chartFactory"
-import { customerGrowCountByMonth, loadPageTimeOption } from "ChartConfig/homeChartConfig"
+import { loadPageTimeOption } from "ChartConfig/homeChartConfig"
 import { jsErrorOptionByHour } from "ChartConfig/jsChartOption"
 import { Card, Icon, Spin } from "antd"
 export default class Home extends Component {
@@ -11,7 +11,7 @@ export default class Home extends Component {
     this.initData.bind(this)
   }
   render() {
-    const { customerPvChart, jsErrorByHourChart, loadPageTimeChart } = this.props
+    const { jsErrorByHourChart, loadPageTimeChart } = this.props
     return <div className="home-container">
       <Header
         chooseProject={this.choseProject.bind(this)}

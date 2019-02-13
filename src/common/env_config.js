@@ -1,7 +1,7 @@
 const envUrls = {
   local: {
-    apiServerUrl: "http://localhost:8010",
-    nodeApiServerUrl: "http://localhost:8010",
+    apiServerUrl: "http://localhost:8011",
+    nodeApiServerUrl: "http://localhost:8011",
     uri: "http://localhost"
   },
   dev: {

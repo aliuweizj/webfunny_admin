@@ -3,45 +3,45 @@ import envConfig from "./env_config"
 const apiHost = envConfig.getApiHost()
 const api = {
   // 登录
-  "login": apiHost + "/api/v1/user/login",
+  "login": apiHost + "/server/user/login",
   // 注册
-  "register": apiHost + "/api/v1/user",
+  "register": apiHost + "/server/user",
   // 查询所有用户
-  "userList": apiHost + "/api/v1/user/list",
+  "userList": apiHost + "/server/user/list",
   // 查询所有项目列表
-  "projectList": apiHost + "/api/v1/project/list",
+  "projectList": apiHost + "/server/project/list",
 
 
   // 根据时间查询每天JS的错误量
-  "getJsErrorCountByDay": apiHost + "/api/v1/getJavascriptErrorInfoListByDay",
+  "getJsErrorCountByDay": apiHost + "/server/getJavascriptErrorInfoListByDay",
   // 根据时间查询一天内js错误总量和最近几小时的错误量
-  "getJsErrorCountByHour": apiHost + "/api/v1/getJavascriptErrorInfoListByHour",
+  "getJsErrorCountByHour": apiHost + "/server/getJavascriptErrorInfoListByHour",
   // 根据JS错误量进行排序
-  "getJsErrorSort": apiHost + "/api/v1/getJavascriptErrorSort",
+  "getJsErrorSort": apiHost + "/server/getJavascriptErrorSort",
   // 根据平台获取JS错误数量
-  "getJavascriptErrorCountByOs": apiHost + "/api/v1/getJavascriptErrorCountByOs",
+  "getJavascriptErrorCountByOs": apiHost + "/server/getJavascriptErrorCountByOs",
   // errorMsg 获取js错误列表
-  "getJavascriptErrorListByMsg": apiHost + "/api/v1/getJavascriptErrorListByMsg",
+  "getJavascriptErrorListByMsg": apiHost + "/server/getJavascriptErrorListByMsg",
   // 获取js错误相关信息
-  "getJavascriptErrorAboutInfo": apiHost + "/api/v1/getJavascriptErrorAboutInfo",
+  "getJavascriptErrorAboutInfo": apiHost + "/server/getJavascriptErrorAboutInfo",
   // 获取js错误详情
-  "getJavascriptErrorDetail": id => apiHost + "/api/v1/javascriptErrorInfo/" + id,
+  "getJavascriptErrorDetail": id => apiHost + "/server/javascriptErrorInfo/" + id,
   // 获取js错误对应的code
-  "getJavascriptErrorStackCode": apiHost + "/api/v1/getJavascriptErrorStackCode",
+  "getJavascriptErrorStackCode": apiHost + "/server/getJavascriptErrorStackCode",
   // 根据页面每天JS的错误量
-  "getJavascriptErrorListByPage": apiHost + "/api/v1/getJavascriptErrorListByPage",
+  "getJavascriptErrorListByPage": apiHost + "/server/getJavascriptErrorListByPage",
   // 设置需要忽略的js错误
-  "setIgnoreJavascriptError": apiHost + "/api/v1/ignoreError",
+  "setIgnoreJavascriptError": apiHost + "/server/ignoreError",
   // 获取忽略的js错误列表
-  "ignoreErrorByApplication": apiHost + "/api/v1/ignoreErrorByApplication",
+  "ignoreErrorByApplication": apiHost + "/server/ignoreErrorByApplication",
   // 查询用户的行为列表
-  "searchUserBehaviors": apiHost + "/api/v1/searchUserBehaviors",
+  "searchUserBehaviors": apiHost + "/server/searchUserBehaviors",
   // 获取截屏列表
-  "getScreenShotInfoListByPage": apiHost + "/api/v1/getScreenShotInfoListByPage",
+  "getScreenShotInfoListByPage": apiHost + "/server/getScreenShotInfoListByPage",
   // 获取日活量数据
-  "getCustomerCountByTime": apiHost + "/api/v1/getCustomerCountByTime",
+  "getCustomerCountByTime": apiHost + "/server/getCustomerCountByTime",
   // 获取当日页面加载平均时间
-  "getPageLoadTimeByDate": apiHost + "/api/v1/getPageLoadTimeByDate",
+  "getPageLoadTimeByDate": apiHost + "/server/getPageLoadTimeByDate",
 
 }
 
