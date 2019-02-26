@@ -182,13 +182,32 @@ class JavascriptError extends Component {
       this.props.getJsErrorCountByHourAction((res) => {
         // 基于准备好的dom，初始化echarts实例
         const jsErrorChartByHour = echarts.init(document.getElementById("jsErrorCountByHour"))
-        const data = res.data
+
+
+        const data = res.data.today
         const dateArray = [], jsErrorArray = []
-        for (let i = 0; i < data.length; i ++) {
-          dateArray.push(data[i].day)
-          jsErrorArray.push(data[i].count)
+
+        for (let i = 0; i < 24; i ++) {
+          if (i + 1 > data.length) {
+            dateArray.push( i + "点")
+            jsErrorArray.push(0)
+          } else {
+            dateArray.push(data[i].day)
+            jsErrorArray.push(data[i].count)
+          }
         }
-        jsErrorChartByHour.setOption(jsErrorOptionByHour([dateArray, jsErrorArray]))
+        const seven = res.data.seven
+        const sevenDateArray = [], sevenJsErrorArray = []
+        for (let i = 0; i < 24; i ++) {
+          if (i + 1 > seven.length) {
+            sevenDateArray.push( i + "点")
+            sevenJsErrorArray.push(0)
+          } else {
+            sevenDateArray.push(seven[i].day)
+            sevenJsErrorArray.push(seven[i].count)
+          }
+        }
+        jsErrorChartByHour.setOption(jsErrorOptionByHour([dateArray, jsErrorArray], [sevenDateArray, sevenJsErrorArray]))
       })
       this.loadInitData("day")
     } else if (key === "1") {

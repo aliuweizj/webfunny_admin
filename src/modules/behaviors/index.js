@@ -27,6 +27,7 @@ class Behaviors extends Component {
         this.search()
       }
     })
+    console.log(Utils.b64DecodeUnicode("MjQxMDJCNkYtRjlDNS00QTdFLUIyRUItRUNFOERDMEM2NTE4"))
   }
 
   componentWillUnMount() {
@@ -82,7 +83,7 @@ class Behaviors extends Component {
                   }
                   happenTimeTemp = behavior.happenTime
                   const happenTime = new Date(parseInt(behavior.happenTime, 10)).Format("yyyy-MM-dd hh:mm:ss.S")
-                  const completeUrl = decodeURIComponent(behavior.completeUrl || behavior.simpleUrl)
+                  let completeUrl = decodeURIComponent(behavior.completeUrl || behavior.simpleUrl)
                   let color = ""
                   let behaviorName = ""
                   let behaviorContent = ""
@@ -119,17 +120,23 @@ class Behaviors extends Component {
                     }
                   } else if (behavior.uploadType === "HTTP_LOG") {
                     const status = behavior.status
+                    const loadTime = (behavior.loadTime / 1000).toFixed(2)
                     behaviorName = behavior.statusResult
                     color = "cyan"
                     if (behaviorName === "请求返回" && status === "200") {
                       color = "green"
-                      behaviorName = <span style={{display: "block"}}>{behavior.statusResult} <i style={{fontSize: 12, color}}>{"    状态：" + status + "  "}</i></span>
+                      behaviorName = <span style={{display: "block"}}>{behavior.statusResult} <i style={{fontSize: 12, color}}>{"    状态：" + status + "  "} <b>||</b> {"  " + "耗时：" + loadTime + "秒  " }</i></span>
                     } else if (behaviorName === "请求返回" && status !== "200") {
                       color = "red"
-                      behaviorName = <span style={{display: "block"}}>{behavior.statusResult} <i style={{fontSize: 12, color}}>{"    状态：" + status + "  "}</i></span>
+                      behaviorName = <span style={{display: "block"}}>{behavior.statusResult} <i style={{fontSize: 12, color}}>{"    状态：" + status + "  "} <b>||</b> {"  " + "耗时：" + loadTime + "秒  " }</i></span>
                     }
                     behaviorContent = <span style={{display: "block"}}><i style={{fontSize: 12}}>请求地址：{Utils.b64DecodeUnicode(behavior.httpUrl).replace(/https:\/\/.*\//g, "https://****/")}</i></span>
-                  }  else {
+                  } else if (behavior.uploadType === "APP_BEHAVIOR") {
+                    color = "#b7b752"
+                    behaviorName = <span style={{display: "block"}}>{behavior.behaviorType} <i style={{fontSize: 12, color}}>{"    状态：" + behavior.behaviorResult + "  "}</i></span>
+                    behaviorContent = behavior.description
+                    completeUrl = ""
+                  } else {
                     color = "black"
                   }
                   return <Timeline.Item color={color} key={index}>

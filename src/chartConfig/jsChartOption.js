@@ -4,9 +4,9 @@ export const jsErrorOption = (result) => {
     tooltip: {
       trigger: "axis",
       // axisPointer: {
-      //   type: 'cross',
+      //   type: "cross",
       //   crossStyle: {
-      //     color: '#666'
+      //     color: "#666"
       //   }
       // },
       confine: true,
@@ -78,21 +78,24 @@ export const jsErrorOption = (result) => {
 }
 
 // 一天内，js错误分布
-export const jsErrorOptionByHour = (result) => {
+export const jsErrorOptionByHour = (result1, result2) => {
   return {
-    color: [ "#5d5cb6" ],
+    color: [ "#a2a1e7", "#5d5cb6" ],
     tooltip: {
       trigger: "axis",
       // axisPointer: {
-      //   type: 'cross',
+      //   type: "cross",
       //   crossStyle: {
-      //     color: '#666'
+      //     color: "#666"
       //   }
       // },
       confine: true,
       position: ["50%", "50%"],
       alwaysShowContent: false,
       hideDelay: 100
+    },
+    legend: {
+      data: ["今天", "一周前"]
     },
     grid: {
       top: "15%",
@@ -104,7 +107,7 @@ export const jsErrorOptionByHour = (result) => {
     xAxis: [
       {
         type: "category",
-        data: result[0],
+        data: result1[0],
         axisPointer: {
           type: "shadow"
         },
@@ -147,10 +150,17 @@ export const jsErrorOptionByHour = (result) => {
     ],
     series: [
       {
-        name: "Error发生次数：",
-        type: "bar",
-        data: result[1],
-      }
+        name: "一周前",
+        type: "line",
+        smooth: true,
+        data: result1[1],
+      },
+      {
+        name: "今天",
+        type: "line",
+        smooth: true,
+        data: result2[1],
+      },
     ]
   }
 }
@@ -175,7 +185,7 @@ export const jsErrorSortOption = (resArray) => {
       trigger: "axis",
       alwaysShowContent: false,
       axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-        type: "shadow"        // 默认为直线，可选为：'line' | 'shadow'
+        type: "shadow"        // 默认为直线，可选为："line" | "shadow"
       }
     },
     grid: {
