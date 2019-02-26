@@ -27,7 +27,7 @@ class Behaviors extends Component {
         this.search()
       }
     })
-    console.log(Utils.b64DecodeUnicode("MjQxMDJCNkYtRjlDNS00QTdFLUIyRUItRUNFOERDMEM2NTE4"))
+    // console.log(Utils.b64DecodeUnicode("MjQxMDJCNkYtRjlDNS00QTdFLUIyRUItRUNFOERDMEM2NTE4"))
   }
 
   componentWillUnMount() {
