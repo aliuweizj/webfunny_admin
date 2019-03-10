@@ -18,18 +18,8 @@ module.exports = env => {
     entry: {
       app: path.resolve(__dirname, 'src/index.js'),
       vendor: [
-        'react-redux',
-        // 'react'
-        // , 'react-dom', 'react-redux', 'react-router-dom', 'react-router-redux'
-        // ,'react-transition-group', 'redux', 'redux-actions','redux-logger', 'redux-thunk'
-        // ,'antd/lib/card', 'antd/lib/dropdown', 'antd/lib/row', 'antd/lib/col', 'antd/lib/tabs', 'antd/lib/menu'
-        // ,'antd/lib/icon', 'antd/lib/pagination'
-      ],
-      // common: [
-      //   'prius','zepto-webpack',
-      //   'JS/lib/common-tool', 'JS/lib/underscore', 'JS/lib/cache', 'JS/lib/consts',
-      //   'JS/lib/http-api', 'JS/lib/http-util'
-      // ],
+        'react-redux'
+      ]
     },
     output: {
       filename: "[name].[chunkhash:8].js",
