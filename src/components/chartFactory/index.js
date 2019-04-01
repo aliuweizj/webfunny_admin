@@ -15,7 +15,6 @@ class ChartFactory extends Component {
     // 基于准备好的dom，初始化echarts实例
     logOutlineChart = echarts.init(document.getElementById(this.state.chartId))
     // 使用刚指定的配置项和数据显示图表。
-    console.log(this.props.option)
     logOutlineChart.setOption(this.props.option)
     $(window).resize(() => {
       logOutlineChart.resize()

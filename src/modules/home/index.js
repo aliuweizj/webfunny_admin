@@ -4,9 +4,8 @@ import Header from "Components/header"
 import ChartFactory from "Components/chartFactory"
 import { jsErrorOptionByHour } from "ChartConfig/jsChartOption"
 import { resourceErrorOption } from "ChartConfig/resourceChartOption"
-import { Card, Icon, Spin, Tabs } from "antd"
+import { Spin, Tabs } from "antd"
 const TabPane = Tabs.TabPane
-import Utils from "Common/utils"
 export default class Home extends Component {
   constructor(props) {
     super(props)
