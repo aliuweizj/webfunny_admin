@@ -109,7 +109,7 @@ function updateReducers(content, callBack) {
 }
 /**
  * 在bandle load追加内容
- * @param {function} callBack 成功回调函数 
+ * @param {function} callBack 成功回调函数
  */
 function appendBundleLoad(callBack){
     var bundleLoadTemp = fs.readFileSync(__dirname + '/src/templates/bundleLoad.js.template', 'utf8');
@@ -129,7 +129,7 @@ function appendBundleLoad(callBack){
 
 /**
  * 更新路由
- * @param {function} callBack  成功回调函数 
+ * @param {function} callBack  成功回调函数
  */
 function updateRouter(callBack) {
     var data = fs.readFileSync(__dirname + '/src/router.js', 'utf8');

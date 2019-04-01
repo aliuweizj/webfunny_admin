@@ -35,7 +35,7 @@ class ChartFactory extends Component {
    * 渲染界面
    */
   render() {
-    return <div className="chart-content">
+    return <div className="chart-content" style={this.props.style}>
       <div id={this.state.chartId} className="ct-chart" />
     </div>
   }

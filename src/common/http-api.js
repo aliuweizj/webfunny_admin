@@ -36,12 +36,18 @@ const api = {
   "ignoreErrorByApplication": apiHost + "/server/ignoreErrorByApplication",
   // 查询用户的行为列表
   "searchUserBehaviors": apiHost + "/server/searchUserBehaviors",
+  // 查询用户的基本信息
+  "searchCustomerInfo": apiHost + "/server/searchCustomerInfo",
   // 获取截屏列表
   "getScreenShotInfoListByPage": apiHost + "/server/getScreenShotInfoListByPage",
   // 获取日活量数据
   "getCustomerCountByTime": apiHost + "/server/getCustomerCountByTime",
   // 获取当日页面加载平均时间
   "getPageLoadTimeByDate": apiHost + "/server/getPageLoadTimeByDate",
+  // 获取静态资源加载失败列表
+  "getResourceLoadInfoListByDay": apiHost + "/server/getResourceLoadInfoListByDay",
+  // 获取每天静态资源加载失败数量列表
+  "getResourceErrorCountByDay": apiHost + "/server/getResourceErrorCountByDay",
 
 }
 

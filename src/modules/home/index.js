@@ -3,7 +3,10 @@ import React, { Component } from "react"
 import Header from "Components/header"
 import ChartFactory from "Components/chartFactory"
 import { jsErrorOptionByHour } from "ChartConfig/jsChartOption"
-import { Card, Icon, Spin } from "antd"
+import { resourceErrorOption } from "ChartConfig/resourceChartOption"
+import { Card, Icon, Spin, Tabs } from "antd"
+const TabPane = Tabs.TabPane
+import Utils from "Common/utils"
 export default class Home extends Component {
   constructor(props) {
     super(props)
@@ -16,7 +19,8 @@ export default class Home extends Component {
   }
 
   render() {
-    const { jsErrorByHourChart } = this.props
+    const { jsErrorByHourChart, resourceErrorByDayChart } = this.props
+    console.log(jsErrorByHourChart, resourceErrorByDayChart)
     return <div className="home-container">
       <canvas className="snow-canvas" id="snowCanvas"></canvas>
       <Header
@@ -27,28 +31,34 @@ export default class Home extends Component {
       <div className="home-mask">
         <div className="home-content">
           <div className="left">
-            <Card title={<div ><Icon type="clock-circle-o" /> Js报错实时监控 </div>} extra={<a onClick={this.turnToJsError.bind(this)}>错误统计 <Icon type="right" /></a>} style={{ width: "99%", float: "left" }}>
-              {
-                jsErrorByHourChart ?
-                  <ChartFactory
-                    option={jsErrorByHourChart}
-                  />
-                  :
-                  <div className="chart-loading">
-                    <Spin tip="Loading..."/>
-                  </div>
-              }
-            </Card>
-
-          </div>
-          <div className="right">
-            <Card title={<div >项目运行状态 </div>} style={{ width: "99%", float: "left" }}>
-              <p><img className="info-icon" src={require("Images/home/PV.png")}/>当天访问量：</p>
-              <p><img className="info-icon" src={require("Images/home/UV.png")}/>当天日活量：</p>
-              <p><img className="info-icon" src={require("Images/home/Error.png")}/>当天错误量：</p>
-              <p><img className="info-icon" src={require("Images/home/load_time.png")}/>页面加载时长：</p>
-              <p><img className="info-icon" src={require("Images/home/response.png")}/>接口响应时长：</p>
-            </Card>
+            <Tabs>
+              <TabPane tab="Js报错实时监控" key="1">
+                {
+                  jsErrorByHourChart ?
+                    <ChartFactory
+                      style={{ height: 320, paddingBottom: 20 }}
+                      option={jsErrorByHourChart}
+                    />
+                    :
+                    <div className="chart-loading">
+                      <Spin tip="Loading..."/>
+                    </div>
+                }
+              </TabPane>
+              <TabPane tab="静态资源加载报错" key="2">
+                {
+                  resourceErrorByDayChart ?
+                    <ChartFactory
+                      style={{ height: 320, paddingBottom: 20 }}
+                      option={resourceErrorByDayChart}
+                    />
+                    :
+                    <div className="chart-loading">
+                      <Spin tip="Loading..."/>
+                    </div>
+                }
+              </TabPane>
+            </Tabs>
           </div>
         </div>
       </div>
@@ -82,9 +92,17 @@ export default class Home extends Component {
       }
       this.props.updateHomeState({jsErrorByHourChart: jsErrorOptionByHour([dateArray, jsErrorArray], [sevenDateArray, sevenJsErrorArray])})
     })
-    // this.props.getPageLoadTimeByDateAction({timeScope: 1}, (data) => {
-    //   this.props.updateHomeState({loadPageTimeChart: loadPageTimeOption(data)})
-    // })
+
+    // 静态资源加载失败列表
+    this.props.getResourceErrorCountByDayAction({}, (data) => {
+      const dateArray = [], jsErrorArray = []
+      for (let i = 0; i <= 30; i ++) {
+        if (!data[i]) continue
+        dateArray.push(data[i].day)
+        jsErrorArray.push(data[i].count)
+      }
+      this.props.updateHomeState({resourceErrorByDayChart: resourceErrorOption([dateArray, jsErrorArray])})
+    })
   }
   choseProject() {
     this.props.clearHomeState()

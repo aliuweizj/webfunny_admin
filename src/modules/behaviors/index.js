@@ -27,15 +27,11 @@ class Behaviors extends Component {
         this.search()
       }
     })
-    // console.log(Utils.b64DecodeUnicode("MjQxMDJCNkYtRjlDNS00QTdFLUIyRUItRUNFOERDMEM2NTE4"))
-  }
-
-  componentWillUnMount() {
-    this.props.clearBehaviorsState()
+    console.log(Utils.b64DecodeUnicode("aHR0cHM6Ly9tYWxsLnFpbmdjaHVuYmFuay5jb20vbHR2ZmUvY2wvY29tbW9uLjIwMDc0MTg2Lmpz"))
   }
 
   render() {
-    const { behaviorList, searchFlag, userInfo, timeScope, showMore } = this.props
+    const { behaviorList, searchFlag, userInfo, loadPageTimeList, timeScope, showMore } = this.props
     const bLen = behaviorList.length
     let happenTimeTemp = ""
     const selectTimeScope =
@@ -106,18 +102,19 @@ class Behaviors extends Component {
                   } else if (behavior.uploadType === "CUSTOMER_PV") {
                     color = "blue"
                     behaviorName = "进入页面 "
-                    behaviorContent = behavior.simpleUrl.replace(/https:\/\/.*\//g, "https://****/")
+                    behaviorContent = behavior.simpleUrl // .replace(/https:\/\/.*\//g, "https://****/")
                   } else if (behavior.uploadType === "JS_ERROR") {
                     color = "red"
                     behaviorName = "发生错误 "
                     behaviorContent = Utils.b64DecodeUnicode(behavior.errorMessage)
+                  } else if (behavior.uploadType === "RESOURCE_LOAD") {
+                    color = "red"
+                    behaviorName = behavior.elementType + " - 静态资源加载失败 "
+                    behaviorContent = Utils.b64DecodeUnicode(behavior.sourceUrl)
                   } else if (behavior.uploadType === "SCREEN_SHOT") {
                     color = "darkgoldenrod"
                     behaviorName = "屏幕截图 "
-                    behaviorContent = Utils.b64DecodeUnicode(behavior.screenInfo)
-                    if (behaviorContent.indexOf("data:image/webp;base64") === -1 && behaviorContent.indexOf("data:image/png;base64") === -1 ) {
-                      behaviorContent = "data:image/webp;base64," + behaviorContent
-                    }
+                    behaviorContent = "data:image/jpeg;base64," + behavior.screenInfo
                   } else if (behavior.uploadType === "HTTP_LOG") {
                     const status = behavior.status
                     const loadTime = (behavior.loadTime / 1000).toFixed(2)
@@ -130,7 +127,7 @@ class Behaviors extends Component {
                       color = "red"
                       behaviorName = <span style={{display: "block"}}>{behavior.statusResult} <i style={{fontSize: 12, color}}>{"    状态：" + status + "  "} <b>||</b> {"  " + "耗时：" + loadTime + "秒  " }</i></span>
                     }
-                    behaviorContent = <span style={{display: "block"}}><i style={{fontSize: 12}}>请求地址：{Utils.b64DecodeUnicode(behavior.httpUrl).replace(/https:\/\/.*\//g, "https://****/")}</i></span>
+                    behaviorContent = <span style={{display: "block"}}><i style={{fontSize: 12}}>请求地址：{Utils.b64DecodeUnicode(behavior.httpUrl)}</i></span>
                   } else if (behavior.uploadType === "APP_BEHAVIOR") {
                     color = "#b7b752"
                     behaviorName = <span style={{display: "block"}}>{behavior.behaviorType} <i style={{fontSize: 12, color}}>{"    状态：" + behavior.behaviorResult + "  "}</i></span>
@@ -142,20 +139,20 @@ class Behaviors extends Component {
                   return <Timeline.Item color={color} key={index}>
                     <span>
                       <label className="footprint-des" onClick={this.showDetail.bind(this, behavior.uploadType, behaviorContent)}>
-                        {behaviorName}
+                        {behaviorName} <br/>
                         { behavior.uploadType === "SCREEN_SHOT" ?
                           <span>
                             <Popover placement="right" content={<img src={behaviorContent}/>} title="屏幕快照">
                               <a type="primary" style={{marginLeft: 10, marginRight: 10}}> 预览 </a>
                             </Popover>
-                            <br/><i style={{fontSize: 12}}>截图描述：{Utils.b64DecodeUnicode(behavior.description)}</i>
+                            <br/><i style={{fontSize: 12}}>截图描述：{decodeURIComponent(Utils.b64DecodeUnicode(behavior.description))}</i>
                           </span>
                           :
                           behaviorContent
                         }
                       </label>
                       <label className="footprint-time"><b style={{color: "#666"}}>客户端时间：{happenTime}</b></label>
-                      <label className="footprint-time"><a style={{color: "#77b3eb"}} href={completeUrl} target="_blank">{completeUrl.replace(/https:\/\/.*\//g, "https://****/")}</a></label>
+                      <label className="footprint-time"><a style={{color: "#77b3eb"}} href={completeUrl} target="_blank">{completeUrl}</a></label>
                     </span>
                   </Timeline.Item>
                 })
@@ -167,6 +164,11 @@ class Behaviors extends Component {
         }
         {
           <Row className="userInfo-container">
+            { !userInfo && behaviorList.length > 0 &&
+              <div className="chart-loading">
+                <Spin tip="Loading..."/>
+              </div>
+            }
             { userInfo &&
               <Card id="infoCard" title={"用户基本信息"}>
                 <p>设备名称：{userInfo.deviceName} &nbsp;&nbsp;&nbsp;&nbsp; <a onClick={this.searchPhone.bind(this, "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=" + userInfo.deviceName)}>机型搜索</a></p>
@@ -180,7 +182,7 @@ class Behaviors extends Component {
                 <p>行为记录：{behaviorList.length} 条</p>
               </Card>
             }
-            { userInfo &&
+            { loadPageTimeList.length &&
             <Card id="loadCard" title="页面平均加载时间（网络环境评估）">
               <div id="loadPageTimeChart" className="chart-box" />
             </Card>
@@ -196,14 +198,20 @@ class Behaviors extends Component {
 
     </div>
   }
+  componentWillUnMount() {
+    this.props.clearBehaviorsState()
+  }
   exampleSearch() {
     const { exampleSearchValue } = this.props
     this.setState({loading: true, searchExampleAble: true})
     const searchValue = Utils.b64EncodeUnicode(exampleSearchValue)
-    this.props.searchUserBehaviorsAction({searchValue, webMonitorId: "mcl_webmonitor", timeScope: 100 }, (result) => {
+    this.props.searchUserBehaviorsAction({searchValue, webMonitorId: "mcl_webmonitor", timeScope: 3 }, (result) => {
       const res = result.behaviorList
       const len = res.length
       for (let i = 0; i < res.length - 1; i++) {
+        if (res[i].uploadType === "RESOURCE_LOAD") {
+          console.log(res)
+        }
         for (let j = 0; j < res.length - 1 - i; j++) {
           if (res[j].happenTime > res[j + 1].happenTime) {
             const temp = res[j]
@@ -237,7 +245,6 @@ class Behaviors extends Component {
     this.setState({loading: true})
     this.props.searchUserBehaviorsAction({searchValue, webMonitorId, timeScope }, (result) => {
       const res = result.behaviorList
-      const len = res.length
       for (let i = 0; i < res.length - 1; i++) {
         for (let j = 0; j < res.length - 1 - i; j++) {
           if (res[j].happenTime > res[j + 1].happenTime) {
@@ -247,16 +254,20 @@ class Behaviors extends Component {
           }
         }
       }
-      const userInfo = result.cusDetail
-      userInfo.startTime = res[0].happenTime
-      userInfo.endTime = res[len - 1].happenTime
-      this.props.updateBehaviorsState({behaviorList: res, searchFlag: true, userInfo})
-      setTimeout(() => {
-        this.createLoadPageTimeChart(result.loadPageTimeList)
-      }, 1000)
+      this.props.updateBehaviorsState({behaviorList: res, searchFlag: true})
       this.setState({loading: false})
     }, () => {
       this.setState({loading: false})
+    })
+
+    this.props.searchCustomerInfoAction({searchValue, webMonitorId, timeScope }, (result) => {
+      const userInfo = result.cusDetail || {}
+      const loadPageTimeList = result.loadPageTimeList
+      this.props.updateBehaviorsState({userInfo, loadPageTimeList})
+      setTimeout(() => {
+        this.createLoadPageTimeChart(loadPageTimeList)
+      }, 1000)
+    }, () => {
     })
   }
   createLoadPageTimeChart(res) {

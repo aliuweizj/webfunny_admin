@@ -16,3 +16,15 @@ export const getPageLoadTimeByDateAction = (params, handleResult) => () => {
     handleResult(response.data)
   })
 }
+
+export const getResourceLoadInfoListByDayAction = (params, handleResult) => () => {
+  return HttpUtil.get(HttpApi.getResourceLoadInfoListByDay, params).then( response => {
+    handleResult(response.data)
+  })
+}
+
+export const getResourceErrorCountByDayAction = (params, handleResult) => () => {
+  return HttpUtil.get(HttpApi.getResourceErrorCountByDay, params).then( response => {
+    handleResult(response.data)
+  })
+}
