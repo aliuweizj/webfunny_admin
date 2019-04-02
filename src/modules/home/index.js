@@ -57,6 +57,13 @@ export default class Home extends Component {
                     </div>
                 }
               </TabPane>
+              <TabPane tab="接口请求报错（待发布）" key="3">
+                {
+                  <div className="chart-loading">
+                    <Spin tip="Loading..."/>
+                  </div>
+                }
+              </TabPane>
             </Tabs>
           </div>
         </div>

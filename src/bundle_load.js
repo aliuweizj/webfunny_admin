@@ -8,6 +8,7 @@ import JavascriptErrorContainer from "Containers/javascriptError"
 import BehaviorsContainer from "Containers/behaviors"
 import JavascriptErrorDetailContainer from "Containers/javascriptErrorDetail"
 import CustomerPvAnalysisContainer from "Containers/customerPvAnalysis"
+import ResourceErrorContainer from "Containers/resourceError"
 export const Home = props => <Bundle loadContainer={HomeContainer} title="前端监控系统" >
   {Container => <Container {...props} />}
 </Bundle>
@@ -45,5 +46,9 @@ export const Behaviors = props => <Bundle loadContainer={BehaviorsContainer} tit
 </Bundle>
 
 export const CustomerPvAnalysis = props => <Bundle loadContainer={CustomerPvAnalysisContainer} title="用户PV/UV分析" >
+  {Container => <Container {...props} />}
+</Bundle>
+
+export const ResourceError = props => <Bundle loadContainer={ResourceErrorContainer} title="静态资源加载报错分析" >
   {Container => <Container {...props} />}
 </Bundle>

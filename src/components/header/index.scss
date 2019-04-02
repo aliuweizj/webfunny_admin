@@ -38,6 +38,9 @@
       width: 150px;
       text-align: center;
       cursor: pointer;
+      .ant-dropdown-link {
+        color: #2f2936;
+      }
       .new {
         position: absolute;
         background: red;

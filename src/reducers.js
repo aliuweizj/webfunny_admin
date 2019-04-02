@@ -6,6 +6,7 @@ import javascriptErrorDetailReducer from "Modules/javascriptErrorDetail/reducer"
 import loginReducer from "Modules/login/reducer"
 import projectListReducer from "Modules/projectList/reducer"
 import registerReducer from "Modules/register/reducer"
+import resourceErrorReducer from "Modules/resourceError/reducer"
 import showScreenShotReducer from "Modules/showScreenShot/reducer"
 
 export default {
@@ -17,5 +18,6 @@ export default {
   login: {reducer: loginReducer, isCached: false},
   projectList: {reducer: projectListReducer, isCached: false},
   register: {reducer: registerReducer, isCached: false},
+  resourceError: {reducer: resourceErrorReducer, isCached: false},
   showScreenShot: {reducer: showScreenShotReducer, isCached: false}
 }

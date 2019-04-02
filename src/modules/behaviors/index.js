@@ -206,12 +206,10 @@ class Behaviors extends Component {
     this.setState({loading: true, searchExampleAble: true})
     const searchValue = Utils.b64EncodeUnicode(exampleSearchValue)
     this.props.searchUserBehaviorsAction({searchValue, webMonitorId: "LTV_webmonitor", timeScope: 3 }, (result) => {
+      console.log(result)
       const res = result.behaviorList
       const len = res.length
       for (let i = 0; i < res.length - 1; i++) {
-        if (res[i].uploadType === "RESOURCE_LOAD") {
-          console.log(res)
-        }
         for (let j = 0; j < res.length - 1 - i; j++) {
           if (res[j].happenTime > res[j + 1].happenTime) {
             const temp = res[j]
@@ -220,9 +218,11 @@ class Behaviors extends Component {
           }
         }
       }
-      const userInfo = result.cusDetail
+
+      const userInfo = result.cusDetail || {}
       userInfo.startTime = res[0].happenTime
       userInfo.endTime = res[len - 1].happenTime
+      console.log(res)
       this.props.updateBehaviorsState({behaviorList: res, searchFlag: true, userInfo})
       setTimeout(() => {
         this.createLoadPageTimeChart(result.loadPageTimeList)
@@ -271,6 +271,7 @@ class Behaviors extends Component {
     })
   }
   createLoadPageTimeChart(res) {
+    if (!res) return
     const arr1 = []
     const arr2 = []
     res.forEach((page) => {

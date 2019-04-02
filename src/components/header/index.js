@@ -45,12 +45,37 @@ export default class Header extends Component {
 
   render() {
     const { projectList, chooseProject } = this.state
+    const errorNameList = [
+      {
+        name: "Js错误统计",
+        url: "javascriptError"
+      },
+      {
+        name: "静态资源错误统计",
+        url: "resourceError"
+      },
+      {
+        name: "接口请求错误统计（待发布）",
+        url: ""
+      },
+    ]
     const menu =
       <Menu>
         {
           projectList.map((project, index) => {
             return <Menu.Item key={ index }>
               <a onClick={this.choseProject.bind(this, project)}>{project.projectName}</a>
+            </Menu.Item>
+          })
+        }
+      </Menu>
+
+    const errorMenu =
+      <Menu>
+        {
+          errorNameList.map((errorName, index) => {
+            return <Menu.Item key={ index }>
+              <a onClick={this.turnToErrorPage.bind(this, errorName)}>{errorName.name}</a>
             </Menu.Item>
           })
         }
@@ -66,7 +91,13 @@ export default class Header extends Component {
           </Dropdown>
         </div>
         <span className="menu-right" onClick={this.turnTo.bind(this, "home")}>首页</span>
-        <span className="menu-right" onClick={this.turnTo.bind(this, "javascriptError")}>错误统计</span>
+        <span className="menu-right">
+          <Dropdown overlay={errorMenu} trigger={["click"]}>
+            <a className="ant-dropdown-link" href="#">
+              错误统计 <Icon type="down" />
+            </a>
+          </Dropdown>
+        </span>
         <span className="menu-right" onClick={this.turnTo.bind(this, "behaviors")}>行为检索<label className="new">New</label></span>
         <span className="menu-right">性能分析<label className="not">Not</label></span>
         <img className="git-btn" src={require("Images/common/github5.png")} onClick={this.turnToBlog.bind(this)} />
@@ -89,5 +120,10 @@ export default class Header extends Component {
     if (typeof this.props.chooseProject === "function") {
       this.props.chooseProject(project)
     }
+  }
+  turnToErrorPage(errorName) {
+    if (!errorName.url) return
+    const {parentProps} = this.props
+    parentProps.history.push(errorName.url)
   }
 }
