@@ -19,7 +19,6 @@ export default class Home extends Component {
 
   render() {
     const { jsErrorByHourChart, resourceErrorByDayChart } = this.props
-    console.log(jsErrorByHourChart, resourceErrorByDayChart)
     return <div className="home-container">
       <canvas className="snow-canvas" id="snowCanvas"></canvas>
       <Header

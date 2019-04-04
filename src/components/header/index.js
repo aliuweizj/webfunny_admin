@@ -51,7 +51,7 @@ export default class Header extends Component {
         url: "javascriptError"
       },
       {
-        name: "静态资源错误统计",
+        name: "静态资源错误统计（待完成）",
         url: "resourceError"
       },
       {

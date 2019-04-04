@@ -1,7 +1,8 @@
 import { handleActions } from "redux-actions"
 
 const initialState = {
-  isFetching: false
+  resourceErrorByDayChart: null,
+  resourceLoadErrorList: null
 }
 
 export default handleActions({
