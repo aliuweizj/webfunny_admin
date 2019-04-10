@@ -5,64 +5,64 @@ body {
   @keyframes loading-msg
   {
     0% {
-      content: '页面正在努力加载中，请稍等几秒钟哦';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦';
     }
     30% {
-      content: '页面正在努力加载中，请稍等几秒钟哦.';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦.';
     }
     60% {
-      content: '页面正在努力加载中，请稍等几秒钟哦..';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦..';
     }
     100% {
-      content: '页面正在努力加载中，请稍等几秒钟哦...';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦...';
     }
   }
 
   @-moz-keyframes loading-msg /* Firefox */
   {
     0% {
-      content: '页面正在努力加载中，请稍等几秒钟哦';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦';
     }
     30% {
-      content: '页面正在努力加载中，请稍等几秒钟哦.';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦.';
     }
     60% {
-      content: '页面正在努力加载中，请稍等几秒钟哦..';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦..';
     }
     100% {
-      content: '页面正在努力加载中，请稍等几秒钟哦...';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦...';
     }
   }
 
   @-webkit-keyframes loading-msg /* Safari 和 Chrome */
   {
     0% {
-      content: '页面正在努力加载中，请稍等几秒钟哦';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦';
     }
     30% {
-      content: '页面正在努力加载中，请稍等几秒钟哦.';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦.';
     }
     60% {
-      content: '页面正在努力加载中，请稍等几秒钟哦..';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦..';
     }
     100% {
-      content: '页面正在努力加载中，请稍等几秒钟哦...';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦...';
     }
   }
 
   @-o-keyframes loading-msg /* Opera */
   {
     0% {
-      content: '页面正在努力加载中，请稍等几秒钟哦';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦';
     }
     30% {
-      content: '页面正在努力加载中，请稍等几秒钟哦.';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦.';
     }
     60% {
-      content: '页面正在努力加载中，请稍等几秒钟哦..';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦..';
     }
     100% {
-      content: '页面正在努力加载中，请稍等几秒钟哦...';
+      content: '带宽偏小，页面正在努力加载中，请稍等几秒钟哦...';
     }
   }
   &:after {
@@ -71,7 +71,7 @@ body {
     text-align: center;
     line-height: 500px;
     font-size: 18px;
-    color: #e2e2e2;
+    color: #afafaf;
     animation: loading-msg 3s linear 0s infinite normal;
     /* Firefox: */
     -moz-animation: loading-msg 3s linear 0s infinite normal;

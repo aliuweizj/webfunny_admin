@@ -28,7 +28,7 @@ class ResourceError extends Component {
         <Card className="main-info-container">
           <Col span={16}>
             <Tabs defaultActiveKey="1" >
-              <TabPane tab={<span><Icon type="area-chart" />月统计</span>} key="1">
+              <TabPane tab={<span><Icon type="area-chart" />静态资源加载失败总数</span>} key="1">
                 {
                   resourceErrorByDayChart ?
                     <ChartFactory
@@ -41,16 +41,11 @@ class ResourceError extends Component {
                     </div>
                 }
               </TabPane>
-              <TabPane tab={<span><Icon type="clock-circle-o" />实时统计</span>} key="2">
-                <div className="chart-loading">
-                  <Spin tip="Loading..."/>
-                </div>
-              </TabPane>
             </Tabs>
           </Col>
           <Col span={8}>
             <Tabs defaultActiveKey="1" >
-              <TabPane tab={<span><Icon type="file-text" />错误率</span>} key="1">
+              <TabPane tab={<span><Icon type="file-text" />今日概况</span>} key="1">
 
               </TabPane>
             </Tabs>
@@ -64,16 +59,14 @@ class ResourceError extends Component {
             <Card className="error-list-container">
               { resourceLoadErrorList &&
                 resourceLoadErrorList.map((resource, index) => {
+                  if (!resource.sourceUrl.length) return null
                   return <p key={index}>
-                    <span>{ Utils.b64DecodeUnicode(resource.sourceUrl).replace(/https:\/\/.*\//g, "https://****/") }</span>
+                    <span>{ Utils.b64DecodeUnicode(resource.sourceUrl) } <a disabled> 影响范围 <Icon type="export" /></a></span>
                     <span>{ resource.count }次</span>
                   </p>
                 })
               }
             </Card>
-          </TabPane>
-          <TabPane tab={<span><Icon type="switcher" />静态资源加载失败页面</span>} key="2">
-
           </TabPane>
         </Tabs>
 

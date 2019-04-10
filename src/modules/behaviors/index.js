@@ -1,6 +1,6 @@
 import "./index.scss"
 import React, { Component } from "react"
-import { Input, Row, Icon, Timeline, BackTop, Card, Button, Spin, Popover, Select, Modal } from "antd"
+import { Input, Row, Icon, Timeline, BackTop, Card, Button, Spin, Popover, Select, Modal, message } from "antd"
 import { loadPageTimeOption } from "ChartConfig/behaviorsChartConfig"
 import Header from "Components/header"
 import Utils from "Common/utils"
@@ -27,7 +27,7 @@ class Behaviors extends Component {
         this.search()
       }
     })
-    console.log(Utils.b64DecodeUnicode("aHR0cHM6Ly9tYWxsLnFpbmdjaHVuYmFuay5jb20vbHR2ZmUvY2wvY29tbW9uLjIwMDc0MTg2Lmpz"))
+    // console.log(Utils.b64DecodeUnicode("aHR0cHM6Ly9tYWxsLnFpbmdjaHVuYmFuay5jb20vbHR2ZmUvY2wvY29tbW9uLjIwMDc0MTg2Lmpz"))
   }
 
   render() {
@@ -87,11 +87,7 @@ class Behaviors extends Component {
                     color = "#333333"
                     behaviorName = "点击了 "
                     let innerText = Utils.b64DecodeUnicode(behavior.innerText)
-                    let placeholder = ""
-                    const placeholderArray = behavior.placeholder.split(" ")
-                    placeholderArray.forEach((item) => {
-                      placeholder += Utils.b64DecodeUnicode(item) + " "
-                    })
+                    const placeholder = Utils.b64DecodeUnicode(behavior.placeholder)
                     const reg = /[\u4e00-\u9fa5]/
                     try {
                       innerText = reg.test(innerText) ? innerText : decodeURIComponent(innerText)
@@ -202,11 +198,11 @@ class Behaviors extends Component {
     this.props.clearBehaviorsState()
   }
   exampleSearch() {
+    message.success('搜索演示的内容较多，可能需要较长的时间，请耐心等待一会...', 8)
     const { exampleSearchValue } = this.props
     this.setState({loading: true, searchExampleAble: true})
     const searchValue = Utils.b64EncodeUnicode(exampleSearchValue)
     this.props.searchUserBehaviorsAction({searchValue, webMonitorId: "LTV_webmonitor", timeScope: 3 }, (result) => {
-      console.log(result)
       const res = result.behaviorList
       const len = res.length
       for (let i = 0; i < res.length - 1; i++) {
@@ -222,7 +218,6 @@ class Behaviors extends Component {
       const userInfo = result.cusDetail || {}
       userInfo.startTime = res[0].happenTime
       userInfo.endTime = res[len - 1].happenTime
-      console.log(res)
       this.props.updateBehaviorsState({behaviorList: res, searchFlag: true, userInfo})
       setTimeout(() => {
         this.createLoadPageTimeChart(result.loadPageTimeList)
