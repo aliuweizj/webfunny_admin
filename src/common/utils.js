@@ -11,6 +11,7 @@ export default class Utils {
     }))
   }
   static b64DecodeUnicode(tempStr) {
+    if (!tempStr) return
     const str = tempStr.replace(/ /g, "+")
     try {
       return decodeURIComponent(atob(str).split("").map(function(c) {

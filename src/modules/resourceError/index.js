@@ -61,7 +61,7 @@ class ResourceError extends Component {
                 resourceLoadErrorList.map((resource, index) => {
                   if (!resource.sourceUrl.length) return null
                   return <p key={index}>
-                    <span>{ Utils.b64DecodeUnicode(resource.sourceUrl) } <a disabled> 影响范围 <Icon type="export" /></a></span>
+                    <span>{ Utils.b64DecodeUnicode(resource.sourceUrl) } <a onClick={this.turnToDetail.bind(this, resource.sourceUrl)}> 影响范围 <Icon type="export" /></a></span>
                     <span>{ resource.count }次</span>
                   </p>
                 })
@@ -91,6 +91,9 @@ class ResourceError extends Component {
   choseProject() {
   }
   loadedProjects() {
+  }
+  turnToDetail(sourceUrl) {
+    console.log(sourceUrl)
   }
 }
 
