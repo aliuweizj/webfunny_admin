@@ -4,7 +4,7 @@ import Header from "Components/header"
 import ChartFactory from "Components/chartFactory"
 import { jsErrorOptionByHour } from "ChartConfig/jsChartOption"
 import { resourceErrorOption } from "ChartConfig/resourceChartOption"
-import { Spin, Tabs, Icon, notification, Button } from "antd"
+import { Spin, Tabs, Icon, notification } from "antd"
 const TabPane = Tabs.TabPane
 export default class Home extends Component {
   constructor(props) {
@@ -18,7 +18,7 @@ export default class Home extends Component {
     this.openNotification()
   }
   close() {
-    console.log("Notification was closed. Either the close button was clicked or duration time elapsed.")
+    console.log('Notification was closed. Either the close button was clicked or duration time elapsed.')
   }
 
   openNotification() {
