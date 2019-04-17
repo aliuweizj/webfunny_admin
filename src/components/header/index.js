@@ -48,15 +48,18 @@ export default class Header extends Component {
     const errorNameList = [
       {
         name: "Js错误统计",
-        url: "javascriptError"
+        url: "javascriptError",
+        icon: <Icon type="line-chart" />
       },
       {
         name: "静态资源错误统计（待完成）",
-        url: "resourceError"
+        url: "resourceError",
+        icon: <Icon type="file-text" />
       },
       {
         name: "接口请求错误统计（待发布）",
-        url: ""
+        url: "",
+        icon: <Icon type="export" />
       },
     ]
     const menu =
@@ -75,7 +78,7 @@ export default class Header extends Component {
         {
           errorNameList.map((errorName, index) => {
             return <Menu.Item key={ index }>
-              <a onClick={this.turnToErrorPage.bind(this, errorName)}>{errorName.name}</a>
+              <a onClick={this.turnToErrorPage.bind(this, errorName)}>{errorName.icon} {errorName.name}</a>
             </Menu.Item>
           })
         }

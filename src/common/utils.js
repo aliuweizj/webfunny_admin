@@ -10,7 +10,16 @@ export default class Utils {
       return String.fromCharCode("0x" + p1)
     }))
   }
-  static b64DecodeUnicode(tempStr) {
+  static b64DecodeUnicode(str) {
+    try {
+      return decodeURIComponent(atob(str).split("").map(function(c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)
+      }).join(""))
+    } catch (e) {
+      return str
+    }
+  }
+  static b64DecodeUnicodeBehavior(tempStr) {
     if (!tempStr) return ""
     const str = tempStr.replace(/ /g, "+")
     try {

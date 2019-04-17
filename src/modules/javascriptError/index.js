@@ -94,9 +94,10 @@ class JavascriptError extends Component {
                   const latestTime = parseInt(error.happenTime, 10)
                   const timeStatus = nowTime - latestTime > 24 * 60 * 60 * 1000
                   return <p key={index} onClick={this.turnToDetail.bind(this, error)} title="点击查看详情" >
-                    <span className={ignoreStatus && " status-icon status-icon-ignore " ||  resolveStatus && " status-icon status-icon-resolve " || "status-icon"}/><span>{ Utils.b64DecodeUnicode(msgArr[0] || msgArr[1] || msgArr[2]) || "空"}</span>
-                    <span>{Utils.b64DecodeUnicode(msgArr[len - 1]) || "..."}</span>
-                    { error.osInfo &&
+                      <span className={ignoreStatus && " status-icon status-icon-ignore " ||  resolveStatus && " status-icon status-icon-resolve " || "status-icon"}/>
+                      <span>{ (Utils.b64DecodeUnicode(msgArr[0] || msgArr[1] || msgArr[2]) || "").substring(0, 30)}</span>
+                      <span>{Utils.b64DecodeUnicode(msgArr[len - 1]) || "..."}</span>
+                      { error.osInfo &&
                       error.osInfo.map((obj) => {
                         let osType = ""
                         if (obj.os === "ios") {
@@ -110,14 +111,14 @@ class JavascriptError extends Component {
                           <Icon className="click-export" type={osType} /><label>（{obj.count}次）</label>
                         </span>
                       })
-                    }
-                    {
-                      ignoreStatus && <label className="ignore-state">已忽略</label> ||
-                      resolveStatus && <label className="resolve-state">已解决</label>
-                    }
-                    <span className="right-icon"><Icon type="right" /></span>
-                    <span className={timeStatus ? "not-today" : ""} title="发生时间以用户的手机为准，不完全准确"><i>{timeStatus ? "最近：" : "24小时内："}</i>{new Date(latestTime).Format("yyyy-MM-dd hh:mm:ss")}</span>
-                  </p>
+                      }
+                      {
+                        ignoreStatus && <label className="ignore-state">已忽略</label> ||
+                        resolveStatus && <label className="resolve-state">已解决</label>
+                      }
+                      <span className="right-icon"><Icon type="right" /></span>
+                      <span className={timeStatus ? "not-today" : ""} title="发生时间以用户的手机为准，不完全准确"><i>{timeStatus ? "最近：" : "24小时内："}</i>{new Date(latestTime).Format("yyyy-MM-dd hh:mm:ss")}</span>
+                    </p>
                 })
               }
             </Card>
@@ -287,7 +288,7 @@ class JavascriptError extends Component {
       this.props.updateJavascriptErrorState({ignoreErrorList: result})
     })
     // 获取js错误列表
-    await this.props.getJsErrorSortAction({ timeType }, (result) => {
+    await this.props.getJsErrorSortAction({ timeType: "day" }, (result) => {
       this.props.updateJavascriptErrorState({jsErrorList: result.data})
     })
   }

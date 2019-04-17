@@ -4,7 +4,7 @@ import Header from "Components/header"
 import ChartFactory from "Components/chartFactory"
 import { jsErrorOptionByHour } from "ChartConfig/jsChartOption"
 import { resourceErrorOption } from "ChartConfig/resourceChartOption"
-import { Spin, Tabs } from "antd"
+import { Spin, Tabs, Icon, notification, Button } from "antd"
 const TabPane = Tabs.TabPane
 export default class Home extends Component {
   constructor(props) {
@@ -13,14 +13,28 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    const canvas = document.querySelector("#snowCanvas")
-    this.snow(canvas)
+    // const canvas = document.querySelector("#snowCanvas")
+    // this.snow(canvas)
+    this.openNotification()
+  }
+  close() {
+    console.log("Notification was closed. Either the close button was clicked or duration time elapsed.")
   }
 
+  openNotification() {
+    const key = `open${Date.now()}`
+    notification.open({
+      message: "更新提示",
+      description: '1. 增加了行为检索中一些细节的展示；2. 优化了JS报错的展示样式；3. 将对JS报错分析增加日期联动功能，以便对比出BUG修正的效果',
+      duration: 20,
+      key,
+      onClose: this.close,
+    })
+  }
   render() {
-    const { jsErrorByHourChart, resourceErrorByDayChart } = this.props
+    const { jsErrorTotalCount, jsErrorByHourChart, resourceErrorTotalCount, resourceErrorByDayChart } = this.props
     return <div className="home-container">
-      <canvas className="snow-canvas" id="snowCanvas"></canvas>
+      <canvas className="snow-canvas" id="snowCanvas" />
       <Header
         chooseProject={this.choseProject.bind(this)}
         loadedProjects={this.loadedProjects.bind(this)}
@@ -30,7 +44,7 @@ export default class Home extends Component {
         <div className="home-content">
           <div className="left">
             <Tabs>
-              <TabPane tab="Js报错实时监控" key="1">
+              <TabPane tab={<span><Icon type="line-chart" />Js报错实时监控（{jsErrorTotalCount}）</span>} key="1">
                 {
                   jsErrorByHourChart ?
                     <ChartFactory
@@ -43,7 +57,7 @@ export default class Home extends Component {
                     </div>
                 }
               </TabPane>
-              <TabPane tab="静态资源加载报错" key="2">
+              <TabPane tab={<span><Icon type="file-text" />静态资源加载报错（{resourceErrorTotalCount}）</span>} key="2">
                 {
                   resourceErrorByDayChart ?
                     <ChartFactory
@@ -56,7 +70,7 @@ export default class Home extends Component {
                     </div>
                 }
               </TabPane>
-              <TabPane tab="接口请求报错（待发布）" key="3">
+              <TabPane tab={<span><Icon type="export" />接口请求报错（待发布）</span>} key="3">
                 {
                   <div className="chart-loading">
                     <Spin tip="Loading..."/>
@@ -73,7 +87,7 @@ export default class Home extends Component {
     this.props.getJsErrorCountByHourAction((res) => {
       const data = res.data.today
       const dateArray = [], jsErrorArray = []
-
+      let jsErrorTotalCount = 0
       for (let i = 0; i < 24; i ++) {
         if (i + 1 > data.length) {
           dateArray.push( i + "点")
@@ -81,6 +95,7 @@ export default class Home extends Component {
         } else {
           dateArray.push(data[i].day)
           jsErrorArray.push(data[i].count)
+          jsErrorTotalCount = jsErrorTotalCount + parseInt(data[i].count, 10)
         }
       }
       const seven = res.data.seven
@@ -95,18 +110,35 @@ export default class Home extends Component {
           sevenJsErrorArray.push(seven[i].count)
         }
       }
-      this.props.updateHomeState({jsErrorByHourChart: jsErrorOptionByHour([dateArray, jsErrorArray], [sevenDateArray, sevenJsErrorArray])})
+      this.props.updateHomeState({jsErrorTotalCount, jsErrorByHourChart: jsErrorOptionByHour([dateArray, jsErrorArray], [sevenDateArray, sevenJsErrorArray])})
     })
 
     // 静态资源加载失败列表
-    this.props.getResourceErrorCountByDayAction({}, (data) => {
-      const dateArray = [], jsErrorArray = []
-      for (let i = 0; i <= 30; i ++) {
-        if (!data[i]) continue
-        dateArray.push(data[i].day)
-        jsErrorArray.push(data[i].count)
+    // this.props.getResourceErrorCountByDayAction({}, (data) => {
+    //   const dateArray = [], jsErrorArray = []
+    //   for (let i = 0; i <= 30; i ++) {
+    //     if (!data[i]) continue
+    //     dateArray.push(data[i].day)
+    //     jsErrorArray.push(data[i].count)
+    //   }
+    //   this.props.updateHomeState({resourceErrorByDayChart: resourceErrorOption([dateArray, jsErrorArray])})
+    // })
+
+    this.props.getResourceErrorCountByHourAction((res) => {
+      const data = res.data
+      const dateArray = [], resourceErrorArray = []
+      let resourceErrorTotalCount = 0
+      for (let i = 0; i < 24; i ++) {
+        if (i + 1 > data.length) {
+          dateArray.push( i + "点")
+          resourceErrorArray.push(0)
+        } else {
+          dateArray.push(data[i].day)
+          resourceErrorArray.push(data[i].count)
+          resourceErrorTotalCount = resourceErrorTotalCount + parseInt(data[i].count, 10)
+        }
       }
-      this.props.updateHomeState({resourceErrorByDayChart: resourceErrorOption([dateArray, jsErrorArray])})
+      this.props.updateHomeState({resourceErrorTotalCount, resourceErrorByDayChart: resourceErrorOption([dateArray, resourceErrorArray])})
     })
   }
   choseProject() {

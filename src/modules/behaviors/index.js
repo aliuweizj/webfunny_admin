@@ -27,7 +27,7 @@ class Behaviors extends Component {
         this.search()
       }
     })
-    // console.log(Utils.b64DecodeUnicode("aHR0cHM6Ly9tYWxsLnFpbmdjaHVuYmFuay5jb20vbHR2ZmUvY2wvY29tbW9uLjIwMDc0MTg2Lmpz"))
+    console.log(Utils.b64DecodeUnicode("ODJDRkJBODItMTBBMC1FNzExLTlCNTEtNzAxMDZGQUZGQjND"))
   }
 
   render() {
@@ -83,11 +83,12 @@ class Behaviors extends Component {
                   let color = ""
                   let behaviorName = ""
                   let behaviorContent = ""
+                  let deviceInfo = ""
                   if (behavior.uploadType === "ELE_BEHAVIOR") {
                     color = "#333333"
                     behaviorName = "点击了 "
-                    let innerText = Utils.b64DecodeUnicode(behavior.innerText)
-                    const placeholder = Utils.b64DecodeUnicode(behavior.placeholder)
+                    let innerText = Utils.b64DecodeUnicodeBehavior(behavior.innerText)
+                    const placeholder = Utils.b64DecodeUnicodeBehavior(behavior.placeholder)
                     const reg = /[\u4e00-\u9fa5]/
                     try {
                       innerText = reg.test(innerText) ? innerText : decodeURIComponent(innerText)
@@ -98,7 +99,8 @@ class Behaviors extends Component {
                   } else if (behavior.uploadType === "CUSTOMER_PV") {
                     color = "blue"
                     behaviorName = "进入页面 "
-                    behaviorContent = behavior.simpleUrl // .replace(/https:\/\/.*\//g, "https://****/")
+                    behaviorContent = behavior.completeUrl // .replace(/https:\/\/.*\//g, "https://****/")
+                    deviceInfo =  <a onClick={this.searchPhone.bind(this, "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=" + behavior.deviceName)}>（{behavior.loadType}）（{behavior.os.indexOf("ios") !== -1 ? <Icon type="apple" /> : <Icon type="android" />}{ behavior.deviceName + " / " + behavior.os }）</a>
                   } else if (behavior.uploadType === "JS_ERROR") {
                     color = "red"
                     behaviorName = "发生错误 "
@@ -148,7 +150,7 @@ class Behaviors extends Component {
                         }
                       </label>
                       <label className="footprint-time"><b style={{color: "#666"}}>客户端时间：{happenTime}</b></label>
-                      <label className="footprint-time"><a style={{color: "#77b3eb"}} href={completeUrl} target="_blank">{completeUrl}</a></label>
+                      <label className="footprint-time"><a style={{color: "#77b3eb"}} href={completeUrl} target="_blank">{completeUrl}</a> { deviceInfo } </label>
                     </span>
                   </Timeline.Item>
                 })
@@ -198,7 +200,7 @@ class Behaviors extends Component {
     this.props.clearBehaviorsState()
   }
   exampleSearch() {
-    message.success('搜索演示的内容较多，可能需要较长的时间，请耐心等待一会...', 8)
+    message.success("搜索演示的内容较多，可能需要较长的时间，请耐心等待一会...", 8)
     const { exampleSearchValue } = this.props
     this.setState({loading: true, searchExampleAble: true})
     const searchValue = Utils.b64EncodeUnicode(exampleSearchValue)

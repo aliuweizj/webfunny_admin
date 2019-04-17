@@ -45,9 +45,7 @@ class ResourceError extends Component {
           </Col>
           <Col span={8}>
             <Tabs defaultActiveKey="1" >
-              <TabPane tab={<span><Icon type="file-text" />今日概况</span>} key="1">
-
-              </TabPane>
+              <TabPane tab={<span><Icon type="file-text" />今日概况</span>} key="1" />
             </Tabs>
           </Col>
         </Card>

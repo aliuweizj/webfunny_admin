@@ -48,6 +48,8 @@ const api = {
   "getResourceLoadInfoListByDay": apiHost + "/server/getResourceLoadInfoListByDay",
   // 获取每天静态资源加载失败数量列表
   "getResourceErrorCountByDay": apiHost + "/server/getResourceErrorCountByDay",
+  // 获取一天内每小时报错数量
+  "getResourceErrorCountByHour": apiHost + "/server/getResourceErrorCountByHour",
 
 }
 

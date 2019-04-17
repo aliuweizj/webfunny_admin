@@ -28,3 +28,9 @@ export const getResourceErrorCountByDayAction = (params, handleResult) => () => 
     handleResult(response.data)
   })
 }
+
+export const getResourceErrorCountByHourAction = (handleResult) => () => {
+  return HttpUtil.get(HttpApi.getResourceErrorCountByHour).then( response => {
+    handleResult(response)
+  })
+}
