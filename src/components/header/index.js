@@ -1,8 +1,10 @@
 import "./index.scss"
 import React, { Component } from "react"
-import { Menu, Dropdown, Icon } from "antd"
+import { Menu, Dropdown, Icon, Tooltip } from "antd"
+import SvgIcons from "Components/svg_icons"
 import HttpUtil from "Common/http-util"
 import HttpApi from "Common/http-api"
+const { AppMessage } = SvgIcons
 export default class Header extends Component {
   constructor(props) {
     super(props)
@@ -105,7 +107,15 @@ export default class Header extends Component {
         <span className="menu-right">性能分析<label className="not">Not</label></span>
         <img className="git-btn" src={require("Images/common/github5.png")} onClick={this.turnToBlog.bind(this)} />
       </section>
+      <div className="message-box" onClick={this.turnToZhihu.bind(this)}>
+        <Tooltip placement="topRight" title="有问题，请给我留言">
+          <Icon component={AppMessage}/>
+        </Tooltip>
+      </div>
     </div>
+  }
+  turnToZhihu() {
+    window.open("https://zhuanlan.zhihu.com/p/56629298")
   }
   turnTo(url) {
     this.props.parentProps.history.push(url)

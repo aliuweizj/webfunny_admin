@@ -2,6 +2,7 @@ import "./index.scss"
 import React, { Component } from "react"
 import Header from "Components/header"
 import ChartFactory from "Components/chartFactory"
+import SvgIcons from "Components/svg_icons"
 import { jsErrorOptionByHour } from "ChartConfig/jsChartOption"
 import { resourceErrorOption } from "ChartConfig/resourceChartOption"
 import { Spin, Tabs, Icon, notification } from "antd"
@@ -18,15 +19,15 @@ export default class Home extends Component {
     this.openNotification()
   }
   close() {
-    console.log('Notification was closed. Either the close button was clicked or duration time elapsed.')
+    console.log("Notification was closed. Either the close button was clicked or duration time elapsed.")
   }
 
   openNotification() {
     const key = `open${Date.now()}`
     notification.open({
       message: "更新提示",
-      description: '1. 增加了行为检索中一些细节的展示；2. 优化了JS报错的展示样式；3. 将对JS报错分析增加日期联动功能，以便对比出BUG修正的效果',
-      duration: 20,
+      description: "1. 增加了行为检索中一些细节的展示；2. 优化了JS报错的展示样式；3. 将对JS报错分析增加日期联动功能，以便对比出BUG修正的效果",
+      duration: 10,
       key,
       onClose: this.close,
     })
@@ -70,7 +71,7 @@ export default class Home extends Component {
                     </div>
                 }
               </TabPane>
-              <TabPane tab={<span><Icon type="export" />接口请求报错（待发布）</span>} key="3">
+              <TabPane tab={<span><Icon component={SvgIcons.RequestSvg} />接口请求报错（待发布）</span>} key="3">
                 {
                   <div className="chart-loading">
                     <Spin tip="Loading..."/>

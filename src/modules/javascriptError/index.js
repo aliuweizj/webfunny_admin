@@ -1,7 +1,7 @@
 import "./index.scss"
 import React, { Component } from "react"
 import Header from "Components/header"
-import { Row, Col, Tabs, Card, Icon, Tooltip } from "antd"
+import { Row, Col, Tabs, Card, Icon, Tooltip, Spin } from "antd"
 import { jsErrorOption, jsErrorOptionByHour } from "ChartConfig/jsChartOption"
 import Utils from "Common/utils"
 const TabPane = Tabs.TabPane
@@ -11,7 +11,8 @@ class JavascriptError extends Component {
     super(props)
     this.state = {
       jsErrorCountByDayChart: null,
-      activePageIndex: 0
+      activePageIndex: 0,
+      loading: false
     }
     this.initData = this.initData.bind(this)
     this.loadInitData = this.loadInitData.bind(this)
@@ -39,11 +40,12 @@ class JavascriptError extends Component {
         loadedProjects={this.loadedProjects.bind(this)}
         parentProps={this.props}
       />
+      <Spin spinning={this.state.loading}>
       <Row>
         <Card className="main-info-container">
           <Col span={16}>
             <Tabs defaultActiveKey="1" activeKey={activeKeyTop} onTabClick={this.onStatistic.bind(this)}>
-              <TabPane tab={<span><Icon type="area-chart" />月统计</span>} key="1">
+              <TabPane tab={<span><Icon type="area-chart" />月统计<span style={{fontSize: 12}}>(点击柱状图更新数据)</span></span>} key="1">
                 <div id="jsErrorCountByDay" className="chart-box" />
               </TabPane>
               <TabPane tab={<span><Icon type="clock-circle-o" />实时统计</span>} key="2">
@@ -55,19 +57,19 @@ class JavascriptError extends Component {
             <Tabs defaultActiveKey="1" >
               <TabPane tab={<span><Icon type="file-text" />错误率</span>} key="1">
                 <div className="info-box">
-                  <span><Icon type="exception" /><label>总错误率</label></span>
+                  <span><Icon type="thunderbolt" theme="filled" /><label>总错误率</label></span>
                   <span>{totalPercent}%</span>
                 </div>
                 <div className="info-box">
-                  <span><Icon type="windows" /><label>PC错误率</label></span>
+                  <span><Icon type="windows" theme="filled"/><label>PC错误率</label></span>
                   <span>{pcPercent}%</span>
                 </div>
                 <div className="info-box">
-                  <span><Icon type="apple" /><label>IOS错误率</label></span>
+                  <span><Icon type="apple" theme="filled" /><label>IOS错误率</label></span>
                   <span>{iosPercent}%</span>
                 </div>
                 <div className="info-box">
-                  <span><Icon type="android" /><label>Android错误率</label></span>
+                  <span><Icon type="android" theme="filled"/><label>Android错误率</label></span>
                   <span>{androidPercent}%</span>
                 </div>
               </TabPane>
@@ -174,17 +176,14 @@ class JavascriptError extends Component {
         </Tabs>
 
       </Row>
+      </Spin>
     </div>
   }
   onStatistic(key) {
-    let timeType = "month"
     if (key === "2") {
-      timeType = "day"
       this.props.getJsErrorCountByHourAction((res) => {
         // 基于准备好的dom，初始化echarts实例
         const jsErrorChartByHour = echarts.init(document.getElementById("jsErrorCountByHour"))
-
-
         const data = res.data.today
         const dateArray = [], jsErrorArray = []
 
@@ -210,15 +209,12 @@ class JavascriptError extends Component {
         }
         jsErrorChartByHour.setOption(jsErrorOptionByHour([dateArray, jsErrorArray], [sevenDateArray, sevenJsErrorArray]))
       })
-      this.loadInitData("day")
-    } else if (key === "1") {
-      timeType = "month"
-      this.loadInitData("month")
     }
-    this.props.updateJavascriptErrorState({activeKeyTop: key, activeKeyDown: "1", timeType})
+    this.props.updateJavascriptErrorState({activeKeyTop: key, activeKeyDown: "1"})
   }
   onPageError(key) {
     const { timeType } = this.props
+    console.log("timeType", timeType)
     this.props.updateJavascriptErrorState({activeKeyDown: key})
     if (key === "2") {
       this.props.getJsErrorCountByPageAction({ timeType }, (res) => {
@@ -269,6 +265,7 @@ class JavascriptError extends Component {
 
   // 加载错误图表数据
   async loadInitData(newTimeType) {
+    let dataIndex = 29
     const timeType = newTimeType ? newTimeType : this.props.timeType
     // 基于准备好的dom，初始化echarts实例
     this.state.jsErrorCountByDayChart = echarts.init(document.getElementById("jsErrorCountByDay"))
@@ -283,13 +280,33 @@ class JavascriptError extends Component {
       }
       this.state.jsErrorCountByDayChart.setOption(jsErrorOption([dateArray, jsErrorArray]))
     })
-    // 获取忽略js错误列表
-    await this.props.getIgnoreJavascriptErrorListAction((result) => {
-      this.props.updateJavascriptErrorState({ignoreErrorList: result})
+    this.state.jsErrorCountByDayChart.off("click")
+    this.state.jsErrorCountByDayChart.on("click", (params) => {
+      dataIndex = params.dataIndex
+      this.setState({ loading: true })
+      this.props.updateJavascriptErrorState({activeKeyDown: "1", timeType: 29 - dataIndex})
+      // 获取忽略js错误列表
+      this.props.getIgnoreJavascriptErrorListAction((result) => {
+        this.props.updateJavascriptErrorState({ignoreErrorList: result})
+        // 获取js错误列表
+        this.props.getJsErrorSortAction({ timeType: 29 - dataIndex }, (res) => {
+          this.props.updateJavascriptErrorState({jsErrorList: res.data})
+          this.setState({loading: false})
+        }).catch(() => {
+          this.setState({loading: false})
+        })
+      })
     })
-    // 获取js错误列表
-    await this.props.getJsErrorSortAction({ timeType: "day" }, (result) => {
-      this.props.updateJavascriptErrorState({jsErrorList: result.data})
+    // 获取忽略js错误列表
+    this.props.getIgnoreJavascriptErrorListAction((result) => {
+      this.props.updateJavascriptErrorState({ignoreErrorList: result})
+      // 获取js错误列表
+      this.props.getJsErrorSortAction({ timeType: 29 - dataIndex }, (res) => {
+        this.props.updateJavascriptErrorState({jsErrorList: res.data})
+        this.setState({loading: false})
+      }).catch(() => {
+        this.setState({loading: false})
+      })
     })
   }
   choseProject() {

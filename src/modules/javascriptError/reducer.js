@@ -1,7 +1,7 @@
 import { handleActions } from "redux-actions"
 
 const initialState = {
-  timeType: "month",
+  timeType: 0,
   jsErrorList: [],
   ignoreErrorList: [],
   jsErrorListByPage: [],

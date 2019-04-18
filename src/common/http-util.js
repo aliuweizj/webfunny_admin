@@ -1,5 +1,4 @@
 import Utils from "Common/utils"
-import {Toast} from "antd-mobile"
 import "whatwg-fetch"
 import "./extension"
 const timeout = 300000
@@ -192,14 +191,14 @@ export default class HttpUtil {
    * 添加loadding状态
    */
   static showLoading() {
-    Toast && Toast.loading("加载中...", 100)
+    console.log("加载中...")
   }
 
   /**
    * 取消loadding状态
    */
   static hideLoading() {
-    Toast && Toast.hide()
+    console.log("加载中...")
   }
 }
 

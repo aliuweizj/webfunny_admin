@@ -97,14 +97,19 @@ module.exports = {
         ],
       },
       {
-        test: /\.svg$/,
-        include: [
-          /node_modules/,
-          require.resolve('antd').replace(/warn\.js$/, ''),  // antd-mobile 内置svg
-          path.resolve(__dirname, 'src/assets/img'),             // 业务代码本地私有 svg 存放目录
-          path.resolve(__dirname, 'src/components')                 // 本地通用组件 svg 存放目录
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+          {
+            loader: '@svgr/webpack',
+            options: {
+              babel: false,
+              icon: true,
+            },
+          },
         ],
-        loader: "svg-sprite-loader",
       },
       {
         test: /\.(png|jpg|jpeg|gif)$/,
