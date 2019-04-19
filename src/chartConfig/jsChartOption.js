@@ -80,7 +80,7 @@ export const jsErrorOption = (result) => {
 // 一天内，js错误分布
 export const jsErrorOptionByHour = (result1, result2) => {
   return {
-    color: [ "#AEC5EB", "#5d5cb6" ],
+    color: [ "#5d5cb6", "#AEC5EB" ],
     tooltip: {
       trigger: "axis",
       // axisPointer: {
