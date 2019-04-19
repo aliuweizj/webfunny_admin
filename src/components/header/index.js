@@ -105,7 +105,7 @@ export default class Header extends Component {
         </span>
         <span className="menu-right" onClick={this.turnTo.bind(this, "behaviors")}>行为检索<label className="new">New</label></span>
         <span className="menu-right">性能分析<label className="not">Not</label></span>
-        <img className="git-btn" src={require("Images/common/github5.png")} onClick={this.turnToBlog.bind(this)} />
+        <div className="github-container"/>
       </section>
       <div className="message-box" onClick={this.turnToZhihu.bind(this)}>
         <Tooltip placement="topRight" title="有问题，请给我留言">

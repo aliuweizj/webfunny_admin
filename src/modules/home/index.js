@@ -27,6 +27,10 @@ export default class Home extends Component {
     notification.open({
       message: "更新提示",
       description: "1. 增加了行为检索中一些细节的展示；2. 优化了JS报错的展示样式；3. 将对JS报错分析增加日期联动功能，以便对比出BUG修正的效果",
+      style: {
+        width: 400,
+        marginTop: 50,
+      },
       duration: 10,
       key,
       onClose: this.close,
