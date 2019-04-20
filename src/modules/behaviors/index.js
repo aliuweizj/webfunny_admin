@@ -1,11 +1,11 @@
 import "./index.scss"
 import React, { Component } from "react"
-import { Input, Row, Icon, Timeline, BackTop, Card, Button, Spin, Popover, Select, Modal, message } from "antd"
+import { Input, Row, Icon, Timeline, Card, BackTop, Button, Spin, Popover, Select, Modal, message } from "antd"
 import { loadPageTimeOption } from "ChartConfig/behaviorsChartConfig"
 import Header from "Components/header"
 import Utils from "Common/utils"
 import SvgIcons from "Components/svg_icons"
-const { Click1 } = SvgIcons
+const { Click1, BackToTop } = SvgIcons
 const echarts = require("echarts")
 const Option = Select.Option
 class Behaviors extends Component {
@@ -47,7 +47,7 @@ class Behaviors extends Component {
 
     return <div className="behaviors-container">
       <BackTop>
-        <Icon type="to-top" size="L"/>
+        <Icon component={BackToTop} size="L"/>
       </BackTop>
       <Header
         chooseProject={this.choseProject.bind(this)}

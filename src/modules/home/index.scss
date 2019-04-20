@@ -4,11 +4,11 @@
     left: 0;
     width: 100%;
     min-height: 100%;
-    background-image: url("../../assets/img/home/spring.jpeg");
+    background-image: url("../../assets/img/home/spring2.jpeg");
     background-size: cover;
     background-position: center;
     .header-container {
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.8);
     }
     @keyframes shadow
     {
@@ -43,7 +43,6 @@
         z-index: 1;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.3);
         .git-btn {
             font-size: 24px;
             color: red;

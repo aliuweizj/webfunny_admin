@@ -16,8 +16,8 @@ export default class Home extends Component {
 
   componentDidMount() {
     // 冬天飘雪花
-    // const canvas = document.querySelector("#snowCanvas")
-    // this.snow(canvas)
+    const canvas = document.querySelector("#snowCanvas")
+    this.snow(canvas)
     this.openNotification()
   }
 
@@ -174,13 +174,15 @@ export default class Home extends Component {
     // 微粒子创建数组
     const particles = []
     for (let j = 0; j < 400; j++) {
+      let floorIndex = j%5
+      const colors = ["#EE7657", "#6AEC5F", "#F6EE72", "#F36DF6", "#80F6C2"];
       particles.push({// 设置雪花的初始位x，y  x,y向上的速度，以及雪花的大小颜色，随机生成的
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
         vx: Math.random() * 1 - 0.5,
         vy: Math.random() * 1 + 0.5,
         size: 1 + Math.random() * 1,
-        color: "#fff"
+        color: colors[floorIndex]
       })
     }
     // 进行绘制
