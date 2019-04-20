@@ -107,4 +107,26 @@ export default class Utils {
     // 递归
     return Utils.quickSort(left).concat([pivot], Utils.quickSort(right))
   }
+
+  // 获取24小时数组
+  static get24HoursArray() {
+    const dateTime = new Date().getTime()
+    const hourArray = []
+    for (let i = 0; i < 24; i ++) {
+      const tempDateTime = dateTime - i * 60 * 60 * 1000
+      const hour = new Date(tempDateTime).Format("MM-dd hh")
+      hourArray.push(hour)
+    }
+    return hourArray
+  }
+  static getSevenDaysAgo24HoursArray() {
+    const dateTime = new Date().getTime() - 6 * 24 * 60 * 60 * 1000
+    const hourArray = []
+    for (let i = 0; i < 24; i ++) {
+      const tempDateTime = dateTime - i * 60 * 60 * 1000
+      const hour = new Date(tempDateTime).Format("MM-dd hh")
+      hourArray.push(hour)
+    }
+    return hourArray
+  }
 }

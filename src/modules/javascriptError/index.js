@@ -181,30 +181,33 @@ class JavascriptError extends Component {
   }
   onStatistic(key) {
     if (key === "2") {
+      const hours = Utils.get24HoursArray().reverse()
+      const sevenHours = Utils.getSevenDaysAgo24HoursArray().reverse()
       this.props.getJsErrorCountByHourAction((res) => {
         // 基于准备好的dom，初始化echarts实例
         const jsErrorChartByHour = echarts.init(document.getElementById("jsErrorCountByHour"))
         const data = res.data.today
         const dateArray = [], jsErrorArray = []
-
-        for (let i = 0; i < 24; i ++) {
-          if (i + 1 > data.length) {
-            dateArray.push( i + "点")
-            jsErrorArray.push(0)
-          } else {
-            dateArray.push(data[i].day)
+        let jsErrorTotalCount = 0
+        for (let i = 0; i < hours.length; i ++) {
+          if (data[i] && data[i].hour === hours[i]) {
+            dateArray.push(data[i].hour + "时")
             jsErrorArray.push(data[i].count)
+            jsErrorTotalCount = jsErrorTotalCount + parseInt(data[i].count, 10)
+          } else {
+            dateArray.push(hours[i] + "时")
+            jsErrorArray.push(0)
           }
         }
         const seven = res.data.seven
         const sevenDateArray = [], sevenJsErrorArray = []
-        for (let i = 0; i < 24; i ++) {
-          if (i + 1 > seven.length) {
-            sevenDateArray.push( i + "点")
-            sevenJsErrorArray.push(0)
-          } else {
-            sevenDateArray.push(seven[i].day)
+        for (let i = 0; i < sevenHours.length; i ++) {
+          if (seven[i] && seven[i].hour === sevenHours[i]) {
+            sevenDateArray.push(seven[i].hour + "时")
             sevenJsErrorArray.push(seven[i].count)
+          } else {
+            sevenDateArray.push(sevenHours[i] + "时")
+            sevenJsErrorArray.push(0)
           }
         }
         jsErrorChartByHour.setOption(jsErrorOptionByHour([dateArray, jsErrorArray], [sevenDateArray, sevenJsErrorArray]))

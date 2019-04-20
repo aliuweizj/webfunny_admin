@@ -4,13 +4,13 @@
   position: fixed;
   top: 0;
   background: #fff;
-  z-index: 9;
+  z-index: 1011;
   .message-box {
     position: fixed;
     cursor: pointer;
     right: 20px;
     bottom: 20px;
-    font-size: 30px;
+    font-size: 36px;
     color: #eef0ee;
     animation: message_box_animate 10s linear infinite;
     -webkit-animation: message_box_animate 10s linear infinite;
@@ -105,10 +105,10 @@
       background-size: 100% 100%;
       background-position: center;
       cursor: pointer;
-      animation: github_container_animate 20s linear infinite;
-      -webkit-animation: github_container_animate 20s linear infinite;
-      -moz-animation: github_container_animate 20s linear infinite;
-      -o-animation: github_container_animate 20s linear infinite;
+      animation: github_container_animate 10s linear infinite;
+      -webkit-animation: github_container_animate 10s linear infinite;
+      -moz-animation: github_container_animate 10s linear infinite;
+      -o-animation: github_container_animate 10s linear infinite;
     }
     @keyframes github_container_animate{
       0%{
@@ -186,16 +186,11 @@
       .ant-dropdown-link {
         color: #2f2936;
       }
-      .new {
+      .new-flag {
         position: absolute;
-        background: red;
-        color: #fff;
-        font-size: 12px;
-        padding: 2px 4px;
-        border-radius: 4px;
-        margin-top: -14px;
+        font-size: 20px;
+        margin-top: -20px;
         margin-left: -20px;
-        transform: scale(0.7);
       }
       .not {
         position: absolute;
@@ -228,4 +223,7 @@
 .code-icon, .blog-icon {
   width: 16px!important;
   margin-right: 10px!important;
+}
+.ui-progress-bar {
+  display: none!important;
 }

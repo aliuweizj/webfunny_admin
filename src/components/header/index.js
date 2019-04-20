@@ -1,10 +1,10 @@
 import "./index.scss"
 import React, { Component } from "react"
 import { Menu, Dropdown, Icon, Tooltip } from "antd"
-import SvgIcons from "Components/svg_icons"
 import HttpUtil from "Common/http-util"
 import HttpApi from "Common/http-api"
-const { AppMessage } = SvgIcons
+import SvgIcons from "Components/svg_icons"
+const { AppMessage, NewFlag } = SvgIcons
 export default class Header extends Component {
   constructor(props) {
     super(props)
@@ -103,12 +103,12 @@ export default class Header extends Component {
             </a>
           </Dropdown>
         </span>
-        <span className="menu-right" onClick={this.turnTo.bind(this, "behaviors")}>行为检索<label className="new">New</label></span>
+        <span className="menu-right" onClick={this.turnTo.bind(this, "behaviors")}>行为检索<Icon className="new-flag" component={NewFlag}/></span>
         <span className="menu-right">性能分析<label className="not">Not</label></span>
-        <div className="github-container"/>
+        <div className="github-container" onClick={this.turnToBlog.bind(this)}/>
       </section>
       <div className="message-box" onClick={this.turnToZhihu.bind(this)}>
-        <Tooltip placement="topRight" title="有问题，请给我留言">
+        <Tooltip placement="topRight" title="有问题，欢迎给我留言">
           <Icon component={AppMessage}/>
         </Tooltip>
       </div>

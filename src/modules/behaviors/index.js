@@ -4,6 +4,8 @@ import { Input, Row, Icon, Timeline, BackTop, Card, Button, Spin, Popover, Selec
 import { loadPageTimeOption } from "ChartConfig/behaviorsChartConfig"
 import Header from "Components/header"
 import Utils from "Common/utils"
+import SvgIcons from "Components/svg_icons"
+const { Click1 } = SvgIcons
 const echarts = require("echarts")
 const Option = Select.Option
 class Behaviors extends Component {
@@ -62,6 +64,7 @@ class Behaviors extends Component {
             placeholder="搜索用户的行为记录，请输入KEY或者USERID"
             onChange={this.changeInputValue}
           />
+          <Icon className="click-hand" component={Click1}/>
           <Button disabled={this.state.searchExampleAble} className="sea-example" onClick={this.exampleSearch.bind(this)}><img src={require("Images/behaviors/click.png")} /> 搜索演示</Button>
         </div>
         { behaviorList.length > 0 &&

@@ -43,6 +43,60 @@
             margin-bottom: 5px;
             color: #999;
         }
+        .click-hand {
+            position: absolute;
+            margin-left: 111px;
+            margin-top: 67px;
+            z-index: 10;
+            font-size: 30px;
+            opacity: 0;
+            animation: click_hand_animate 8s linear 1;
+            -webkit-animation: click_hand_animate 8s linear 1;
+            -moz-animation: click_hand_animate 8s linear 1;
+            -o-animation: click_hand_animate 8s linear 1;
+        }
+        @keyframes click_hand_animate{
+            0%{
+                opacity: 0;
+                margin-left: 111px;
+                margin-top: 67px;
+            }
+            10%{
+                opacity: 1;
+                margin-left: 111px;
+                margin-top: 67px;
+            }
+            20% {
+                opacity: 1;
+                margin-left: 85px;
+                margin-top: 22px;
+            }
+            30% {
+                opacity: 0;
+                margin-left: 85px;
+                margin-top: 22px;
+            }
+            40% {
+                opacity: 0;
+                margin-left: 111px;
+                margin-top: 67px;
+            }
+            50% {
+                opacity: 1;
+                margin-left: 85px;
+                margin-top: 22px;
+            }
+            60% {
+                opacity: 0;
+                margin-left: 85px;
+                margin-top: 22px;
+            }
+            100% {
+                opacity: 0;
+                margin-left: 111px;
+                margin-top: 67px;
+            }
+        }
         .sea-example {
             float: right;
             margin-right: -130px;
@@ -103,4 +157,7 @@
     .ant-card {
         background: rgba(255, 255, 255, 0.8);
     }
+}
+.ant-message {
+    z-index: 1012;
 }

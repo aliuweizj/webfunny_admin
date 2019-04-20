@@ -6,6 +6,7 @@ import SvgIcons from "Components/svg_icons"
 import { jsErrorOptionByHour } from "ChartConfig/jsChartOption"
 import { resourceErrorOption } from "ChartConfig/resourceChartOption"
 import { Spin, Tabs, Icon, notification } from "antd"
+import utils from "Common/utils"
 const TabPane = Tabs.TabPane
 export default class Home extends Component {
   constructor(props) {
@@ -14,26 +15,30 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
+    // 冬天飘雪花
     // const canvas = document.querySelector("#snowCanvas")
     // this.snow(canvas)
     this.openNotification()
-  }
-  close() {
-    console.log("Notification was closed. Either the close button was clicked or duration time elapsed.")
   }
 
   openNotification() {
     const key = `open${Date.now()}`
     notification.open({
-      message: "更新提示",
-      description: "1. 增加了行为检索中一些细节的展示；2. 优化了JS报错的展示样式；3. 将对JS报错分析增加日期联动功能，以便对比出BUG修正的效果",
+      message: "更新提示（2019-04-20）",
+      description: <p className="update-box">
+          <span>1. JS报错分析中增加日期联动功能，点击柱状图可以查看每一天的js报错详情，以便对比出BUG修正的效果；</span> <br/>
+          <span>2. JS实时报错时间段由当天24小时调整为向前推算24小时；</span><br/>
+          <span>3. 增加了行为检索中一些细节的展示，以区分用户多台机器登录的情况；</span><br/>
+          <hr/>
+          <label>1. 将增加首页接口报错实时统计；</label><br/>
+          <label>2. 将完善静态资源错误统计和分析功能；</label>
+      </p>,
       style: {
         width: 400,
         marginTop: 50,
       },
-      duration: 10,
-      key,
-      onClose: this.close,
+      duration: 20,
+      key
     })
   }
   render() {
@@ -89,30 +94,31 @@ export default class Home extends Component {
     </div>
   }
   initData() {
+    const hours = utils.get24HoursArray().reverse()
+    const sevenHours = utils.getSevenDaysAgo24HoursArray().reverse()
     this.props.getJsErrorCountByHourAction((res) => {
       const data = res.data.today
       const dateArray = [], jsErrorArray = []
       let jsErrorTotalCount = 0
-      for (let i = 0; i < 24; i ++) {
-        if (i + 1 > data.length) {
-          dateArray.push( i + "点")
-          jsErrorArray.push(0)
-        } else {
-          dateArray.push(data[i].day)
+      for (let i = 0; i < hours.length; i ++) {
+        if (data[i] && data[i].hour === hours[i]) {
+          dateArray.push(data[i].hour + "时")
           jsErrorArray.push(data[i].count)
           jsErrorTotalCount = jsErrorTotalCount + parseInt(data[i].count, 10)
+        } else {
+          dateArray.push(hours[i] + "时")
+          jsErrorArray.push(0)
         }
       }
       const seven = res.data.seven
       const sevenDateArray = [], sevenJsErrorArray = []
-
-      for (let i = 0; i < 24; i ++) {
-        if (i + 1 > seven.length) {
-          sevenDateArray.push( i + "点")
-          sevenJsErrorArray.push(0)
-        } else {
-          sevenDateArray.push(seven[i].day)
+      for (let i = 0; i < sevenHours.length; i ++) {
+        if (seven[i] && seven[i].hour === sevenHours[i]) {
+          sevenDateArray.push(seven[i].hour + "时")
           sevenJsErrorArray.push(seven[i].count)
+        } else {
+          sevenDateArray.push(sevenHours[i] + "时")
+          sevenJsErrorArray.push(0)
         }
       }
       this.props.updateHomeState({jsErrorTotalCount, jsErrorByHourChart: jsErrorOptionByHour([dateArray, jsErrorArray], [sevenDateArray, sevenJsErrorArray])})
