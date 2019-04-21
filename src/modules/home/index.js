@@ -126,6 +126,9 @@ export default class Home extends Component {
         }
       }
       this.props.updateHomeState({jsErrorTotalCount, jsErrorByHourChart: jsErrorOptionByHour([dateArray, jsErrorArray], [sevenDateArray, sevenJsErrorArray])})
+
+      // 数据加载完成后， 预加载其他模块的js文件，提高加载速度
+      this.preloadJs()
     })
 
     // 静态资源加载失败列表
@@ -216,14 +219,16 @@ export default class Home extends Component {
         context.fill()
       }
     }
-
     setInterval(timeUp, 40)
   }
-  preloadJs(jsList) {
-    for (const key in jsList) {
-      if (!(key === "app.js" || key === "common.js" || key === "home.js")) {
-        utils.loadJs(jsList[key])
+  preloadJs() {
+    // 首页渲染完成后，加载其他模块的js，以便提前缓存
+    this.props.getJsListAction((jsList) => {
+      for (const key in jsList) {
+        if (key === "javascriptError.js" || key === "behaviors.js" || key === "resourceError.js") {
+          utils.loadJs(jsList[key])
+        }
       }
-    }
+    })
   }
 }
