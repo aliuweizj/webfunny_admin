@@ -34,3 +34,9 @@ export const getResourceErrorCountByHourAction = (handleResult) => () => {
     handleResult(response)
   })
 }
+
+export const getJsListAction = (handleResult) => () => {
+  return HttpUtil.get(HttpApi.jsList).then( response => {
+    handleResult(response)
+  })
+}

@@ -129,4 +129,12 @@ export default class Utils {
     }
     return hourArray
   }
+  static loadJs(url, onload) {
+    const script = document.createElement("script")
+    script.async = 1
+    script.onload = typeof onload === "function" ? onload : () => {}
+    script.src = url
+    const dom = document.getElementsByTagName("script")[0]
+    dom.parentNode.insertBefore(script, dom)
+  }
 }
