@@ -225,7 +225,7 @@ export default class Home extends Component {
     // 首页渲染完成后，加载其他模块的js，以便提前缓存
     this.props.getJsListAction((jsList) => {
       for (const key in jsList) {
-        if (key === "javascriptError.js" || key === "behaviors.js" || key === "resourceError.js") {
+        if (key === "javascriptError.js" || key === "behaviors.js") {
           utils.loadJs(jsList[key])
         }
       }
