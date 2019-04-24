@@ -57,7 +57,7 @@ module.exports = env => {
       new webpack.ProvidePlugin({
           $: 'jquery'
       }),
-      new OpenBrowserPlugin({ url: 'http://localhost:' + port + '/webfunny/home'})
+      new OpenBrowserPlugin({ url: 'http://localhost:' + port + '/webFunny/home'})
     ]
   });
 }

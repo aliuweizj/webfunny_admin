@@ -33,7 +33,7 @@ export default class Home extends Component {
           <span>1. JS报错分析中增加日期联动功能，点击柱状图可以查看每一天的js报错详情，以便对比出BUG修正的效果；</span> <br/>
           <span>2. JS实时报错时间段由当天24小时调整为向前推算24小时；</span><br/>
           <span>3. 增加了行为检索中一些细节的展示，以区分用户多台机器登录的情况；</span><br/>
-          <hr/>
+          <span className="line" />
           <label>1. 将增加首页接口报错实时统计；</label><br/>
           <label>2. 将完善静态资源错误统计和分析功能；</label>
       </p>,

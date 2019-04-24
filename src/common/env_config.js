@@ -5,9 +5,10 @@ const envUrls = {
     uri: "http://localhost"
   },
   dev: {
-    apiServerUrl: "",
-    nodeApiServerUrl: "",
-    uri: ""
+    apiServerUrl: "http://172.16.48.57:9100",
+    assetsUrl: "http://172.16.48.57:9100",
+    nodeApiServerUrl: "http://172.16.48.57:9100",
+    uri: "http://172.16.48.57:9100"
   },
   qa: {
     apiServerUrl: "https://www.webfunny.cn",
