@@ -6,7 +6,9 @@ const initialState = {
   jsErrorTotalCount: 0,
   loadPageTimeChart: null,
   resourceErrorByDayChart: null,
-  resourceErrorTotalCount: 0
+  resourceErrorTotalCount: 0,
+  httpErrorByHourChart: null,
+  httpErrorTotalCount: 0
 }
 
 export default handleActions({

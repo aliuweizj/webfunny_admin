@@ -23,20 +23,14 @@ export const getResourceLoadInfoListByDayAction = (params, handleResult) => () =
   })
 }
 
-export const getResourceErrorCountByDayAction = (params, handleResult) => () => {
-  return HttpUtil.get(HttpApi.getResourceErrorCountByDay, params).then( response => {
-    handleResult(response.data)
-  })
-}
-
 export const getResourceErrorCountByHourAction = (handleResult) => () => {
   return HttpUtil.get(HttpApi.getResourceErrorCountByHour).then( response => {
     handleResult(response)
   })
 }
 
-export const getJsListAction = (handleResult) => () => {
-  return HttpUtil.get(HttpApi.jsList).then( response => {
+export const getHttpErrorCountByHourAction = (handleResult) => () => {
+  return HttpUtil.get(HttpApi.getHttpErrorCountByHour).then( response => {
     handleResult(response)
   })
 }

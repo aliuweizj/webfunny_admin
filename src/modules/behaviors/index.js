@@ -29,7 +29,7 @@ class Behaviors extends Component {
         this.search()
       }
     })
-    // console.log(Utils.b64DecodeUnicode("MTcwRjIzRUQtMzFFMi1FNzExLTlCNTEtNzAxMDZGQUZGQjND"))
+    // console.log(Utils.b64DecodeUnicodeBehavior("MTgzMTc1MTIwMjY="))
   }
 
   render() {

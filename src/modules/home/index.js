@@ -4,7 +4,6 @@ import Header from "Components/header"
 import ChartFactory from "Components/chartFactory"
 import SvgIcons from "Components/svg_icons"
 import { jsErrorOptionByHour } from "ChartConfig/jsChartOption"
-import { resourceErrorOption } from "ChartConfig/resourceChartOption"
 import { Spin, Tabs, Icon, notification } from "antd"
 import utils from "Common/utils"
 const TabPane = Tabs.TabPane
@@ -12,6 +11,7 @@ export default class Home extends Component {
   constructor(props) {
     super(props)
     this.initData.bind(this)
+    this.analysisErrorData.bind(this)
   }
 
   componentDidMount() {
@@ -19,10 +19,6 @@ export default class Home extends Component {
     const canvas = document.querySelector("#snowCanvas")
     this.snow(canvas)
     this.openNotification()
-    // 首页渲染完成后，加载其他模块的js，以便提前缓存
-    this.props.getJsListAction((data) => {
-      this.preloadJs(data)
-    })
   }
 
   openNotification() {
@@ -46,7 +42,7 @@ export default class Home extends Component {
     })
   }
   render() {
-    const { jsErrorTotalCount, jsErrorByHourChart, resourceErrorTotalCount, resourceErrorByDayChart } = this.props
+    const { jsErrorTotalCount, jsErrorByHourChart, resourceErrorTotalCount, resourceErrorByDayChart, httpErrorTotalCount, httpErrorByHourChart } = this.props
     return <div className="home-container">
       <canvas className="snow-canvas" id="snowCanvas" />
       <Header
@@ -58,7 +54,7 @@ export default class Home extends Component {
         <div className="home-content">
           <div className="left">
             <Tabs>
-              <TabPane tab={<span><Icon type="line-chart" />Js报错实时监控（{jsErrorTotalCount}）</span>} key="1">
+              <TabPane tab={<span><Icon type="line-chart" />Js报错实时监控（今日：{jsErrorTotalCount}）</span>} key="1">
                 {
                   jsErrorByHourChart ?
                     <ChartFactory
@@ -71,7 +67,7 @@ export default class Home extends Component {
                     </div>
                 }
               </TabPane>
-              <TabPane tab={<span><Icon type="file-text" />静态资源加载报错（{resourceErrorTotalCount}）</span>} key="2">
+              <TabPane tab={<span><Icon type="file-text" />静态资源加载报错（今天：{resourceErrorTotalCount}）</span>} key="2">
                 {
                   resourceErrorByDayChart ?
                     <ChartFactory
@@ -84,11 +80,17 @@ export default class Home extends Component {
                     </div>
                 }
               </TabPane>
-              <TabPane tab={<span><Icon component={SvgIcons.RequestSvg} />接口请求报错（待发布）</span>} key="3">
+              <TabPane tab={<span><Icon component={SvgIcons.RequestSvg} />接口请求报错（今天：{httpErrorTotalCount}）</span>} key="3">
                 {
-                  <div className="chart-loading">
-                    <Spin tip="Loading..."/>
-                  </div>
+                  httpErrorByHourChart ?
+                    <ChartFactory
+                      style={{ height: 320, paddingBottom: 20 }}
+                      option={httpErrorByHourChart}
+                    />
+                    :
+                    <div className="chart-loading">
+                      <Spin tip="Loading..."/>
+                    </div>
                 }
               </TabPane>
             </Tabs>
@@ -102,62 +104,52 @@ export default class Home extends Component {
     const sevenHours = utils.getSevenDaysAgo24HoursArray().reverse()
     this.props.getJsErrorCountByHourAction((res) => {
       const data = res.data.today
-      const dateArray = [], jsErrorArray = []
-      let jsErrorTotalCount = 0
-      for (let i = 0; i < hours.length; i ++) {
-        if (data[i] && data[i].hour === hours[i]) {
-          dateArray.push(data[i].hour + "时")
-          jsErrorArray.push(data[i].count)
-          jsErrorTotalCount = jsErrorTotalCount + parseInt(data[i].count, 10)
-        } else {
-          dateArray.push(hours[i] + "时")
-          jsErrorArray.push(0)
-        }
-      }
       const seven = res.data.seven
-      const sevenDateArray = [], sevenJsErrorArray = []
-      for (let i = 0; i < sevenHours.length; i ++) {
-        if (seven[i] && seven[i].hour === sevenHours[i]) {
-          sevenDateArray.push(seven[i].hour + "时")
-          sevenJsErrorArray.push(seven[i].count)
-        } else {
-          sevenDateArray.push(sevenHours[i] + "时")
-          sevenJsErrorArray.push(0)
-        }
-      }
-      this.props.updateHomeState({jsErrorTotalCount, jsErrorByHourChart: jsErrorOptionByHour([dateArray, jsErrorArray], [sevenDateArray, sevenJsErrorArray])})
-
-      // 数据加载完成后， 预加载其他模块的js文件，提高加载速度
-      this.preloadJs()
+      const jsErrorInfo = this.analysisErrorData(data, hours)
+      const sevenDayAgoJsErrorInfo = this.analysisErrorData(seven, sevenHours)
+      this.props.updateHomeState({jsErrorTotalCount: jsErrorInfo.errorTotalCount, jsErrorByHourChart: jsErrorOptionByHour([hours, jsErrorInfo.errorArray], [hours, sevenDayAgoJsErrorInfo.errorArray])})
     })
-
-    // 静态资源加载失败列表
-    // this.props.getResourceErrorCountByDayAction({}, (data) => {
-    //   const dateArray = [], jsErrorArray = []
-    //   for (let i = 0; i <= 30; i ++) {
-    //     if (!data[i]) continue
-    //     dateArray.push(data[i].day)
-    //     jsErrorArray.push(data[i].count)
-    //   }
-    //   this.props.updateHomeState({resourceErrorByDayChart: resourceErrorOption([dateArray, jsErrorArray])})
-    // })
-
     this.props.getResourceErrorCountByHourAction((res) => {
-      const data = res.data
-      const dateArray = [], resourceErrorArray = []
-      let resourceErrorTotalCount = 0
-      for (let i = 0; i < 24; i ++) {
-        if (i + 1 > data.length) {
-          dateArray.push( i + "点")
-          resourceErrorArray.push(0)
-        } else {
-          dateArray.push(data[i].day)
-          resourceErrorArray.push(data[i].count)
-          resourceErrorTotalCount = resourceErrorTotalCount + parseInt(data[i].count, 10)
+      const data = res.data.today
+      const seven = res.data.seven
+      const errorInfo = this.analysisErrorData(data, hours)
+      const sevenDayAgoErrorInfo = this.analysisErrorData(seven, sevenHours)
+      this.props.updateHomeState({resourceErrorTotalCount: errorInfo.errorTotalCount, resourceErrorByDayChart: jsErrorOptionByHour([hours, errorInfo.errorArray], [hours, sevenDayAgoErrorInfo.errorArray])})
+    })
+    // 接口请求报错列表
+    this.props.getHttpErrorCountByHourAction((res) => {
+      const data = res.data.today
+      const seven = res.data.seven
+      const errorInfo = this.analysisErrorData(data, hours)
+      const sevenDayAgoErrorInfo = this.analysisErrorData(seven, sevenHours)
+      console.log(errorInfo, sevenDayAgoErrorInfo)
+      this.props.updateHomeState({httpErrorTotalCount: errorInfo.errorTotalCount, httpErrorByHourChart: jsErrorOptionByHour([errorInfo.dateArray, errorInfo.errorArray], [errorInfo.dateArray, sevenDayAgoErrorInfo.errorArray])})
+    })
+  }
+  analysisErrorData(data, hours) {
+    const nowHour = new Date().getHours()
+    const dateArray = [], errorArray = []
+    let errorTotalCount = 0
+    for (let i = 0; i < hours.length; i ++) {
+      let isInclude = false
+      for (let j = 0; j < data.length; j ++) {
+        if (data[j].hour === hours[i]) {
+          const tempHour = hours[i]
+          dateArray.push(tempHour + "时")
+          errorArray.push(data[j].count)
+          if (nowHour >= parseInt(tempHour.substring(6, 8), 10)) {
+            errorTotalCount = errorTotalCount + parseInt(data[j].count, 10)
+          }
+          isInclude = true
+          break
         }
       }
-      this.props.updateHomeState({resourceErrorTotalCount, resourceErrorByDayChart: resourceErrorOption([dateArray, resourceErrorArray])})
-    })
+      if (isInclude === false) {
+        dateArray.push(hours[i] + "时")
+        errorArray.push(0)
+      }
+    }
+    return {errorTotalCount, dateArray, errorArray}
   }
   choseProject() {
     this.props.clearHomeState()
@@ -220,15 +212,5 @@ export default class Home extends Component {
       }
     }
     setInterval(timeUp, 40)
-  }
-  preloadJs() {
-    // 首页渲染完成后，加载其他模块的js，以便提前缓存
-    this.props.getJsListAction((jsList) => {
-      for (const key in jsList) {
-        if (key === "javascriptError.js" || key === "behaviors.js") {
-          utils.loadJs(jsList[key])
-        }
-      }
-    })
   }
 }
