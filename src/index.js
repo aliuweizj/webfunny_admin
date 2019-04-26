@@ -7,7 +7,7 @@ initApp("/webfunny", reducers, extraRoutes)
 
 // 注册service worker，service worker脚本文件为sw.js
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./webfunny/sw.js").then(function() {
+  navigator.serviceWorker.register("./sw.js").then(function() {
     console.log("Service Worker 注册成功")
   })
 }
