@@ -13,7 +13,6 @@ export default class Home extends Component {
     this.initData.bind(this)
     this.analysisErrorData.bind(this)
   }
-
   componentDidMount() {
     // 冬天飘雪花
     const canvas = document.querySelector("#snowCanvas")

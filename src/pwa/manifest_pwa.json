@@ -1,0 +1,39 @@
+{
+    "name": "前端监控系统",
+    "short_name": "前端监控",
+    "start_url": "/webfunny/home",
+    "display": "standalone",
+    "background_color": "#333",
+    "description": "一个集监控前端报错，日志分析，性能分析于一体的监控系统",
+    "orientation": "portrait-primary",
+    "theme_color": "#5eace0",
+    "icons": [{
+        "src": "img/icons/book-32.png",
+        "sizes": "32x32",
+        "type": "image/png"
+    }, {
+        "src": "img/icons/book-72.png",
+        "sizes": "72x72",
+        "type": "image/png"
+    }, {
+        "src": "img/icons/book-128.png",
+        "sizes": "128x128",
+        "type": "image/png"
+    }, {
+        "src": "img/icons/book-144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+    }, {
+        "src": "img/icons/book-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+    }, {
+        "src": "img/icons/book-256.png",
+        "sizes": "256x256",
+        "type": "image/png"
+    }, {
+        "src": "img/icons/book-512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+    }]
+}

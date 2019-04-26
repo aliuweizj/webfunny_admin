@@ -10,6 +10,7 @@ const pxtorem = require('postcss-pxtorem');
 const baseConfig = require('./webpack.base.js');
 const envConfig = require("./src/common/env_config.js");
 const ManifestPlugin = require('webpack-manifest-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = env => {
   const curEnv = env || "local"
@@ -89,6 +90,9 @@ module.exports = env => {
       new webpack.ProvidePlugin({
         $: 'jquery'
       }),
+      new CopyWebpackPlugin([
+        { from: __dirname + '/src/pwa/' }
+      ])
     ]
   });
 }

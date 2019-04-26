@@ -36,6 +36,7 @@
     "bundle-loader": "^0.5.5",
     "classnames": "^2.2.5",
     "clean-webpack-plugin": "^0.1.16",
+    "copy-webpack-plugin": "^4.6.0",
     "cors": "^2.8.4",
     "css-loader": "^0.28.1",
     "eslint": "^4.11.0",

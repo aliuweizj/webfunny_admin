@@ -6,7 +6,22 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="icon" type="image/png" href="//www.webfunny.cn/resource/favicon.ico">
     <title></title>
-    <link rel="icon" type="image/png" href="./assets/img/common/favicon.ico">
+    <link rel="manifest" href="./manifest_pwa.json">
+    <meta name="theme-color" content="#5eace0"/>
+
+    <!-- 针对safari（iOS）的添加到桌面功能进行相关设置 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="前端监控">
+    <link rel="apple-touch-icon" href="img/icons/book-256.png">
+
+    <!-- IE的设置 -->
+    <meta name="application-name" content="图书搜索" />
+    <meta name="msapplication-TileColor" content="#222">
+    <meta name="msapplication-square70x70logo" content="img/icons/book-72.png" />
+    <meta name="msapplication-square150x150logo" content="img/icons/book-144.png" />
+    <meta name="msapplication-square310x310logo" content="img/icons/book-256.png" />
+
     <% if(htmlWebpackPlugin.options.baiduAs) { %>
         <script>
           var _hmt = _hmt || [];
@@ -18,7 +33,6 @@
           })();
         </script>
     <% } %>
-
     <script language="javascript">
       // viewport 设置
       // 针对原来高清方案的基础, 增加了根据屏幕宽度计算不同font-size 来达到对不同屏幕的适配

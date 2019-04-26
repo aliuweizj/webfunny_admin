@@ -1,14 +1,14 @@
 const envUrls = {
   local: {
-    apiServerUrl: "http://localhost:8011",
-    nodeApiServerUrl: "http://localhost:8011",
-    uri: "http://localhost"
+    apiServerUrl: "http://172.16.48.57:8011",
+    nodeApiServerUrl: "http://172.16.48.57:8011",
+    uri: "http://172.16.48.57"
   },
   dev: {
-    apiServerUrl: "http://172.16.48.57:9100",
-    assetsUrl: "http://172.16.48.57:9100",
-    nodeApiServerUrl: "http://172.16.48.57:9100",
-    uri: "http://172.16.48.57:9100"
+    apiServerUrl: "https://www.webfunny.cn",
+    nodeApiServerUrl: "https://www.webfunny.cn",
+    assetsUrl: "https://local.webfunny.cn",
+    uri: "https://local.webfunny.cn:9100"
   },
   qa: {
     apiServerUrl: "https://www.webfunny.cn",
