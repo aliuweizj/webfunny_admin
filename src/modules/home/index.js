@@ -95,6 +95,7 @@ export default class Home extends Component {
             </Tabs>
           </div>
         </div>
+        <a className="bei-an-text" href="http://www.miit.gov.cn/">苏ICP备17071733号-2</a>
       </div>
     </div>
   }
