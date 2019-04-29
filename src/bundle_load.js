@@ -28,7 +28,7 @@ export const Login = props => <Bundle loadContainer={LoginContainer} title="logi
   {Container => <Container {...props} />}
 </Bundle>
 
-export const JavascriptError = props => <Bundle loadContainer={JavascriptErrorContainer} next={[JavascriptErrorDetailContainer]} title="JS错误列表" >
+export const JavascriptError = props => <Bundle loadContainer={JavascriptErrorContainer} title="JS错误列表" >
   {Container => <Container {...props} />}
 </Bundle>
 
