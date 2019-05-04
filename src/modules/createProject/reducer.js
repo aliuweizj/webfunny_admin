@@ -1,21 +1,19 @@
 import { handleActions } from "redux-actions"
 
 const initialState = {
-  resourceErrorByDayChart: null,
-  resourceLoadErrorList: null,
-  timeType: 0
+  isFetching: false
 }
 
 export default handleActions({
 
-  updateResourceErrorState: (state = initialState, { payload }) => {
+  updateCreateProjectState: (state = initialState, { payload }) => {
     return {
       ...state,
       ...payload
     }
   },
 
-  clearResourceErrorState: () => {
+  clearCreateProjectState: () => {
     return {
       ...initialState
     }

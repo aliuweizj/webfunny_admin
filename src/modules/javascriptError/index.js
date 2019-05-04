@@ -110,7 +110,7 @@ class JavascriptError extends Component {
                           osType = "windows"
                         }
                         return <span key={Math.random()}>
-                          <Icon className="click-export" type={osType} /><label>（{obj.count}次）</label>
+                          <Icon className="click-export" theme="filled" type={osType} /><label>（{obj.count}次）</label>
                         </span>
                       })
                       }
@@ -161,7 +161,7 @@ class JavascriptError extends Component {
                             osType = "windows"
                           }
                           return <span key={Math.random()}>
-                          <Icon className="click-export" type={osType} /><label>（{obj.count}次）</label>
+                          <Icon className="click-export" theme="filled" type={osType} /><label>（{obj.count}次）</label>
                         </span>
                         })
                       }
@@ -217,7 +217,6 @@ class JavascriptError extends Component {
   }
   onPageError(key) {
     const { timeType } = this.props
-    console.log("timeType", timeType)
     this.props.updateJavascriptErrorState({activeKeyDown: key})
     if (key === "2") {
       this.props.getJsErrorCountByPageAction({ timeType }, (res) => {

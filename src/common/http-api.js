@@ -55,6 +55,10 @@ const api = {
   // 获取一天内每小时接口请求报错数量
   "getHttpErrorCountByHour": apiHost + "/server/getHttpErrorCountByHour",
 
+  // 创建新项目
+  "createNewProject": apiHost + "/server/createNewProject",
+
+
 }
 
 const nodeApi = {

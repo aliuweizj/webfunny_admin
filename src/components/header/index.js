@@ -1,6 +1,6 @@
 import "./index.scss"
 import React, { Component } from "react"
-import { Menu, Dropdown, Icon, Tooltip } from "antd"
+import { Menu, Dropdown, Icon, Tooltip, Switch, AutoComplete, Button } from "antd"
 import HttpUtil from "Common/http-util"
 import HttpApi from "Common/http-api"
 import SvgIcons from "Components/svg_icons"
@@ -9,6 +9,7 @@ export default class Header extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      userType: 1,
       projectList: [],
       chooseProject: {
         webMonitorId: "",
@@ -46,7 +47,13 @@ export default class Header extends Component {
   }
 
   render() {
-    const { projectList, chooseProject } = this.state
+    const { userType, projectList, chooseProject } = this.state
+    const { isCreateProject } = this.props
+    const projectNameList = []
+    const chooseProjectName = chooseProject.projectName
+    projectList.forEach((item) => {
+      projectNameList.push(item.projectName)
+    })
     const errorNameList = [
       {
         name: "Js错误统计",
@@ -64,16 +71,6 @@ export default class Header extends Component {
         icon: <Icon type="export" />
       },
     ]
-    const menu =
-      <Menu>
-        {
-          projectList.map((project, index) => {
-            return <Menu.Item key={ index }>
-              <a onClick={this.choseProject.bind(this, project)}>{project.projectName}</a>
-            </Menu.Item>
-          })
-        }
-      </Menu>
 
     const errorMenu =
       <Menu>
@@ -89,11 +86,32 @@ export default class Header extends Component {
       <section className="sub-header">
         <Icon className="home-icon" type="home" onClick={this.turnToHome.bind(this)}/>
         <div className="project-select-box">
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <a className="ant-dropdown-link" href="#">
-              {chooseProject.projectName} <Icon type="down" />
-            </a>
-          </Dropdown>
+          {
+            projectNameList.length > 0 &&
+            <span>
+              <AutoComplete
+                backfill
+                style={{ width: 180 }}
+                dataSource={projectNameList}
+                placeholder="试着输入你的项目名称"
+                defaultValue={chooseProjectName}
+                filterOption={(inputValue, option) => option.props.children.indexOf(inputValue) !== -1}
+                onSelect={(value) => {
+                  projectList.forEach((item) => {
+                    if (item.projectName === value) {
+                      this.choseProject(item)
+                    }
+                  })
+                }}
+              /><div className="search-icon"><Icon type="search"/></div>
+            </span>
+          }
+          { isCreateProject &&
+          <span>
+                <Switch className="user-type-switch" checkedChildren="开" unCheckedChildren="关" defaultChecked={false} onChange={this.changeUserType.bind(this)}/> <label className={userType === 2 ? "user-type-text user-type-active" : "user-type-text"}>一键部署</label>
+            { userType === 2 && isCreateProject && <Button type="primary" icon="plus" onClick={this.turnToCreateNewProject.bind(this)}>新建</Button> }
+              </span>
+          }
         </div>
         <span className="menu-right" onClick={this.turnTo.bind(this, "home")}>首页</span>
         <span className="menu-right">
@@ -138,5 +156,17 @@ export default class Header extends Component {
     if (!errorName.url) return
     const {parentProps} = this.props
     parentProps.history.push(errorName.url)
+  }
+  changeUserType() {
+    const { userType } = this.state
+    if (userType === 1) {
+      this.setState({userType: 2})
+    } else {
+      this.setState({userType: 1})
+    }
+  }
+  turnToCreateNewProject() {
+    const {parentProps} = this.props
+    parentProps.history.push("createProject")
   }
 }

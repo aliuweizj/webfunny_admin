@@ -1,4 +1,5 @@
 import behaviorsReducer from "Modules/behaviors/reducer"
+import createProjectReducer from "Modules/createProject/reducer"
 import customerPvAnalysisReducer from "Modules/customerPvAnalysis/reducer"
 import homeReducer from "Modules/home/reducer"
 import javascriptErrorReducer from "Modules/javascriptError/reducer"
@@ -11,6 +12,7 @@ import showScreenShotReducer from "Modules/showScreenShot/reducer"
 
 export default {
   behaviors: {reducer: behaviorsReducer, isCached: false},
+  createProject: {reducer: createProjectReducer, isCached: false},
   customerPvAnalysis: {reducer: customerPvAnalysisReducer, isCached: false},
   home: {reducer: homeReducer, isCached: false},
   javascriptError: {reducer: javascriptErrorReducer, isCached: false},

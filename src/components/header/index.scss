@@ -98,6 +98,26 @@
         color: #2f2936;
       }
     }
+    .search-icon {
+      position: absolute;
+      margin-top: -23px;
+      margin-left: 155px;
+      z-index: 2;
+    }
+    .user-type-switch {
+      margin-left: 20px;
+    }
+    .user-type-text {
+      font-size: 12px;
+      position: absolute;
+      margin-top: 15px;
+      margin-left: 2px;
+      color: #8e8f8f;
+    }
+    .user-type-active {
+      color: #74d04c;
+      margin-left: -2px;
+    }
     .github-container {
       width: 50px;
       height: 32px;
@@ -217,6 +237,24 @@
     &:hover {
       color: #1890ff;
     }
+  }
+  .ant-switch-checked {
+    background-color: #74d04c;
+  }
+  .ant-select-auto-complete.ant-select .ant-input {
+    border-width: 0;
+    background-color: #d5d5d5;
+    box-shadow: none;
+  }
+  .ant-select-auto-complete.ant-select .ant-input:hover {
+    border: 0;
+    box-shadow: none;
+  }
+  .ant-btn-primary {
+    color: #fff;
+    background-color: #74d04c;
+    border-color: #74d04c;
+    margin-left: 65px;
   }
 }
 

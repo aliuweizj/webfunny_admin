@@ -12,7 +12,7 @@ export const getResourceErrorCountByDayAction = (params, handleResult) => () => 
 }
 
 export const getResourceLoadInfoListByDayAction = (params, handleResult) => () => {
-  return HttpUtil.get(HttpApi.getResourceLoadInfoListByDay, params).then( response => {
+  return HttpUtil.post(HttpApi.getResourceLoadInfoListByDay, params).then( response => {
     handleResult(response.data)
   })
 }

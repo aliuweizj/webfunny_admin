@@ -52,3 +52,8 @@ export const CustomerPvAnalysis = props => <Bundle loadContainer={CustomerPvAnal
 export const ResourceError = props => <Bundle loadContainer={ResourceErrorContainer} title="静态资源加载报错分析" >
   {Container => <Container {...props} />}
 </Bundle>
+
+import CreateProjectContainer from "Containers/createProject"
+export const CreateProject = props => <Bundle loadContainer={CreateProjectContainer} title="createProject" >
+  {Container => <Container {...props} />}
+</Bundle>
