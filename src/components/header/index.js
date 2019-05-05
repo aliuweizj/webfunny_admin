@@ -61,7 +61,7 @@ export default class Header extends Component {
         icon: <Icon type="line-chart" />
       },
       {
-        name: "静态资源错误统计（待完成）",
+        name: "静态资源错误统计",
         url: "resourceError",
         icon: <Icon type="file-text" />
       },

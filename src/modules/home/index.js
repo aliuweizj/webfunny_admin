@@ -27,12 +27,12 @@ export default class Home extends Component {
     }
     const key = `open${Date.now()}`
     notification.open({
-      message: "更新提示（2019-04-20）",
+      message: "更新提示（2019-05-05）",
       description: <p className="update-box">
         <span>1. 增加免部署版本，只需输入项目名称，即可生成监控代码，实时统计；</span> <br/>
-        <span>2. 将增加首页接口报错实时统计；</span> <br/>
+        <span>2. 增加静态资源报错数据统计；</span> <br/>
         <span className="line" />
-        <label>1. 将完善静态资源错误统计和分析功能；</label>
+        <label>1. 增加接口报错统计分析；</label>
       </p>,
       onClose: () => {
         localStorage.closeNotification = new Date().Format("yyyy-MM-dd")

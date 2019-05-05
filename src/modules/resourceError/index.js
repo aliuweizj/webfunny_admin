@@ -1,9 +1,10 @@
 import "./index.scss"
 import React, { Component } from "react"
-import { Row, Col, Tabs, Card, Icon, Spin, Popover } from "antd"
+import { Row, Col, Tabs, Card, Icon, Spin } from "antd"
 import Header from "Components/header"
 import ChartFactory from "Components/chartFactory"
 import { resourceErrorOption } from "ChartConfig/resourceChartOption"
+import SvgIcons from "Components/svg_icons"
 import Utils from "Common/utils"
 const TabPane = Tabs.TabPane
 class ResourceError extends Component {
@@ -21,7 +22,8 @@ class ResourceError extends Component {
   }
 
   render() {
-    const { resourceErrorByDayChart, resourceLoadErrorList } = this.props
+    const { resourceErrorByDayChart, resourceLoadErrorList, totalCount, customerCount } = this.props
+    console.log(totalCount, customerCount)
     return <div className="resourceError-container">
       <Header
         chooseProject={this.choseProject.bind(this)}
@@ -37,7 +39,7 @@ class ResourceError extends Component {
                 {
                   resourceErrorByDayChart ?
                     <ChartFactory
-                      style={{ height: 260, paddingBottom: 20 }}
+                      style={{ height: 200, paddingBottom: 20 }}
                       option={resourceErrorByDayChart}
                       handleClick={this.choseBarChart}
                     />
@@ -51,7 +53,20 @@ class ResourceError extends Component {
           </Col>
           <Col span={8}>
             <Tabs defaultActiveKey="1" >
-              <TabPane tab={<span><Icon type="file-text" />今日概况</span>} key="1" />
+              <TabPane tab={<span><Icon type="file-text" />今日概况</span>} key="1" >
+                <div className="info-box">
+                  <span><Icon component={SvgIcons.Total} /><label>总发生次数</label></span>
+                  <span>{totalCount}次</span>
+                </div>
+                <div className="info-box">
+                  <span><Icon component={SvgIcons.Pages} /><label>影响页面次数</label></span>
+                  <span>{totalCount}次</span>
+                </div>
+                <div className="info-box">
+                  <span><Icon component={SvgIcons.Customers} /><label>影响用户数</label></span>
+                  <span>{customerCount}次</span>
+                </div>
+              </TabPane>
             </Tabs>
           </Col>
         </Card>
@@ -65,7 +80,7 @@ class ResourceError extends Component {
                 resourceLoadErrorList.map((resource, index) => {
                   if (!resource.sourceUrl.length) return null
                   return <p key={index}>
-                    <span>{ Utils.b64DecodeUnicode(resource.sourceUrl) } 【{ resource.count }次】  <Popover className="error-scope" placement="right" title={"text"} content={"1111"} trigger="click">影响范围 <Icon type="export" /></Popover></span>
+                    <span>{ Utils.b64DecodeUnicode(resource.sourceUrl) } 【总共:<b>{ resource.count }</b>次 | 发生页面:<b>{resource.pageCount}</b>个 | 影响用户:<b>{resource.customerCount}</b>次】</span>
                     <span style={{color: "#666"}}>{new Date(resource.createdAt).Format("yyyy-MM-dd hh:mm:ss")}</span>
                   </p>
                 })
@@ -95,8 +110,10 @@ class ResourceError extends Component {
     const dataIndex = params.dataIndex
     this.setState({ loading: true })
     this.props.updateResourceErrorState({timeType: 29 - dataIndex})
+    let totalCount = 0
+    let customerCount = 0
     this.props.getResourceLoadInfoListByDayAction({ timeType: 29 - dataIndex }, (data) => {
-      for (let i = 0; i < data.length - 1; i++) {
+      for (let i = 0; i <= data.length - 1; i++) {
         for (let j = 0; j < data.length - 1 - i; j++) {
           if (data[j].createdAt < data[j + 1].createdAt) {
             const temp = data[j]
@@ -105,13 +122,18 @@ class ResourceError extends Component {
           }
         }
       }
-      this.props.updateResourceErrorState({resourceLoadErrorList: data})
+      for (let i = 0; i < data.length - 1; i++) {
+        totalCount += parseInt(data[i].count, 10)
+        customerCount += parseInt(data[i].customerCount, 10)
+      }
+      this.props.updateResourceErrorState({resourceLoadErrorList: data, totalCount, customerCount})
       this.setState({loading: false})
     }).catch(() => {
       this.setState({loading: false})
     })
   }
   choseProject() {
+    this.initData()
   }
   loadedProjects() {
   }

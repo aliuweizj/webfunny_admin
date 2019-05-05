@@ -103,7 +103,7 @@ class Behaviors extends Component {
                     color = "blue"
                     behaviorName = "进入页面 "
                     behaviorContent = behavior.completeUrl // .replace(/https:\/\/.*\//g, "https://****/")
-                    deviceInfo =  <a onClick={this.searchPhone.bind(this, "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=" + behavior.deviceName)}>（{behavior.loadType}）（{behavior.os.indexOf("ios") !== -1 ? <Icon type="apple" /> : <Icon type="android" />}{ behavior.deviceName + " / " + behavior.os }）</a>
+                    deviceInfo =  <a onClick={this.searchPhone.bind(this, "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=" + behavior.deviceName)}>（{behavior.loadType}）（{behavior.os.indexOf("ios") !== -1 ? <Icon type="apple" theme="filled"/> : <Icon type="android" theme="filled"/>}{ behavior.deviceName + " / " + behavior.os }）</a>
                   } else if (behavior.uploadType === "JS_ERROR") {
                     color = "red"
                     behaviorName = "发生错误 "
