@@ -25,7 +25,7 @@ module.exports = env => {
     output: {
       filename: "[name].[chunkhash:8].js",
       chunkFilename: "[name].[chunkhash:8].chunk.js",
-      path: path.resolve(__dirname, "dist"),
+      path: path.resolve(__dirname, "dist/webfunny"),
       publicPath: assetsUrl
     },
     plugins: [
@@ -51,7 +51,7 @@ module.exports = env => {
       }),
       new webpack.optimize.CommonsChunkPlugin({
         name: "common",
-        minChunks: function (module) {
+        minChunks: function(module) {
           return module.context && module.context.indexOf("node_modules") !== -1 // this assumes your vendor imports exist in the node_modules directory
         }
       }),
@@ -69,7 +69,7 @@ module.exports = env => {
           removeAttributeQuotes: true,
           minifyJS: true
         },
-        chunksSortMode: function (chunk1, chunk2) {
+        chunksSortMode: function(chunk1, chunk2) {
           const orders = ["common", "vendor", "debug", "app"]
           const order1 = orders.indexOf(chunk1.names[0])
           const order2 = orders.indexOf(chunk2.names[0])

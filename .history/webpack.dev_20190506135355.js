@@ -2,7 +2,7 @@ const path = require("path")
 const webpack = require("webpack")
 const Merge = require("webpack-merge")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
-// const autoprefixer = require("autoprefixer")
+const autoprefixer = require("autoprefixer")
 const baseConfig = require("./webpack.base.js")
 const OpenBrowserPlugin = require("open-browser-webpack-plugin")
 

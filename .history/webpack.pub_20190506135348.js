@@ -14,7 +14,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 module.exports = env => {
   const curEnv = env || "local"
-  const assetsUrl = envConfig.getAssetsUrl(curEnv, "/")
+  const assetsUrl = envConfig.getAssetsUrl(curEnv, "/webfunny/")
   return Merge(baseConfig, {
     entry: {
       app: path.resolve(__dirname, "src/index.js"),
@@ -25,7 +25,7 @@ module.exports = env => {
     output: {
       filename: "[name].[chunkhash:8].js",
       chunkFilename: "[name].[chunkhash:8].chunk.js",
-      path: path.resolve(__dirname, "dist"),
+      path: path.resolve(__dirname, "dist/webfunny"),
       publicPath: assetsUrl
     },
     plugins: [
@@ -70,18 +70,19 @@ module.exports = env => {
           minifyJS: true
         },
         chunksSortMode: function (chunk1, chunk2) {
-          const orders = ["common", "vendor", "debug", "app"]
-          const order1 = orders.indexOf(chunk1.names[0])
-          const order2 = orders.indexOf(chunk2.names[0])
+          let orders = ["common", "vendor", "debug", "app"]
+          var order1 = orders.indexOf(chunk1.names[0])
+          var order2 = orders.indexOf(chunk2.names[0])
           if (order1 > order2) {
             return 1
           } else if (order1 < order2) {
             return -1
           }
           return 0
+
         },
         webfunny: true,
-        baiduAs: false
+        baiduAs: true
       }),
       new ManifestPlugin({
         publicPath: assetsUrl

@@ -14,7 +14,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 module.exports = env => {
   const curEnv = env || "local"
-  const assetsUrl = envConfig.getAssetsUrl(curEnv, "/")
+  const assetsUrl = envConfig.getAssetsUrl(curEnv, "/webfunny/")
   return Merge(baseConfig, {
     entry: {
       app: path.resolve(__dirname, "src/index.js"),
@@ -25,7 +25,7 @@ module.exports = env => {
     output: {
       filename: "[name].[chunkhash:8].js",
       chunkFilename: "[name].[chunkhash:8].chunk.js",
-      path: path.resolve(__dirname, "dist"),
+      path: path.resolve(__dirname, "dist/webfunny"),
       publicPath: assetsUrl
     },
     plugins: [
@@ -81,7 +81,7 @@ module.exports = env => {
           return 0
         },
         webfunny: true,
-        baiduAs: false
+        baiduAs: true
       }),
       new ManifestPlugin({
         publicPath: assetsUrl

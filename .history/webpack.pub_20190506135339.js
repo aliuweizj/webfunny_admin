@@ -5,8 +5,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin")
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin")
 const CleanPlugin = require("clean-webpack-plugin")
-// const autoprefixer = require("autoprefixer")
-// const pxtorem = require("postcss-pxtorem")
+const autoprefixer = require("autoprefixer")
+const pxtorem = require("postcss-pxtorem")
 const baseConfig = require("./webpack.base.js")
 const envConfig = require("./src/common/env_config.js")
 const ManifestPlugin = require("webpack-manifest-plugin")
@@ -14,7 +14,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 module.exports = env => {
   const curEnv = env || "local"
-  const assetsUrl = envConfig.getAssetsUrl(curEnv, "/")
+  const assetsUrl = envConfig.getAssetsUrl(curEnv, "/webfunny/")
   return Merge(baseConfig, {
     entry: {
       app: path.resolve(__dirname, "src/index.js"),
@@ -25,7 +25,7 @@ module.exports = env => {
     output: {
       filename: "[name].[chunkhash:8].js",
       chunkFilename: "[name].[chunkhash:8].chunk.js",
-      path: path.resolve(__dirname, "dist"),
+      path: path.resolve(__dirname, "dist/webfunny"),
       publicPath: assetsUrl
     },
     plugins: [
@@ -40,7 +40,7 @@ module.exports = env => {
         comments: false,
         compress: {
           warnings: false, // 在UglifyJs删除没有用到的代码时不输出警告
-          drop_console: curEnv === "staging" || curEnv === "prod",
+          drop_console: curEnv === 'staging' || curEnv === 'prod',
           collapse_vars: true, // 内嵌定义了但是只用到一次的变量
           reduce_vars: true, // 提取出出现多次但是没有定义成变量去引用的静态值
         }
@@ -51,7 +51,7 @@ module.exports = env => {
       }),
       new webpack.optimize.CommonsChunkPlugin({
         name: "common",
-        minChunks: function (module) {
+        minChunks: function(module) {
           return module.context && module.context.indexOf("node_modules") !== -1 // this assumes your vendor imports exist in the node_modules directory
         }
       }),
@@ -70,18 +70,19 @@ module.exports = env => {
           minifyJS: true
         },
         chunksSortMode: function (chunk1, chunk2) {
-          const orders = ["common", "vendor", "debug", "app"]
-          const order1 = orders.indexOf(chunk1.names[0])
-          const order2 = orders.indexOf(chunk2.names[0])
+          var orders = ['common', 'vendor', 'debug', 'app'];
+          var order1 = orders.indexOf(chunk1.names[0]);
+          var order2 = orders.indexOf(chunk2.names[0]);
           if (order1 > order2) {
-            return 1
+            return 1;
           } else if (order1 < order2) {
-            return -1
-          }
-          return 0
+            return -1;
+          } 
+            return 0;
+          
         },
         webfunny: true,
-        baiduAs: false
+        baiduAs: true
       }),
       new ManifestPlugin({
         publicPath: assetsUrl

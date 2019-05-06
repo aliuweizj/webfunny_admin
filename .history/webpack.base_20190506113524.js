@@ -1,32 +1,32 @@
-require("babel-polyfill")
-const path = require("path")
-// const webpack = require("webpack")
-const autoprefixer = require("autoprefixer")
-const pxtorem = require("postcss-pxtorem")
+require("babel-polyfill");
+const path = require('path');
+const webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
+const pxtorem = require('postcss-pxtorem');
 const postcssConfig = {
-  loader: "postcss-loader",
+  loader: 'postcss-loader',
   options: {
     plugins: () => [
-      autoprefixer({
-        browsers: ["> 1%", "last 4 versions"]
-      }),
+      autoprefixer({browsers: ['> 1%', 'last 4 versions']}),
       pxtorem({
         rootValue: 100,
         propWhiteList: [],
       })
     ]
   }
-}
+};
 module.exports = {
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.js?$/,
-        include: path.resolve(__dirname, "src/containers"),
-        use: [{
-            loader: "bundle-loader",
+        include: path.resolve(__dirname, 'src/containers'),
+        use: [
+          {
+            loader: 'bundle-loader',
             options: {
               lazy: true,
-              name: "[name]"
+              name: '[name]'
             }
           },
           "babel-loader"
@@ -48,12 +48,10 @@ module.exports = {
           "style-loader",
           "css-loader",
           {
-            loader: "postcss-loader",
+            loader: 'postcss-loader',
             options: {
               plugins: () => [
-                autoprefixer({
-                  browsers: ["> 1%", "last 4 versions"]
-                }),
+                autoprefixer({browsers: ['> 1%', 'last 4 versions']}),
                 pxtorem({
                   rootValue: 100,
                   propWhiteList: [],
@@ -67,9 +65,9 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          "style-loader",
+          'style-loader',
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               importLoaders: 1,
               modules: true,
@@ -82,11 +80,11 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          "style-loader",
-          "css-loader",
+          'style-loader',
+          'css-loader',
           postcssConfig,
           {
-            loader: "sass-loader",
+            loader: 'sass-loader',
             options: {
               sassLoader: {
                 includePaths: [
@@ -100,11 +98,12 @@ module.exports = {
       },
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        use: [{
-            loader: "babel-loader",
+        use: [
+          {
+            loader: 'babel-loader',
           },
           {
-            loader: "@svgr/webpack",
+            loader: '@svgr/webpack',
             options: {
               babel: false,
               icon: true,
@@ -114,33 +113,35 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|jpeg|gif)$/,
-        use: [{
-          loader: "url-loader",
-          options: {
-            name: "[path][name].[ext]",
-            limit: 25000
+        use: [
+          {
+            loader: 'url-loader',
+              options: {
+                name:'[path][name].[ext]',
+                limit: 25000
+            }
           }
-        }]
+        ]
       }
     ]
   },
   resolve: {
     alias: {
-      Libs: path.resolve(__dirname, "src/lib/"),
-      Components: path.resolve(__dirname, "src/components/"),
-      Containers: path.resolve(__dirname, "src/containers/"),
-      Modules: path.resolve(__dirname, "src/modules/"),
-      Common: path.resolve(__dirname, "src/common/"),
-      Images: path.resolve(__dirname, "src/assets/img/"),
-      ChartConfig: path.resolve(__dirname, "src/chartConfig/")
+      Libs: path.resolve(__dirname, 'src/lib/'),
+      Components: path.resolve(__dirname, 'src/components/'),
+      Containers: path.resolve(__dirname, 'src/containers/'),
+      Modules: path.resolve(__dirname, 'src/modules/'),
+      Common: path.resolve(__dirname, 'src/common/'),
+      Images: path.resolve(__dirname, 'src/assets/img/'),
+      ChartConfig: path.resolve(__dirname, 'src/chartConfig/')
     },
     mainFiles: ["index.web", "index"],
     modules: [path.resolve(__dirname, "src"), "node_modules"],
-    extensions: [".web.tsx", ".web.ts", ".web.jsx", ".web.js", ".ts", ".tsx", ".js", ".jsx", ".json", ".scss"],
+    extensions: ['.web.tsx', '.web.ts', '.web.jsx', '.web.js', '.ts', '.tsx', '.js', '.jsx', '.json', '.scss'],
     mainFields: [
-      "browser",
-      "jsnext:main",
-      "main",
+      'browser',
+      'jsnext:main',
+      'main',
     ],
   },
 }

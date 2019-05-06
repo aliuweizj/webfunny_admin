@@ -3,7 +3,7 @@ import envConfig from "./env_config"
 const apiHost = envConfig.getApiHost()
 const api = {
   // 获取所有模块的js文件
-  "jsList": "//live.webfunny.com/manifest.json",
+  "jsList": "//live.webfunny.cn/manifest.json",
   // 登录
   "login": apiHost + "/server/user/login",
   // 注册

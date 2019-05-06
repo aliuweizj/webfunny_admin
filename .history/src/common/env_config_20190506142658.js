@@ -5,28 +5,28 @@ const envUrls = {
     uri: "http://172.16.48.57"
   },
   dev: {
-    apiServerUrl: "https://live.webfunny.com",
-    nodeApiServerUrl: "https://live.webfunny.com",
+    apiServerUrl: "https://live.webfunny.cn",
+    nodeApiServerUrl: "https://live.webfunny.cn",
     assetsUrl: "https://local.webfunny.cn",
     uri: "https://local.webfunny.cn:9100"
   },
   qa: {
-    apiServerUrl: "https://live.webfunny.com",
-    assetsUrl: "https://live.webfunny.com",
-    nodeApiServerUrl: "https://live.webfunny.com",
-    uri: "https://live.webfunny.com"
+    apiServerUrl: "https://live.webfunny.cn",
+    assetsUrl: "https://live.webfunny.cn",
+    nodeApiServerUrl: "https://live.webfunny.cn",
+    uri: "https://live.webfunny.cn"
   },
   staging: {
-    apiServerUrl: "https://live.webfunny.com",
-    assetsUrl: "https://live.webfunny.com",
-    nodeApiServerUrl: "https://live.webfunny.com",
-    uri: "https://live.webfunny.com"
+    apiServerUrl: "https://live.webfunny.cn",
+    assetsUrl: "https://live.webfunny.cn",
+    nodeApiServerUrl: "https://live.webfunny.cn",
+    uri: "https://live.webfunny.cn"
   },
   prod: {
-    apiServerUrl: "//live.webfunny.com",
-    assetsUrl: "//live.webfunny.com",
-    nodeApiServerUrl: "//live.webfunny.com",
-    uri: "//live.webfunny.com"
+    apiServerUrl: "//live.webfunny.cn",
+    assetsUrl: "//live.webfunny.cn",
+    nodeApiServerUrl: "//live.webfunny.cn",
+    uri: "//live.webfunny.cn"
   }
 }
 

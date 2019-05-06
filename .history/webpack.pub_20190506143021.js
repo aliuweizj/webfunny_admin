@@ -14,7 +14,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 module.exports = env => {
   const curEnv = env || "local"
-  const assetsUrl = envConfig.getAssetsUrl(curEnv, "/")
+  const assetsUrl = envConfig.getAssetsUrl(curEnv, "")
   return Merge(baseConfig, {
     entry: {
       app: path.resolve(__dirname, "src/index.js"),
