@@ -42,7 +42,7 @@ class Register extends Component {
     })
   }
   goLogin() {
-    fetch("//live.webfunny.com/api/v1/user/list", (res) => {
+    fetch("//live.webfunny.com/server/user/list", (res) => {
       console.log(res)
     })
   }

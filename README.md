@@ -13,7 +13,7 @@
     这是一个运用于前端监控系统的项目，我在知乎上对其作用做了介绍。
     
 线上Demo:
-    http://www.webfunny.cn/
+    http://live.webfunny.com/
     
 博客讲解：
     https://www.cnblogs.com/warm-stranger/p/10209990.html
@@ -26,7 +26,7 @@
 
     本地运行：   npm run start
 
-    运行完成后访问： http://localhost:9010/webfunny/javascriptError   目前以这个页面为开始
+    运行完成后访问： http://localhost/javascriptError   目前以这个页面为开始
 
 
 如何打包：
@@ -50,17 +50,16 @@
 
     需要安装Nginx服务器， 配置如下
     server {
-        listen       8010;
+        listen       80;
         server_name  localhost;
-        root /Users/jiangyw/WebstormProjects/webfunny/dist;
-        index  /webfunny/index.html;
-        location /webfunny/ {
-            try_files $uri /webfunny/index.html;
+        root /Users/jiangyw/WebstormProjects/webfunny/dist; 
+        location / {
+            index index.html;
         }
     }
     重启Nginx后
     
-    访问 http://localhost:8010/webfunny/javascriptError 
+    访问 http://localhost/javascriptError 
     
 
 

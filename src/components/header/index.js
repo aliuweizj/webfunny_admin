@@ -1,9 +1,9 @@
 import "./index.scss"
 import React, { Component } from "react"
 import { Menu, Dropdown, Icon, Tooltip, Switch, AutoComplete, Button } from "antd"
-import HttpUtil from "Common/http-util"
-import HttpApi from "Common/http-api"
-import SvgIcons from "Components/svg_icons"
+import HttpUtil from "common/http-util"
+import HttpApi from "common/http-api"
+import SvgIcons from "components/svg_icons"
 const { AppMessage, NewFlag } = SvgIcons
 export default class Header extends Component {
   constructor(props) {
@@ -123,7 +123,7 @@ export default class Header extends Component {
         </span>
         <span className="menu-right" onClick={this.turnTo.bind(this, "behaviors")}>行为检索<Icon className="new-flag" component={NewFlag}/></span>
         <span className="menu-right">性能分析<label className="not">Not</label></span>
-        <div className="github-container" onClick={this.turnToBlog.bind(this)}/>
+        {/* <div className="github-container" onClick={this.turnToBlog.bind(this)}/> */}
       </section>
       <div className="message-box" onClick={this.turnToZhihu.bind(this)}>
         <Tooltip placement="topRight" title="有问题，欢迎给我留言">

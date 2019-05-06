@@ -29,11 +29,13 @@ module.exports = env => {
       port: port,
       host: "0.0.0.0",
       disableHostCheck: true,
-      proxy: [{
-        context: ["/webfunny/**"],
-        target: "https://webfunny.com/",
-        secure: false
-      }]
+      proxy: {
+        '/api': {
+          target: 'http://localhost:8011/',
+          changeOrigin: true, // target是域名的话，需要这个参数，
+          secure: false, // 设置支持https协议的代理
+        }
+      }
     },
     devtool: "source-map",
     plugins: [
@@ -56,7 +58,7 @@ module.exports = env => {
         $: "jquery"
       }),
       new OpenBrowserPlugin({
-        url: "http://localhost:" + port + "/webFunny/home"
+        url: "http://localhost:" + port + "/"
       })
     ]
   })

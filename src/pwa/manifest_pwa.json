@@ -1,7 +1,7 @@
 {
     "name": "前端监控系统",
     "short_name": "前端监控",
-    "start_url": "/webfunny/home",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#333",
     "description": "一个集监控前端报错，日志分析，性能分析于一体的监控系统",

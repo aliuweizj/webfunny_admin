@@ -1,9 +1,9 @@
 import React from "react"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
-import Home from "Modules/home"
-import * as actions from "Modules/home/action"
-import { getJsErrorCountByHourAction } from "Modules/javascriptError/action"
+import Home from "modules/home"
+import * as actions from "modules/home/action"
+import { getJsErrorCountByHourAction } from "modules/javascriptError/action"
 
 const HomeContainer = props => <Home {...props} />
 

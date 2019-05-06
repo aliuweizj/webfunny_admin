@@ -4,7 +4,7 @@
 const cacheName = "bs-0-1-3"
 const apiCacheName = "api-0-1-3"
 const cacheFiles = [
-    "/webfunny/",
+    "/",
     "./img/book.png",
     "./img/loading.svg"
 ]
@@ -36,7 +36,7 @@ self.addEventListener("activate", function(e) {
 self.addEventListener("fetch", function(e) {
     // 需要缓存的xhr请求
     const cacheRequestUrls = [
-        "/webfunny/"
+        "/"
     ]
     console.log("现在正在请求：" + e.request.url)
 

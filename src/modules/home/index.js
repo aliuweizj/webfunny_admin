@@ -1,11 +1,11 @@
 import "./index.scss"
 import React, { Component } from "react"
-import Header from "Components/header"
-import ChartFactory from "Components/chartFactory"
-import SvgIcons from "Components/svg_icons"
-import { jsErrorOptionByHour } from "ChartConfig/jsChartOption"
+import Header from "components/header"
+import ChartFactory from "components/chartFactory"
+import SvgIcons from "components/svg_icons"
+import { jsErrorOptionByHour } from "chartConfig/jsChartOption"
 import { Spin, Tabs, Icon, notification } from "antd"
-import utils from "Common/utils"
+import utils from "common/utils"
 const TabPane = Tabs.TabPane
 export default class Home extends Component {
   constructor(props) {

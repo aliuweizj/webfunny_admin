@@ -1,6 +1,6 @@
 {
   "name": "webfunny",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "test fe lib",
   "main": "index.js",
   "scripts": {
@@ -16,9 +16,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com:a597873885/webfunny_admin.git"
+    "url": "git@github.com:ykshao/webfunny_admin.git"
   },
-  "author": "jiangyw",
+  "author": "yongkai",
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^7.1.2",
